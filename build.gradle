@@ -30,3 +30,11 @@ test {
 		suites "src/test/resources/integration-suite.xml"
 	}
 }
+
+sonarqube {
+  properties {
+    property "sonar.projectKey", "nirmal1064_SpringCricket"
+    property "sonar.organization", "nirmal1064"
+    property "sonar.host.url", "https://sonarcloud.io"
+  }
+}
