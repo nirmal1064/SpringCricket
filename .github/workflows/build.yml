@@ -17,18 +17,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Setup MySQL
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          host port: 3306
-          container port: 
-          character set server: 
-          collation server: 
-          mysql version: 
-          mysql root password: 
-          mysql database: cricketdbtest
-          mysql user: testuser
-          mysql password: testpwd
+      - name: Start mysql instance
+        run: sudo systemctl start mysql.service
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
         with:
