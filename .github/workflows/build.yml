@@ -18,7 +18,13 @@ jobs:
         with:
           java-version: 11
       - name: Start mysql instance
-        run: sudo systemctl start mysql.service
+        env:
+          DB_NAME: cricketdbtest
+          DB_USER: root
+          DB_PASSWORD: root
+        run: |
+          sudo systemctl start mysql.service
+          mysql -e 'CREATE DATABASE ${{ env.DB_NAME }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
         with:
