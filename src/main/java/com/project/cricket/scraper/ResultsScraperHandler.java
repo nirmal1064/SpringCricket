@@ -58,8 +58,7 @@ public class ResultsScraperHandler {
 					sum = sum + summary.size();
 					if (Boolean.TRUE.equals(saveToDb)) {
 						int recordsCount = dbHandler.saveResultsSummaryToDb(summary);
-						LOGGER.info("{}/{} results summary stored in db for class {} and year {}", 
-								recordsCount, summary.size(), classId, summary.get(0).getYear());
+						LOGGER.info("{}/{} results summary stored in db for class {} and year {}", recordsCount, summary.size(), classId, summary.get(0).getYear());
 					}
 				}
 				result.addAll(summary);
