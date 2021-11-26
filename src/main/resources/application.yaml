@@ -1,0 +1,29 @@
+spring.profiles.active: dev
+springdoc.swagger-ui.operationsSorter: method
+spring.jpa.hibernate.ddl-auto: update
+
+---
+spring:
+   profiles: dev
+   datasource:
+      url: jdbc:mysql://localhost:3306/cricketdb
+      username: root
+      password: password
+threads: 20
+---
+spring:
+   profiles: prod
+   datasource:
+      url:
+      username:
+      password:
+threads: 20
+---
+spring:
+   profiles: test
+   jpa.hibernate.ddl-auto: create-drop
+   datasource: 
+      url: jdbc:mysql://localhost:3306/cricketdbtest
+      username: testuser
+      password: testpwd
+threads: 20
