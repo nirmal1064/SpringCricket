@@ -25,7 +25,7 @@ jobs:
           character set server: 
           collation server: 
           mysql version: 
-          mysql root password: testpwd
+          mysql root password: 
           mysql database: cricketdbtest
           mysql user: testuser
           mysql password: testpwd
