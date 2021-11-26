@@ -35,8 +35,17 @@ public class ResultsScraperHandler {
 	@Autowired
 	private ExecutorUtil executorUtil;
 
-	public List<ResultSummary> getSummaryBetweenYears(int classId, int startYear, int endYear, boolean saveToDb) {
+	public List<ResultSummary> getSummary(int classId, int startYear, int endYear, boolean saveToDb) {
 		LOGGER.info("Getting results for class: {} between {} and {}", classId, startYear, endYear);
+		return summaryBetweenYears(classId, startYear, endYear, saveToDb);
+	}
+
+	public List<ResultSummary> postSummary(int classId, int startYear, int endYear, boolean saveToDb) {
+		LOGGER.info("Posting results for class: {} between {} and {}", classId, startYear, endYear);
+		return summaryBetweenYears(classId, startYear, endYear, saveToDb);
+	}
+
+	private List<ResultSummary> summaryBetweenYears(int classId, int startYear, int endYear, boolean saveToDb) {
 		StopWatch stopWatch = new StopWatch();
 		List<ResultSummary> result = new ArrayList<>();
 		List<Future<List<ResultSummary>>> resultsFuture = new ArrayList<>();
@@ -76,9 +85,4 @@ public class ResultsScraperHandler {
 		return result;
 	}
 
-	public List<ResultSummary> getSummaryByClassAndYear(int classId, int year) throws Exception {
-		ResultsScraperTask resultsScraperTask = serviceFactory.resultsScraperTask();
-		resultsScraperTask.init(classId, year);
-		return resultsScraperTask.call();
-	}
 }
