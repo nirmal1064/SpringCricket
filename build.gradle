@@ -58,3 +58,7 @@ sonarqube {
 tasks.named('sonarqube').configure {
     dependsOn test
 }
+
+plugins.withType(JacocoPlugin) {
+  tasks["test"].finalizedBy 'jacocoTestReport'
+}
