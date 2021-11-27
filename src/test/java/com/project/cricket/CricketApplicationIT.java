@@ -43,9 +43,22 @@ public class CricketApplicationIT extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void testSummarySameYear() {
-		ResponseEntity<List<ResultSummary>> matchResultsResponse = resultsController.getMatchResults(1, 2020, 2020);
+		ResponseEntity<List<ResultSummary>> matchResultsResponse = resultsController.getMatchResults(1, 2020, 0);
 		List<ResultSummary> matchResults = matchResultsResponse.getBody();
 		Assert.assertTrue(matchResults.size() > 0);
 	}
 
+	@Test
+	public void testPostSummaryDifferentYear() {
+		ResponseEntity<List<ResultSummary>> matchResultsResponse = resultsController.postMatchResults(1, 2020, 2021);
+		List<ResultSummary> matchResults = matchResultsResponse.getBody();
+		Assert.assertTrue(matchResults.size() > 0);
+	}
+
+	@Test
+	public void testPostSummarySameYear() {
+		ResponseEntity<List<ResultSummary>> matchResultsResponse = resultsController.postMatchResults(1, 2020, 0);
+		List<ResultSummary> matchResults = matchResultsResponse.getBody();
+		Assert.assertTrue(matchResults.size() > 0);
+	}
 }
