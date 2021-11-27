@@ -39,6 +39,7 @@ sonarqube {
     property "sonar.projectKey", "nirmal1064_SpringCricket"
     property "sonar.organization", "nirmal1064"
     property "sonar.host.url", "https://sonarcloud.io"
+    property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
   }
 }
 
