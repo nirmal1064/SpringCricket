@@ -43,4 +43,5 @@ public class ResultsController {
 		}
 		return new ResponseEntity<>(summary, HttpStatus.OK);
 	}
+
 }
