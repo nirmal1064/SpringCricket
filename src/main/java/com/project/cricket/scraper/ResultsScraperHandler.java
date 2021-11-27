@@ -65,7 +65,7 @@ public class ResultsScraperHandler {
 				List<ResultSummary> summary = future.get();
 				if (!CollectionUtils.isEmpty(summary)) {
 					sum = sum + summary.size();
-					if (Boolean.TRUE.equals(saveToDb)) {
+					if (saveToDb) {
 						int recordsCount = dbHandler.saveResultsSummaryToDb(summary);
 						LOGGER.info("{}/{} results summary stored in db for class {} and year {}", recordsCount, summary.size(), classId, summary.get(0).getYear());
 					}
