@@ -26,10 +26,10 @@ public class ResultsController {
 			endYear = startYear;
 		}
 		List<ResultSummary> summary = resultsScraperHandler.getSummary(classId, startYear, endYear, false);
-		if (!CollectionUtils.isEmpty(summary)) {
-			return new ResponseEntity<>(summary, HttpStatus.OK);
+		if (CollectionUtils.isEmpty(summary)) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(summary, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/results")
@@ -38,9 +38,9 @@ public class ResultsController {
 			endYear = startYear;
 		}
 		List<ResultSummary> summary = resultsScraperHandler.postSummary(classId, startYear, endYear, true);
-		if (!CollectionUtils.isEmpty(summary)) {
-			return new ResponseEntity<>(summary, HttpStatus.OK);
+		if (CollectionUtils.isEmpty(summary)) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(summary, HttpStatus.OK);
 	}
 }
