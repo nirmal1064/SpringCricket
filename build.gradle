@@ -27,7 +27,9 @@ dependencies {
 
 test {
 	useTestNG() {
+		useDefaultListeners = true
 		suites "src/test/resources/integration-suite.xml"
+		testLogging.showStandardStreams = true
 	}
 }
 
