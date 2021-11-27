@@ -21,8 +21,8 @@ public class ResultsController {
 	private ResultsScraperHandler resultsScraperHandler;
 
 	@GetMapping(value = "/results")
-	public ResponseEntity<List<ResultSummary>> getMatchResults(@RequestParam int classId, @RequestParam int startYear, @RequestParam(required = false) int endYear) {
-		if (endYear == 0) {
+	public ResponseEntity<List<ResultSummary>> getMatchResults(@RequestParam Integer classId, @RequestParam Integer startYear, @RequestParam(required = false) Integer endYear) {
+		if (endYear == null || endYear < startYear) {
 			endYear = startYear;
 		}
 		List<ResultSummary> summary = resultsScraperHandler.getSummary(classId, startYear, endYear, false);
@@ -33,8 +33,8 @@ public class ResultsController {
 	}
 
 	@PostMapping(value = "/results")
-	public ResponseEntity<List<ResultSummary>> postMatchResults(@RequestParam int classId, @RequestParam int startYear, @RequestParam(required = false) int endYear) {
-		if (endYear == 0) {
+	public ResponseEntity<List<ResultSummary>> postMatchResults(@RequestParam Integer classId, @RequestParam Integer startYear, @RequestParam(required = false) Integer endYear) {
+		if (endYear == null || endYear < startYear) {
 			endYear = startYear;
 		}
 		List<ResultSummary> summary = resultsScraperHandler.postSummary(classId, startYear, endYear, true);

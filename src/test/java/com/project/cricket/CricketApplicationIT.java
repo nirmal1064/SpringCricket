@@ -43,7 +43,7 @@ public class CricketApplicationIT extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void testSummarySameYear() {
-		ResponseEntity<List<ResultSummary>> matchResultsResponse = resultsController.getMatchResults(1, 2020, 0);
+		ResponseEntity<List<ResultSummary>> matchResultsResponse = resultsController.getMatchResults(1, 2020, null);
 		List<ResultSummary> matchResults = matchResultsResponse.getBody();
 		Assert.assertTrue(matchResults.size() > 0);
 	}
@@ -57,16 +57,21 @@ public class CricketApplicationIT extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void testPostSummarySameYear() {
-		ResponseEntity<List<ResultSummary>> matchResultsResponse = resultsController.postMatchResults(1, 2020, 0);
+		ResponseEntity<List<ResultSummary>> matchResultsResponse = resultsController.postMatchResults(1, 2020, null);
 		List<ResultSummary> matchResults = matchResultsResponse.getBody();
 		Assert.assertTrue(matchResults.size() > 0);
 	}
 
 	@Test
-	public void testSummaryExceptions() {
-		ResponseEntity<List<ResultSummary>> matchResultsResponse = resultsController.postMatchResults(1, 2022, 0);
-		Assert.assertTrue(matchResultsResponse.getBody().size() == 0);
-		ResponseEntity<List<ResultSummary>> matchResultsResponse1 = resultsController.getMatchResults(1, 2022, 0);
-		Assert.assertTrue(matchResultsResponse1.getBody().size() == 0);
+	public void testPostSummaryExceptions() {
+		ResponseEntity<List<ResultSummary>> matchResultsResponse = resultsController.postMatchResults(1, 1234, 1235);
+		Assert.assertNull(matchResultsResponse.getBody());
 	}
+
+	@Test
+	public void testGetSummaryExceptions() {
+		ResponseEntity<List<ResultSummary>> matchResultsResponse = resultsController.getMatchResults(1, 2022, 0);
+		Assert.assertNull(matchResultsResponse.getBody());
+	}
+
 }

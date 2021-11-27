@@ -62,6 +62,7 @@ public class ResultsScraperTask implements Callable<List<ResultSummary>> {
 			document = Jsoup.connect(url).get();
 			Elements engineTable = document.getElementsByClass(ENGINE_TABLE).get(0).getElementsByClass(DATA1);
 			if (engineTable.isEmpty()) {
+				//return resultSummary;
 				throw new ResultNotFoundException(NORESULTS);
 			}
 			Elements rows = engineTable.select(TR);

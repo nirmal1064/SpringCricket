@@ -63,7 +63,7 @@ public class ResultsScraperHandler {
 			service.shutdown();
 			for (Future<List<ResultSummary>> future : resultsFuture) {
 				List<ResultSummary> summary = future.get();
-				if (CollectionUtils.isEmpty(summary)) {
+				if (!CollectionUtils.isEmpty(summary)) {
 					sum = sum + summary.size();
 					if (Boolean.TRUE.equals(saveToDb)) {
 						int recordsCount = dbHandler.saveResultsSummaryToDb(summary);
