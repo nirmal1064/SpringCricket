@@ -64,7 +64,7 @@ public class CricketApplicationIT extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void testPostSummaryExceptions() {
-		ResponseEntity<List<ResultSummary>> matchResultsResponse = resultsController.postMatchResults(1, 1234, 1235);
+		ResponseEntity<List<ResultSummary>> matchResultsResponse = resultsController.postMatchResults(1, 1234, 0);
 		Assert.assertNull(matchResultsResponse.getBody());
 	}
 
