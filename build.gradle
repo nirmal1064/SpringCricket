@@ -32,7 +32,6 @@ dependencies {
 	implementation "commons-io:commons-io:${commonsio}"
 
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
-	//testImplementation "junit:junit:${junit}"
 	testImplementation "org.testng:testng:${testng}"
 }
 
