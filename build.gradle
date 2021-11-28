@@ -25,7 +25,7 @@ dependencies {
 	implementation "commons-io:commons-io:${commonsio}"
 
 	testImplementation ("org.springframework.boot:spring-boot-starter-test") {
-		exclude group: "org.junit.vintage"
+		exclude group: "junit"
 	}
 	testImplementation "junit:junit:${junit}"
 	testImplementation "org.testng:testng:${testng}"
