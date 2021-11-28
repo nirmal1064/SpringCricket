@@ -25,6 +25,7 @@ dependencies {
 		exclude group: "commons-io"
 	}
 	implementation "org.jsoup:jsoup:${jsoup}"
+	implementation "commons-io:commons-io:${commonsio}"
 
 	testImplementation ("org.springframework.boot:spring-boot-starter-test") {
 		exclude group: 'junit', module: 'junit'
