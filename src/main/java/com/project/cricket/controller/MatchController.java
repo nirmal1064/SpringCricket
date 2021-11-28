@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.gson.Gson;
 import com.project.cricket.model.MatchJson;
 
 @RestController
@@ -22,11 +23,15 @@ public class MatchController {
 	@Autowired
 	private RestTemplate restTemplate;
 
+	@Autowired
+	private Gson gson;
+
 	@GetMapping(value = "/matchjson")
 	public ResponseEntity<MatchJson> getMatchJson(@RequestParam Integer matchId) {
 		try {
 			String url = String.format(MJSON_URL, matchId);
-			MatchJson matchJson = restTemplate.getForObject(url, MatchJson.class);
+			String response = restTemplate.getForObject(url, String.class);
+			MatchJson matchJson = gson.fromJson(response, MatchJson.class);
 			return new ResponseEntity<>(matchJson, HttpStatus.OK);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
