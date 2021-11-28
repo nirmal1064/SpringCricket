@@ -18,10 +18,15 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-web"
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
 	runtimeOnly "mysql:mysql-connector-java"
-	implementation "org.springdoc:springdoc-openapi-ui:${openApi}"
+	implementation ("org.springdoc:springdoc-openapi-ui:${openApi}") {
+		exclude group: "commons-io"
+	}
 	implementation "org.jsoup:jsoup:${jsoup}"
+	implementation "commons-io:commons-io:${commonsio}"
 
-	testImplementation "org.springframework.boot:spring-boot-starter-test"
+	testImplementation ("org.springframework.boot:spring-boot-starter-test") {
+		exclude group: "org.junit.vintage"
+	}
 	testImplementation "junit:junit:${junit}"
 	testImplementation "org.testng:testng:${testng}"
 }
