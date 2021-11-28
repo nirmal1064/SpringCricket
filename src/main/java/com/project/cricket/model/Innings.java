@@ -11,10 +11,10 @@ public class Innings {
 	private int batted;
 
 	@SerializedName("batting_team_id")
-	private int batting_team_id;
+	private int battingTeamId;
 
 	@SerializedName("bowling_team_id")
-	private int bowling_team_id;
+	private int bowlingTeamId;
 
 	private int bpo;
 
@@ -126,31 +126,31 @@ public class Innings {
 	}
 
 	/**
-	 * @return the batting_team_id
+	 * @return the battingTeamId
 	 */
-	public int getBatting_team_id() {
-		return batting_team_id;
+	public int getBattingTeamId() {
+		return battingTeamId;
 	}
 
 	/**
-	 * @param batting_team_id the batting_team_id to set
+	 * @param battingTeamId the battingTeamId to set
 	 */
-	public void setBatting_team_id(int batting_team_id) {
-		this.batting_team_id = batting_team_id;
+	public void setBattingTeamId(int battingTeamId) {
+		this.battingTeamId = battingTeamId;
 	}
 
 	/**
-	 * @return the bowling_team_id
+	 * @return the bowlingTeamId
 	 */
-	public int getBowling_team_id() {
-		return bowling_team_id;
+	public int getBowlingTeamId() {
+		return bowlingTeamId;
 	}
 
 	/**
-	 * @param bowling_team_id the bowling_team_id to set
+	 * @param bowlingTeamId the bowlingTeamId to set
 	 */
-	public void setBowling_team_id(int bowling_team_id) {
-		this.bowling_team_id = bowling_team_id;
+	public void setBowlingTeamId(int bowlingTeamId) {
+		this.bowlingTeamId = bowlingTeamId;
 	}
 
 	/**
@@ -530,4 +530,5 @@ public class Innings {
 	public void setWides(int wides) {
 		this.wides = wides;
 	}
+
 }
