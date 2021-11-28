@@ -30,6 +30,7 @@ dependencies {
 	}
 	implementation "org.jsoup:jsoup:${jsoup}"
 	implementation "commons-io:commons-io:${commonsio}"
+	implementation "com.google.code.gson:gson:${gson}"
 
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
 	testImplementation "org.testng:testng:${testng}"

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.cricket.config.ClassNumber;
 import com.project.cricket.model.ResultSummary;
 import com.project.cricket.scraper.ResultsScraperHandler;
 
@@ -31,6 +32,19 @@ public class ResultsController {
 		}
 		return new ResponseEntity<>(summary, HttpStatus.OK);
 	}
+
+	@GetMapping(value = "/resultsCheck")
+	public ResponseEntity<List<ResultSummary>> getMatchResultsCheck(@RequestParam ClassNumber classNumber, @RequestParam Integer startYear, @RequestParam(required = false) Integer endYear) {
+		if (endYear == null || endYear < startYear) {
+			endYear = startYear;
+		}
+		List<ResultSummary> summary = resultsScraperHandler.getSummary(classNumber.getValue(), startYear, endYear, false);
+		if (CollectionUtils.isEmpty(summary)) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(summary, HttpStatus.OK);
+	}
+
 
 	@PostMapping(value = "/results")
 	public ResponseEntity<List<ResultSummary>> postMatchResults(@RequestParam Integer classId, @RequestParam Integer startYear, @RequestParam(required = false) Integer endYear) {
