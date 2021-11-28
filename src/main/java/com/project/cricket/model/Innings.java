@@ -4,84 +4,84 @@ import com.google.gson.annotations.SerializedName;
 
 public class Innings {
 	@SerializedName("ball_limit")
-	public int ballLimit;
+	private int ballLimit;
 
-	public int balls;
+	private int balls;
 
-	public int batted;
+	private int batted;
 
 	@SerializedName("batting_team_id")
-	public int batting_team_id;
+	private int batting_team_id;
 
 	@SerializedName("bowling_team_id")
-	public int bowling_team_id;
+	private int bowling_team_id;
 
-	public int bpo;
+	private int bpo;
 
-	public int byes;
+	private int byes;
 
-	public int event;
+	private int event;
 
 	@SerializedName("event_name")
-	public String eventName;
+	private String eventName;
 
-	public int extras;
+	private int extras;
 
 	@SerializedName("innings_number")
-	public String inningsNumber;
+	private String inningsNumber;
 
 	@SerializedName("innings_numth")
-	public String inningsNumth;
+	private String inningsNumth;
 
-	public int lead;
+	private int lead;
 
-	public int legbyes;
+	private int legbyes;
 
 	@SerializedName("live_current")
-	public int liveCurrent;
+	private int liveCurrent;
 
 	@SerializedName("live_current_name")
-	public String liveCurrentName;
+	private String liveCurrentName;
 
-	public String minutes;
+	private String minutes;
 
-	public int noballs;
+	private int noballs;
 
 	@SerializedName("old_penalty_or_bonus")
-	public int oldPenaltyOrBonus;
+	private int oldPenaltyOrBonus;
 
 	@SerializedName("over_limit")
-	public String overLimit;
+	private String overLimit;
 
 	@SerializedName("over_limit_run_rate")
-	public String overLimitRunRate;
+	private String overLimitRunRate;
 
 	@SerializedName("over_split_limit")
-	public String overSplitLimit;
+	private String overSplitLimit;
 
-	public String overs;
+	private String overs;
 
 	@SerializedName("overs_docked")
-	public int oversDocked;
+	private int oversDocked;
 
-	public int penalties;
+	private int penalties;
 
 	@SerializedName("penalties_field_end")
-	public int penaltiesFieldEnd;
+	private int penaltiesFieldEnd;
 
 	@SerializedName("penalties_field_start")
-	public int penaltiesFieldStart;
+	private int penaltiesFieldStart;
 
 	@SerializedName("run_rate")
-	public String runRate;
+	private String runRate;
 
-	public int runs;
+	private int runs;
 
-	public int target;
+	private int target;
 
-	public int wickets;
+	private int wickets;
 
-	public int wides;
+	private int wides;
 
 	/**
 	 * @return the ballLimit
@@ -530,5 +530,4 @@ public class Innings {
 	public void setWides(int wides) {
 		this.wides = wides;
 	}
-
 }
