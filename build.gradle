@@ -3,7 +3,7 @@ plugins {
 	id "io.spring.dependency-management" version "${dependency}"
 	id "org.sonarqube" version "${sonarqube}"
 	id "java"
-	id 'jacoco'
+	id "jacoco"
 }
 
 group = "com.project"
@@ -25,7 +25,8 @@ dependencies {
 	implementation "commons-io:commons-io:${commonsio}"
 
 	testImplementation ("org.springframework.boot:spring-boot-starter-test") {
-		exclude group: "junit"
+		exclude group: "junit", module: "junit"
+		exclude group: "org.junit.vintage", module: "junit-vintage-engine"
 	}
 	testImplementation "junit:junit:${junit}"
 	testImplementation "org.testng:testng:${testng}"
@@ -52,11 +53,11 @@ sonarqube {
     property "sonar.projectKey", "nirmal1064_SpringCricket"
     property "sonar.organization", "nirmal1064"
     property "sonar.host.url", "https://sonarcloud.io"
-    property 'sonar.core.codeCoveragePlugin', 'jacoco'
+    property "sonar.core.codeCoveragePlugin", "jacoco"
     property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
   }
 }
 
-tasks.named('sonarqube').configure {
+tasks.named("sonarqube").configure {
     dependsOn test
 }
