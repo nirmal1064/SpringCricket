@@ -10,6 +10,13 @@ group = "com.project"
 version = "0.0.1-SNAPSHOT"
 sourceCompatibility = "11"
 
+configurations {
+  all {
+    exclude group: 'junit', module: 'junit'
+    exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+  }
+}
+
 repositories {
 	mavenCentral()
 }
@@ -25,7 +32,7 @@ dependencies {
 	implementation "commons-io:commons-io:${commonsio}"
 
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
-	testImplementation "junit:junit:${junit}"
+	//testImplementation "junit:junit:${junit}"
 	testImplementation "org.testng:testng:${testng}"
 }
 
