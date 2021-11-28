@@ -17,8 +17,8 @@ repositories {
 dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-web"
 	implementation ("org.springframework.boot:spring-boot-starter-data-jpa") {
-		exclude group: 'junit', module: 'junit'
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+		exclude group: "junit", module: "junit"
+		exclude group: "org.junit.vintage", module: "junit-vintage-engine"
 	}
 	runtimeOnly "mysql:mysql-connector-java"
 	implementation ("org.springdoc:springdoc-openapi-ui:${openApi}") {
@@ -28,10 +28,12 @@ dependencies {
 	implementation "commons-io:commons-io:${commonsio}"
 
 	testImplementation ("org.springframework.boot:spring-boot-starter-test") {
-		exclude group: 'junit', module: 'junit'
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+		exclude group: "junit", module: "junit"
+		exclude group: "org.junit.vintage", module: "junit-vintage-engine"
 	}
-	testImplementation "junit:junit:${junit}"
+	testImplementation "org.junit.jupiter:junit-jupiter-api:${junitapi}"
+	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitapi}"
+	//testImplementation "junit:junit:${junit}"
 	testImplementation "org.testng:testng:${testng}"
 }
 
