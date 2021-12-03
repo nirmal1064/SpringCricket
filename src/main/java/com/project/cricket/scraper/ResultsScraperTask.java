@@ -38,7 +38,8 @@ public class ResultsScraperTask implements Callable<List<ResultSummary>> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResultsScraperTask.class);
 
-	@Autowired CricUtils cricUtils;
+	@Autowired
+	private CricUtils cricUtils;
 
 	private int classId;
 	private int year;

@@ -1,6 +1,6 @@
 springdoc.swagger-ui.operationsSorter: method
 spring.jpa.hibernate.ddl-auto: update
-
+file.output.location: json
 ---
 spring:
    profiles: dev

@@ -9,18 +9,17 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 
+import lombok.Getter;
+
 @Configuration
+@Getter
 public class ApplicationConfiguration {
 
 	@Value("${threads}")
 	private int numOfThreads;
 
-	/**
-	 * @return the numOfThreads
-	 */
-	public int getNumOfThreads() {
-		return numOfThreads;
-	}
+	@Value("${file.output.location}")
+	private String jsonFileLocation;
 
 	@SuppressWarnings("rawtypes")
 	@Bean

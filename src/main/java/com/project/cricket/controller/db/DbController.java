@@ -1,10 +1,12 @@
 package com.project.cricket.controller.db;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +45,12 @@ public class DbController {
 			@RequestParam Integer startYear, @RequestParam Integer endYear) {
 		LOGGER.info("Getting results summary for class {} between years {} and {}", classId, startYear, endYear);
 		return resultSummaryRepository.findByClassIdAndYearBetween(classId, startYear, endYear);
+	}
+
+	@GetMapping(value = "/matchids", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Integer> getMatchIds(@RequestParam Integer classId, @RequestParam Integer startYear, @RequestParam Integer endYear) {
+		LOGGER.info("Getting match ids");
+		return resultSummaryRepository.findByClassIdAndYearBetween(classId, startYear, endYear).stream().map(r -> r.getMatchId()).collect(Collectors.toList());
 	}
 
 }

@@ -17,3 +17,4 @@ public interface ResultSummaryRepository extends JpaRepository<ResultSummary, In
 	public List<ResultSummary> findByClassId(int classId);
 
 }
+
