@@ -32,8 +32,11 @@ public class MatchHandler {
 	@Autowired
 	private ServiceFactory serviceFactory;
 
+	private int count;
+
 	public List<String> getMatchJson(List<Integer> matchIds, boolean writeToFile) {
 		LOGGER.info("MatchJson summary for {} matches", matchIds.size());
+		count = matchIds.size();
 		StopWatch stopWatch = new StopWatch();
 		List<String> result = new ArrayList<>();
 		try {
@@ -48,8 +51,8 @@ public class MatchHandler {
 			}
 			resultsFuture = service.invokeAll(matchJsonTasks);
 			addResults(stopWatch, result, service, resultsFuture);
-			LOGGER.info("MatchJson summary for {} matches completed in {} seconds", matchIds.size(),
-					stopWatch.getTotalTimeSeconds());
+			LOGGER.info("MatchJson summary for {} matches completed in {} seconds for {} matches", matchIds.size(),
+					stopWatch.getTotalTimeSeconds(), count);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 			LOGGER.error(e.getMessage(), e);
@@ -75,8 +78,8 @@ public class MatchHandler {
 			}
 			resultsFuture = service.invokeAll(matchHtmlScraperTasks);
 			addResults(stopWatch, result, service, resultsFuture);
-			LOGGER.info("MatchScorecard summary for {} matches completed in {} seconds", matchIds.size(),
-					stopWatch.getTotalTimeSeconds());
+			LOGGER.info("MatchScorecard summary for {} matches completed in {} seconds for {} matches", matchIds.size(),
+					stopWatch.getTotalTimeSeconds(), count);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 			LOGGER.error(e.getMessage(), e);
@@ -91,7 +94,10 @@ public class MatchHandler {
 		service.shutdown();
 		for (Future<String> future : resultsFuture) {
 			String json = future.get();
-			result.add(json);
+			if (json != null) {
+				result.add(json);
+				count--;
+			}
 		}
 		stopWatch.stop();
 	}

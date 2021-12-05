@@ -40,12 +40,10 @@ public class MatchHtmlScraperTask implements Callable<String> {
 
 	@Override
 	public String call() throws Exception {
-		LOGGER.info("{} {}", matchId, writeToFile);
-		scrapeWebsite();
-		return null;
+		return scrapeWebsite();
 	}
 
-	private void scrapeWebsite() {
+	private String scrapeWebsite() {
 		String url = String.format(MATCH_URL, matchId);
 		LOGGER.info("scrapting html for {}", url);
 		Document document = null;
@@ -55,11 +53,15 @@ public class MatchHtmlScraperTask implements Callable<String> {
 			String scorecard = element.data();
 			if (writeToFile) {
 				String fileName = String.valueOf(matchId) + ".json";
-				fileUtils.writeToFile(appConfig.getMatchScorecardFileLocation(), fileName, scorecard);
+				boolean flag = fileUtils.writeToFile(appConfig.getMatchScorecardFileLocation(), fileName, scorecard);
+				if (!flag) {
+					return String.valueOf(matchId);
+				}
 			}
 		} catch (Exception e) {
 			LOGGER.error("Exception in extracting scorecard for match {}", matchId, e);
 		}
+		return null;
 	}
 
 }
