@@ -43,9 +43,9 @@ public class MatchController {
 		return returnResponse(matchScorecard);
 	}
 
-	private ResponseEntity<String> returnResponse(List<String> matchScorecard) {
-		if (!CollectionUtils.isEmpty(matchScorecard)) {
-			return new ResponseEntity<>(matchScorecard.get(0), HttpStatus.OK);
+	private ResponseEntity<String> returnResponse(List<String> responses) {
+		if (!CollectionUtils.isEmpty(responses)) {
+			return new ResponseEntity<>(responses.get(0), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

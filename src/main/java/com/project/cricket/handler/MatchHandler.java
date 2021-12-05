@@ -59,16 +59,6 @@ public class MatchHandler {
 		return result;
 	}
 
-	private void addResults(StopWatch stopWatch, List<String> result, ExecutorService service,
-			List<Future<String>> resultsFuture) throws InterruptedException, ExecutionException {
-		service.shutdown();
-		for (Future<String> future : resultsFuture) {
-			String json = future.get();
-			result.add(json);
-		}
-		stopWatch.stop();
-	}
-
 	public List<String> getMatchScorecard(List<Integer> matchIds, boolean writeToFile) {
 		LOGGER.info("Match Scorecard summary for {} matches", matchIds.size());
 		StopWatch stopWatch = new StopWatch();
@@ -94,6 +84,16 @@ public class MatchHandler {
 			LOGGER.error(e.getMessage(), e);
 		}
 		return result;
+	}
+
+	private void addResults(StopWatch stopWatch, List<String> result, ExecutorService service,
+			List<Future<String>> resultsFuture) throws InterruptedException, ExecutionException {
+		service.shutdown();
+		for (Future<String> future : resultsFuture) {
+			String json = future.get();
+			result.add(json);
+		}
+		stopWatch.stop();
 	}
 
 }
