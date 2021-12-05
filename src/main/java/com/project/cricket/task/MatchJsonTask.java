@@ -1,4 +1,4 @@
-package com.project.cricket.handler;
+package com.project.cricket.task;
 
 import static com.project.cricket.utils.Constants.MJSON_URL;
 

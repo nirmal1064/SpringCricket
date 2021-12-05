@@ -1,4 +1,4 @@
-package com.project.cricket.controller.db;
+package com.project.cricket.controller;
 
 import java.util.List;
 import java.util.stream.Collectors;

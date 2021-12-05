@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.cricket.controller.db.DbController;
 import com.project.cricket.handler.MatchHandler;
-import com.project.cricket.scraper.MatchHtmlScraperHandler;
+import com.project.cricket.handler.MatchHtmlScraperHandler;
 
 @RestController
 public class MatchController {

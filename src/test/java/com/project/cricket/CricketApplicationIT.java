@@ -16,8 +16,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.project.cricket.controller.DbController;
 import com.project.cricket.controller.ResultsController;
-import com.project.cricket.controller.db.DbController;
 import com.project.cricket.handler.DbHandler;
 import com.project.cricket.model.ResultSummary;
 

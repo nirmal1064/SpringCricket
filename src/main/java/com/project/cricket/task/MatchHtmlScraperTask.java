@@ -1,4 +1,4 @@
-package com.project.cricket.scraper;
+package com.project.cricket.task;
 
 import static com.project.cricket.utils.Constants.MATCH_URL;
 import static com.project.cricket.utils.Constants.NEXT_DATA;

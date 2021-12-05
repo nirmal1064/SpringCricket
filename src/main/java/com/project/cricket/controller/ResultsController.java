@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.cricket.handler.ResultsScraperHandler;
 import com.project.cricket.model.ResultSummary;
-import com.project.cricket.scraper.ResultsScraperHandler;
 
 @RestController
 public class ResultsController {
