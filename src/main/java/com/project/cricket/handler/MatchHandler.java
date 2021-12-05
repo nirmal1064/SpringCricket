@@ -2,6 +2,7 @@ package com.project.cricket.handler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -46,22 +47,26 @@ public class MatchHandler {
 				matchJsonTasks.add(matchJsonTask);
 			}
 			resultsFuture = service.invokeAll(matchJsonTasks);
-			service.shutdown();
-			for (Future<String> future : resultsFuture) {
-				String json = future.get();
-				result.add(json);
-			}
-			stopWatch.stop();
+			addResults(stopWatch, result, service, resultsFuture);
 			LOGGER.info("MatchJson summary for {} matches completed in {} seconds", matchIds.size(),
 					stopWatch.getTotalTimeSeconds());
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 			LOGGER.error(e.getMessage(), e);
 		} catch (Exception e) {
-			Thread.currentThread().interrupt();
 			LOGGER.error(e.getMessage(), e);
 		}
 		return result;
+	}
+
+	private void addResults(StopWatch stopWatch, List<String> result, ExecutorService service,
+			List<Future<String>> resultsFuture) throws InterruptedException, ExecutionException {
+		service.shutdown();
+		for (Future<String> future : resultsFuture) {
+			String json = future.get();
+			result.add(json);
+		}
+		stopWatch.stop();
 	}
 
 	public List<String> getMatchScorecard(List<Integer> matchIds, boolean writeToFile) {
@@ -79,12 +84,7 @@ public class MatchHandler {
 				matchHtmlScraperTasks.add(matchHtmlScraperTask);
 			}
 			resultsFuture = service.invokeAll(matchHtmlScraperTasks);
-			service.shutdown();
-			for (Future<String> future : resultsFuture) {
-				String json = future.get();
-				result.add(json);
-			}
-			stopWatch.stop();
+			addResults(stopWatch, result, service, resultsFuture);
 			LOGGER.info("MatchScorecard summary for {} matches completed in {} seconds", matchIds.size(),
 					stopWatch.getTotalTimeSeconds());
 		} catch (InterruptedException e) {

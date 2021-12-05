@@ -54,8 +54,7 @@ public class MatchController {
 		if (endYear == null || endYear < startYear) {
 			endYear = startYear;
 		}
-		List<Integer> matchIds = dbController.getMatchIds(classId, startYear, endYear);
-		return matchIds;
+		return dbController.getMatchIds(classId, startYear, endYear);
 	}
 
 }
