@@ -13,6 +13,7 @@ import org.springframework.util.StopWatch;
 
 import com.project.cricket.config.ApplicationConfiguration;
 import com.project.cricket.config.ServiceFactory;
+import com.project.cricket.task.MatchHtmlScraperTask;
 import com.project.cricket.task.MatchJsonTask;
 import com.project.cricket.utils.ExecutorUtil;
 
@@ -37,7 +38,7 @@ public class MatchHandler {
 		try {
 			ExecutorService service = executorUtil.getThreadPool(appConfig.getNumOfThreads());
 			List<MatchJsonTask> matchJsonTasks = new ArrayList<>();
-			List<Future<String>> resultsFuture = new ArrayList<>();
+			List<Future<String>> resultsFuture;
 			stopWatch.start();
 			for (Integer matchId : matchIds) {
 				MatchJsonTask matchJsonTask = serviceFactory.matchJsonTask();
@@ -62,4 +63,37 @@ public class MatchHandler {
 		}
 		return result;
 	}
+
+	public List<String> getMatchScorecard(List<Integer> matchIds, boolean writeToFile) {
+		LOGGER.info("Match Scorecard summary for {} matches", matchIds.size());
+		StopWatch stopWatch = new StopWatch();
+		List<String> result = new ArrayList<>();
+		try {
+			ExecutorService service = executorUtil.getThreadPool(appConfig.getNumOfThreads());
+			List<MatchHtmlScraperTask> matchHtmlScraperTasks = new ArrayList<>();
+			List<Future<String>> resultsFuture;
+			stopWatch.start();
+			for (Integer matchId : matchIds) {
+				MatchHtmlScraperTask matchHtmlScraperTask = serviceFactory.matchHtmlScraperTask();
+				matchHtmlScraperTask.init(matchId, writeToFile);
+				matchHtmlScraperTasks.add(matchHtmlScraperTask);
+			}
+			resultsFuture = service.invokeAll(matchHtmlScraperTasks);
+			service.shutdown();
+			for (Future<String> future : resultsFuture) {
+				String json = future.get();
+				result.add(json);
+			}
+			stopWatch.stop();
+			LOGGER.info("MatchScorecard summary for {} matches completed in {} seconds", matchIds.size(),
+					stopWatch.getTotalTimeSeconds());
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			LOGGER.error(e.getMessage(), e);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+		return result;
+	}
+
 }
