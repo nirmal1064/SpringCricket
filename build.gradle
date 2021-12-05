@@ -12,7 +12,8 @@ sourceCompatibility = "11"
 
 configurations {
   all {
-    exclude group: 'org.apache.logging.log4j'
+    exclude group: "org.apache.logging.log4j"
+    exclude group: "org.apache.commons"
   }
 }
 
