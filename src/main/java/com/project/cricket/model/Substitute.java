@@ -27,12 +27,6 @@ public class Substitute extends Player {
 	@SerializedName("team_abbreviation")
 	private String teamAbbreviation;
 
-	@SerializedName("team_id")
-	private String teamId;
-
-	@SerializedName("team_name")
-	private String teamName;
-
 	@SerializedName("team_short_name")
 	private String teamShortName;
 

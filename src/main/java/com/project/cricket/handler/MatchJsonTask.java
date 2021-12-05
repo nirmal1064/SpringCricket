@@ -45,7 +45,7 @@ public class MatchJsonTask implements Callable<String> {
 			matchJson = getMatchJson(matchId);
 			if (writeToFile) {
 				String fileName = String.valueOf(matchId) + ".json";
-				fileUtils.writeToFile(appConfig.getJsonFileLocation(), fileName, matchJson);
+				fileUtils.writeToFile(appConfig.getMatchJsonFileLocation(), fileName, matchJson);
 			}
 		} catch (Exception e) {
 			LOGGER.error("Exception in json task for match {}", matchId, e);

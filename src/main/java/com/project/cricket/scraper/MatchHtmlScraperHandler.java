@@ -1,4 +1,4 @@
-package com.project.cricket.handler;
+package com.project.cricket.scraper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +16,9 @@ import com.project.cricket.config.ServiceFactory;
 import com.project.cricket.utils.ExecutorUtil;
 
 @Component
-public class MatchHandler {
+public class MatchHtmlScraperHandler {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(MatchHandler.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MatchHtmlScraperHandler.class);
 
 	@Autowired
 	private ApplicationConfiguration appConfig;
@@ -29,28 +29,28 @@ public class MatchHandler {
 	@Autowired
 	private ServiceFactory serviceFactory;
 
-	public List<String> getMatchJson(List<Integer> matchIds, boolean writeToFile) {
-		LOGGER.info("MatchJson summary for {} matches", matchIds.size());
+	public List<String> getMatchScorecard(List<Integer> matchIds, boolean writeToFile) {
+		LOGGER.info("Match Scorecard summary for {} matches", matchIds.size());
 		StopWatch stopWatch = new StopWatch();
 		List<String> result = new ArrayList<>();
 		try {
 			ExecutorService service = executorUtil.getThreadPool(appConfig.getNumOfThreads());
-			List<MatchJsonTask> matchJsonTasks = new ArrayList<>();
+			List<MatchHtmlScraperTask> matchHtmlScraperTasks = new ArrayList<>();
 			List<Future<String>> resultsFuture = new ArrayList<>();
 			stopWatch.start();
 			for (Integer matchId : matchIds) {
-				MatchJsonTask matchJsonTask = serviceFactory.matchJsonTask();
-				matchJsonTask.init(matchId, writeToFile);
-				matchJsonTasks.add(matchJsonTask);
+				MatchHtmlScraperTask matchHtmlScraperTask = serviceFactory.matchHtmlScraperTask();
+				matchHtmlScraperTask.init(matchId, writeToFile);
+				matchHtmlScraperTasks.add(matchHtmlScraperTask);
 			}
-			resultsFuture = service.invokeAll(matchJsonTasks);
+			resultsFuture = service.invokeAll(matchHtmlScraperTasks);
 			service.shutdown();
 			for (Future<String> future : resultsFuture) {
 				String json = future.get();
 				result.add(json);
 			}
 			stopWatch.stop();
-			LOGGER.info("MatchJson summary for {} matches completed in {} seconds", matchIds.size(),
+			LOGGER.info("MatchScorecard summary for {} matches completed in {} seconds", matchIds.size(),
 					stopWatch.getTotalTimeSeconds());
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
@@ -61,4 +61,5 @@ public class MatchHandler {
 		}
 		return result;
 	}
+
 }

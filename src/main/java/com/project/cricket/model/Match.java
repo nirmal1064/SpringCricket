@@ -1,5 +1,14 @@
 package com.project.cricket.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
@@ -7,37 +16,43 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Entity
+@Table(name = "match_summary")
 public class Match {
 
+	@Id
+	@Column(name = "match_id")
+	private Integer matchId;
+
 	@SerializedName("actual_days")
-	private String actualDays;
+	private int actualDays;
 
-	private String adjusted;
+	private int adjusted;
 
-	private String amount;
+	private int amount;
 
 	@SerializedName("amount_balls")
-	private String amountBalls;
+	private int amountBalls;
 
 	@SerializedName("amount_name")
 	private String amountName;
 
 	@SerializedName("amount_type")
-	private String amountType;
+	private int amountType;
 
 	@SerializedName("away_team_id")
-	private String awayTeamId;
+	private int awayTeamId;
 
 	@SerializedName("ballbyball_source")
 	private String ballbyballSource;
 
 	@SerializedName("batting_first_team_id")
-	private String battingFirstTeamId;
+	private int battingFirstTeamId;
 
 	@SerializedName("bitly_hash")
 	private String bitlyHash;
 
-	private String bpo;
+	private int bpo;
 
 	@SerializedName("cancelled_match")
 	private String cancelledMatch;
@@ -49,7 +64,7 @@ public class Match {
 	private String commentarySource;
 
 	@SerializedName("continent_id")
-	private String continentId;
+	private int continentId;
 
 	@SerializedName("continent_name")
 	private String continentName;
@@ -61,7 +76,7 @@ public class Match {
 	private String countryFilename;
 
 	@SerializedName("country_id")
-	private String countryId;
+	private int countryId;
 
 	@SerializedName("country_name")
 	private String countryName;
@@ -72,7 +87,7 @@ public class Match {
 	private String dateString;
 
 	@SerializedName("days_extended")
-	private String daysExtended;
+	private int daysExtended;
 
 	@SerializedName("end_date")
 	private String endDate;
@@ -80,18 +95,18 @@ public class Match {
 	@SerializedName("end_date_raw")
 	private String endDateRaw;
 
-	private String floodlit;
+	private int floodlit;
 
 	@SerializedName("floodlit_name")
 	private String floodlitName;
 
-	private String followon;
+	private int followon;
 
 	@SerializedName("general_class_card")
 	private String generalClassCard;
 
 	@SerializedName("general_class_id")
-	private String generalClassId;
+	private int generalClassId;
 
 	@SerializedName("general_class_name")
 	private String generalClassName;
@@ -100,13 +115,13 @@ public class Match {
 	private String generalNumber;
 
 	@SerializedName("general_valid")
-	private String generalValid;
+	private int generalValid;
 
 	@SerializedName("gmt_difference")
 	private String gmtDifference;
 
 	@SerializedName("ground_id")
-	private String groundId;
+	private int groundId;
 
 	@SerializedName("ground_latitude")
 	private String groundLatitude;
@@ -118,7 +133,7 @@ public class Match {
 	private String groundName;
 
 	@SerializedName("ground_object_id")
-	private String groundObjectId;
+	private int groundObjectId;
 
 	@SerializedName("ground_small_name")
 	private String groundSmallName;
@@ -130,7 +145,7 @@ public class Match {
 	private String head2headSource;
 
 	@SerializedName("home_team_id")
-	private String homeTeamId;
+	private int homeTeamId;
 
 	@SerializedName("hours_string")
 	private String hoursString;
@@ -139,16 +154,16 @@ public class Match {
 	private String internationalClassCard;
 
 	@SerializedName("international_class_id")
-	private String internationalClassId;
+	private int internationalClassId;
 
 	@SerializedName("international_class_name")
 	private String internationalClassName;
 
 	@SerializedName("international_number")
-	private String internationalNumber;
+	private int internationalNumber;
 
 	@SerializedName("international_valid")
-	private String internationalValid;
+	private int internationalValid;
 
 	@SerializedName("legacy_url")
 	private String legacyUrl;
@@ -160,10 +175,10 @@ public class Match {
 	private String liveCompanion;
 
 	@SerializedName("live_day_number")
-	private String liveDayNumber;
+	private int liveDayNumber;
 
 	@SerializedName("live_innings_number")
-	private String liveInningsNumber;
+	private int liveInningsNumber;
 
 	@SerializedName("live_match")
 	private String liveMatch;
@@ -172,16 +187,16 @@ public class Match {
 	private String liveNote;
 
 	@SerializedName("live_overs_remaining")
-	private String liveOversRemaining;
+	private double liveOversRemaining;
 
 	@SerializedName("live_overs_unique")
-	private String liveOversUnique;
+	private double liveOversUnique;
 
 	@SerializedName("live_scorer")
 	private String liveScorer;
 
 	@SerializedName("live_session_number")
-	private String liveSessionNumber;
+	private int liveSessionNumber;
 
 	@SerializedName("live_state")
 	private String liveState;
@@ -190,10 +205,10 @@ public class Match {
 	private String matchClock;
 
 	@SerializedName("match_day_countdown")
-	private String matchDayCountdown;
+	private int matchDayCountdown;
 
 	@SerializedName("match_minute_countdown")
-	private String matchMinuteCountdown;
+	private int matchMinuteCountdown;
 
 	@SerializedName("match_path")
 	private String matchPath;
@@ -202,37 +217,37 @@ public class Match {
 	private String matchStatus;
 
 	@SerializedName("neutral_match")
-	private String neutralMatch;
+	private int neutralMatch;
 
 	@SerializedName("next_datetime_gmt")
-	private String nextDatetimeGmt;
+	private LocalDateTime nextDatetimeGmt;
 
 	@SerializedName("next_datetime_local")
-	private String nextDatetimeLocal;
+	private LocalDateTime nextDatetimeLocal;
 
 	@SerializedName("player_rating")
 	private String playerRating;
 
 	@SerializedName("present_date_gmt")
-	private String presentDateGmt;
+	private LocalDate presentDateGmt;
 
 	@SerializedName("present_date_local")
-	private String presentDateLocal;
+	private LocalDate presentDateLocal;
 
 	@SerializedName("present_datetime_gmt")
-	private String presentDatetimeGmt;
+	private LocalDateTime presentDatetimeGmt;
 
 	@SerializedName("present_datetime_local")
-	private String presentDatetimeLocal;
+	private LocalDateTime presentDatetimeLocal;
 
 	@SerializedName("present_time_gmt")
-	private String presentTimeGmt;
+	private LocalTime presentTimeGmt;
 
 	@SerializedName("present_time_local")
-	private String presentTimeLocal;
+	private LocalTime presentTimeLocal;
 
 	@SerializedName("rain_rule")
-	private String rainRule;
+	private int rainRule;
 
 	@SerializedName("rain_rule_name")
 	private String rainRuleName;
@@ -240,12 +255,12 @@ public class Match {
 	@SerializedName("rating_promo")
 	private String ratingPromo;
 
-	private String reduced;
+	private int reduced;
 
 	@SerializedName("reserve_days_used")
-	private String reserveDaysUsed;
+	private int reserveDaysUsed;
 
-	private String result;
+	private int result;
 
 	@SerializedName("result_name")
 	private String resultName;
@@ -257,24 +272,24 @@ public class Match {
 	private String scheduleNote;
 
 	@SerializedName("scheduled_days")
-	private String scheduledDays;
+	private int scheduledDays;
 
 	@SerializedName("scheduled_innings")
-	private String scheduledInnings;
+	private int scheduledInnings;
 
 	@SerializedName("scheduled_overs")
-	private String scheduledOvers;
+	private double scheduledOvers;
 
 	@SerializedName("scorecard_source")
 	private String scorecardSource;
 
 	@SerializedName("scribble_id")
-	private String scribbleId;
+	private int scribbleId;
 
 	private String season;
 
 	@SerializedName("site_id")
-	private String siteId;
+	private int siteId;
 
 	@SerializedName("site_name")
 	private String siteName;
@@ -286,16 +301,16 @@ public class Match {
 	private String startDateGmtOffset;
 
 	@SerializedName("start_date_raw")
-	private String startDateRaw;
+	private LocalDate startDateRaw;
 
 	@SerializedName("start_datetime_gmt")
-	private String startDatetimeGmt;
+	private LocalDateTime startDatetimeGmt;
 
 	@SerializedName("start_datetime_gmt_raw")
-	private String startDatetimeGmtRaw;
+	private LocalDateTime startDatetimeGmtRaw;
 
 	@SerializedName("start_datetime_local")
-	private String startDatetimeLocal;
+	private LocalDateTime startDatetimeLocal;
 
 	@SerializedName("start_time_gmt")
 	private String startTimeGmt;
@@ -304,7 +319,7 @@ public class Match {
 	private String startTimeLocal;
 
 	@SerializedName("sub_class_id")
-	private String subClassId;
+	private int subClassId;
 
 	@SerializedName("team1_abbreviation")
 	private String team1Abbreviation;
@@ -319,7 +334,7 @@ public class Match {
 	private String team1Filename;
 
 	@SerializedName("team1_id")
-	private String team1Id;
+	private int team1Id;
 
 	@SerializedName("team1_logo_alt_id")
 	private String team1LogoAltId;
@@ -328,7 +343,7 @@ public class Match {
 	private String team1LogoEspncdn;
 
 	@SerializedName("team1_logo_object_id")
-	private String team1LogoObjectId;
+	private int team1LogoObjectId;
 
 	@SerializedName("team1_name")
 	private String team1Name;
@@ -343,16 +358,16 @@ public class Match {
 	private String team2Abbreviation;
 
 	@SerializedName("team2_class_id")
-	private String team2ClassId;
+	private int team2ClassId;
 
 	@SerializedName("team2_country_id")
-	private String team2CountryId;
+	private int team2CountryId;
 
 	@SerializedName("team2_filename")
 	private String team2Filename;
 
 	@SerializedName("team2_id")
-	private String team2Id;
+	private int team2Id;
 
 	@SerializedName("team2_logo_alt_id")
 	private String team2LogoAltId;
@@ -361,13 +376,13 @@ public class Match {
 	private String team2LogoEspncdn;
 
 	@SerializedName("team2_logo_object_id")
-	private String team2LogoObjectId;
+	private int team2LogoObjectId;
 
 	@SerializedName("team2_name")
 	private String team2Name;
 
 	@SerializedName("team2_object_id")
-	private String team2ObjectId;
+	private int team2ObjectId;
 
 	@SerializedName("team2_short_name")
 	private String team2ShortName;
@@ -376,16 +391,16 @@ public class Match {
 	private String tiebreakerName;
 
 	@SerializedName("tiebreaker_team_id")
-	private String tiebreakerTeamId;
+	private int tiebreakerTeamId;
 
 	@SerializedName("tiebreaker_type")
-	private String tiebreakerType;
+	private int tiebreakerType;
 
 	@SerializedName("time_zone")
 	private String timeZone;
 
 	@SerializedName("toss_choice_team_id")
-	private String tossChoiceTeamId;
+	private int tossChoiceTeamId;
 
 	@SerializedName("toss_decision")
 	private String tossDecision;
@@ -394,7 +409,7 @@ public class Match {
 	private String tossDecisionName;
 
 	@SerializedName("toss_winner_team_id")
-	private String tossWinnerTeamId;
+	private int tossWinnerTeamId;
 
 	@SerializedName("town_aka")
 	private String townAka;
@@ -403,7 +418,7 @@ public class Match {
 	private String townArea;
 
 	@SerializedName("town_id")
-	private String townId;
+	private int townId;
 
 	@SerializedName("town_name")
 	private String townName;
@@ -415,12 +430,12 @@ public class Match {
 	private String urlComponent;
 
 	@SerializedName("watch_espn_id")
-	private String watchEspnId;
+	private int watchEspnId;
 
 	@SerializedName("weather_location_code")
 	private String weatherLocationCode;
 
 	@SerializedName("winner_team_id")
-	private String winnerTeamId;
+	private int winnerTeamId;
 
 }

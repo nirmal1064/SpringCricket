@@ -1,5 +1,7 @@
 package com.project.cricket.model;
 
+import javax.persistence.Column;
+
 import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
@@ -8,6 +10,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Player extends Person {
+
+	@Column(name = "match_id")
+	private Integer matchId;
+
+	@Column(name = "team_id")
+	private Integer teamId;
+
+	@Column(name = "team_name")
+	private String teamName;
 
 	@SerializedName("batting_style")
 	private String battingStyle;

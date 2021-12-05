@@ -18,8 +18,11 @@ public class ApplicationConfiguration {
 	@Value("${threads}")
 	private int numOfThreads;
 
-	@Value("${file.output.location}")
-	private String jsonFileLocation;
+	@Value("${file.matchjson.location}")
+	private String matchJsonFileLocation;
+
+	@Value("${file.matchscorecard.location}")
+	private String matchScorecardFileLocation;
 
 	@SuppressWarnings("rawtypes")
 	@Bean

@@ -1,5 +1,9 @@
 package com.project.cricket.model;
 
+import java.time.LocalDate;
+
+import javax.persistence.MappedSuperclass;
+
 import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
@@ -7,65 +11,66 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@MappedSuperclass
 public class Person {
 
 	@SerializedName("age_days")
-	private int ageDays;
+	protected int ageDays;
 
 	@SerializedName("age_years")
-	private int ageYears;
+	protected int ageYears;
 
 	@SerializedName("alpha_name")
-	private String alphaName;
+	protected String alphaName;
 
 	@SerializedName("batting_hand")
-	private String battingHand;
+	protected String battingHand;
 
 	@SerializedName("bowling_hand")
-	private String bowlingHand;
+	protected String bowlingHand;
 
 	@SerializedName("bowling_pacespin")
-	private String bowlingPacespin;
+	protected String bowlingPacespin;
 
 	@SerializedName("card_long")
-	private String cardLong;
+	protected String cardLong;
 
 	@SerializedName("card_qualifier")
-	private String cardQualifier;
+	protected String cardQualifier;
 
 	@SerializedName("card_short")
-	private String cardShort;
+	protected String cardShort;
 
-	private String dob;
+	protected LocalDate dob;
 
 	@SerializedName("known_as")
-	private String knownAs;
+	protected String knownAs;
 
 	@SerializedName("mobile_name")
-	private String mobileName;
+	protected String mobileName;
 
 	@SerializedName("object_id")
-	private int objectId;
+	protected int objectId;
 
 	@SerializedName("player_id")
-	private String playerId;
+	protected String playerId;
 
 	@SerializedName("player_type")
-	private int playerType;
+	protected int playerType;
 
 	@SerializedName("player_type_name")
-	private String playerTypeName;
+	protected String playerTypeName;
 
 	@SerializedName("popular_name")
-	private String popularName;
+	protected String popularName;
 
 	@SerializedName("portrait_alt_id")
-	private String portraitAltId;
+	protected String portraitAltId;
 
 	@SerializedName("portrait_object_id")
-	private int portraitObjectId;
+	protected int portraitObjectId;
 
 	@SerializedName("status_id")
-	private int statusId;
+	protected int statusId;
 
 }

@@ -49,8 +49,7 @@ public class DbController {
 
 	@GetMapping(value = "/matchids", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Integer> getMatchIds(@RequestParam Integer classId, @RequestParam Integer startYear, @RequestParam Integer endYear) {
-		LOGGER.info("Getting match ids");
-		return resultSummaryRepository.findByClassIdAndYearBetween(classId, startYear, endYear).stream().map(r -> r.getMatchId()).collect(Collectors.toList());
+		return resultSummaryRepository.findByClassIdAndYearBetween(classId, startYear, endYear).stream().map(ResultSummary::getMatchId).collect(Collectors.toList());
 	}
 
 }
