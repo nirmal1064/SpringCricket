@@ -22,25 +22,25 @@ public class DbController {
 	@Autowired
 	private ResultSummaryRepository resultSummaryRepository;
 
-	@GetMapping(value = "/resultsummary", produces = "application/json")
+	@GetMapping(value = "/resultsummary", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<ResultSummary> getResultsSummaryFromDb() {
 		LOGGER.info("Getting results summary");
 		return resultSummaryRepository.findAll();
 	}
 
-	@GetMapping(value = "/resultbetweenyears", produces = "application/json")
+	@GetMapping(value = "/resultbetweenyears", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<ResultSummary> getResultsSummaryBetweenYears(@RequestParam Integer startYear, @RequestParam Integer endYear) {
 		LOGGER.info("Getting results summary betweem years {} and {}", startYear, endYear);
 		return resultSummaryRepository.findByYearBetween(startYear, endYear);
 	}
 
-	@GetMapping(value = "/resultsByClass", produces = "application/json")
+	@GetMapping(value = "/resultsByClass", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<ResultSummary> getResultsSummaryClassId(@RequestParam Integer classId) {
 		LOGGER.info("Getting results summary for class {} ", classId);
 		return resultSummaryRepository.findByClassId(classId);
 	}
 
-	@GetMapping(value = "/resultsByClassBetweenYears", produces = "application/json")
+	@GetMapping(value = "/resultsByClassBetweenYears", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<ResultSummary> getResultsSummaryClassIdBetweenYears(@RequestParam Integer classId,
 			@RequestParam Integer startYear, @RequestParam Integer endYear) {
 		LOGGER.info("Getting results summary for class {} between years {} and {}", classId, startYear, endYear);

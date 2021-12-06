@@ -9,6 +9,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,10 @@ import com.project.cricket.utils.ExecutorUtil;
 @Component
 public class MatchHandler {
 
+	public static final String SCORECARD_SUMMARY_LOG = "MatchScorecard summary for {} matches completed in {} seconds ";
+
+	public static final String JSON_SUMMARY_LOG = "MatchJson summary for {} matches completed in {} seconds ";
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(MatchHandler.class);
 
 	@Autowired
@@ -35,51 +41,34 @@ public class MatchHandler {
 	@Autowired
 	private ServiceFactory serviceFactory;
 
+	private ExecutorService service;
+
 	public List<String> getMatchJson(List<Integer> matchIds, boolean writeToFile, boolean overWrite) {
 		LOGGER.info("MatchJson summary for {} matches", matchIds.size());
-		StopWatch stopWatch = new StopWatch();
-		List<String> result = new ArrayList<>();
-		try {
-			ExecutorService service = executorUtil.getThreadPool(appConfig.getNumOfThreads());
-			List<MatchTask> matchTasks = new ArrayList<>();
-			List<Future<String>> resultsFuture;
-			stopWatch.start();
-			for (Integer matchId : matchIds) {
-				MatchTask matchTask = serviceFactory.matchTask();
-				matchTask.init(matchId, writeToFile, overWrite, JSON, false);
-				matchTasks.add(matchTask);
-			}
-			resultsFuture = service.invokeAll(matchTasks);
-			addResults(stopWatch, result, service, resultsFuture);
-			LOGGER.info("MatchJson summary for {} matches completed in {} seconds ", matchIds.size(),
-					stopWatch.getTotalTimeSeconds());
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-			LOGGER.error(e.getMessage(), e);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-		}
-		return result;
+		return handleMatchTask(matchIds, writeToFile, overWrite, JSON, JSON_SUMMARY_LOG);
 	}
 
 	public List<String> getMatchScorecard(List<Integer> matchIds, boolean writeToFile, boolean overWrite) {
 		LOGGER.info("Match Scorecard summary for {} matches", matchIds.size());
-		StopWatch stopWatch = new StopWatch();
+		return handleMatchTask(matchIds, writeToFile, overWrite, HTML, SCORECARD_SUMMARY_LOG);
+	}
+
+	private List<String> handleMatchTask(List<Integer> matchIds, boolean writeToFile, 
+			boolean overWrite, String type, String comments) {
 		List<String> result = new ArrayList<>();
+		StopWatch stopWatch = new StopWatch();
 		try {
-			ExecutorService service = executorUtil.getThreadPool(appConfig.getNumOfThreads());
 			List<MatchTask> matchTasks = new ArrayList<>();
 			List<Future<String>> resultsFuture;
 			stopWatch.start();
 			for (Integer matchId : matchIds) {
 				MatchTask matchTask = serviceFactory.matchTask();
-				matchTask.init(matchId, writeToFile, overWrite, HTML, false);
+				matchTask.init(matchId, writeToFile, overWrite, type, false);
 				matchTasks.add(matchTask);
 			}
 			resultsFuture = service.invokeAll(matchTasks);
 			addResults(stopWatch, result, service, resultsFuture);
-			LOGGER.info("MatchScorecard summary for {} matches completed in {} seconds ", matchIds.size(),
-					stopWatch.getTotalTimeSeconds());
+			LOGGER.info(comments, matchIds.size(), stopWatch.getTotalTimeSeconds());
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 			LOGGER.error(e.getMessage(), e);
@@ -99,6 +88,11 @@ public class MatchHandler {
 			}
 		}
 		stopWatch.stop();
+	}
+
+	@PostConstruct
+	public void init() {
+		service = executorUtil.getThreadPool(appConfig.getNumOfThreads());
 	}
 
 }
