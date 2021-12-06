@@ -18,4 +18,6 @@ public final class Constants {
 	public static final String FCHASH = "FC # ";
 	public static final String COMMENTS = "https://hsapi.espncricinfo.com/v1/pages/match/comments?lang=en&leagueId=%s&eventId=%s&period=%s&page=%s&filter=full&liveTest=false";
 	public static final String NEXT_DATA = "__NEXT_DATA__";
+	public static final String HTML = "HTML";
+	public static final String JSON = "JSON";
 }

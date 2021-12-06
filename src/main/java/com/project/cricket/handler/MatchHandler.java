@@ -1,5 +1,8 @@
 package com.project.cricket.handler;
 
+import static com.project.cricket.utils.Constants.HTML;
+import static com.project.cricket.utils.Constants.JSON;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -11,11 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
+import org.springframework.util.StringUtils;
 
 import com.project.cricket.config.ApplicationConfiguration;
 import com.project.cricket.config.ServiceFactory;
-import com.project.cricket.task.MatchHtmlScraperTask;
-import com.project.cricket.task.MatchJsonTask;
+import com.project.cricket.task.MatchTask;
 import com.project.cricket.utils.ExecutorUtil;
 
 @Component
@@ -38,15 +41,15 @@ public class MatchHandler {
 		List<String> result = new ArrayList<>();
 		try {
 			ExecutorService service = executorUtil.getThreadPool(appConfig.getNumOfThreads());
-			List<MatchJsonTask> matchJsonTasks = new ArrayList<>();
+			List<MatchTask> matchTasks = new ArrayList<>();
 			List<Future<String>> resultsFuture;
 			stopWatch.start();
 			for (Integer matchId : matchIds) {
-				MatchJsonTask matchJsonTask = serviceFactory.matchJsonTask();
-				matchJsonTask.init(matchId, writeToFile, overWrite);
-				matchJsonTasks.add(matchJsonTask);
+				MatchTask matchTask = serviceFactory.matchTask();
+				matchTask.init(matchId, writeToFile, overWrite, JSON, false);
+				matchTasks.add(matchTask);
 			}
-			resultsFuture = service.invokeAll(matchJsonTasks);
+			resultsFuture = service.invokeAll(matchTasks);
 			addResults(stopWatch, result, service, resultsFuture);
 			LOGGER.info("MatchJson summary for {} matches completed in {} seconds ", matchIds.size(),
 					stopWatch.getTotalTimeSeconds());
@@ -65,15 +68,15 @@ public class MatchHandler {
 		List<String> result = new ArrayList<>();
 		try {
 			ExecutorService service = executorUtil.getThreadPool(appConfig.getNumOfThreads());
-			List<MatchHtmlScraperTask> matchHtmlScraperTasks = new ArrayList<>();
+			List<MatchTask> matchTasks = new ArrayList<>();
 			List<Future<String>> resultsFuture;
 			stopWatch.start();
 			for (Integer matchId : matchIds) {
-				MatchHtmlScraperTask matchHtmlScraperTask = serviceFactory.matchHtmlScraperTask();
-				matchHtmlScraperTask.init(matchId, writeToFile, overWrite);
-				matchHtmlScraperTasks.add(matchHtmlScraperTask);
+				MatchTask matchTask = serviceFactory.matchTask();
+				matchTask.init(matchId, writeToFile, overWrite, HTML, false);
+				matchTasks.add(matchTask);
 			}
-			resultsFuture = service.invokeAll(matchHtmlScraperTasks);
+			resultsFuture = service.invokeAll(matchTasks);
 			addResults(stopWatch, result, service, resultsFuture);
 			LOGGER.info("MatchScorecard summary for {} matches completed in {} seconds ", matchIds.size(),
 					stopWatch.getTotalTimeSeconds());
@@ -91,7 +94,7 @@ public class MatchHandler {
 		service.shutdown();
 		for (Future<String> future : resultsFuture) {
 			String json = future.get();
-			if (json != null) {
+			if (StringUtils.hasLength(json)) {
 				result.add(json);
 			}
 		}
