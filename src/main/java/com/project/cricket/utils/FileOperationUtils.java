@@ -20,7 +20,7 @@ public class FileOperationUtils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileOperationUtils.class);
 
-	public boolean writeToFile(String dirPath, String fileName, String content) {
+	public boolean writeToFile(String dirPath, String fileName, String content, boolean overWrite) {
 		boolean flag = false;
 		FileChannel fileChannel = null;
 		try {
@@ -28,10 +28,14 @@ public class FileOperationUtils {
 			Path path = Paths.get(dirPath);
 			Files.createDirectories(path);
 			Path filePath = Paths.get(path.toString(), fileName);
-			Files.write(filePath, content.getBytes());
-			fileChannel = FileChannel.open(filePath);
-			String fileSize = FileUtils.byteCountToDisplaySize(fileChannel.size());
-			LOGGER.info("File {} written successfully in {} with size {}", fileName, dirPath, fileSize);
+			if (!overWrite && filePath.toFile().exists()) {
+				LOGGER.info("File {} already exists in {}", fileName, dirPath);
+			} else {
+				Files.write(filePath, content.getBytes());
+				fileChannel = FileChannel.open(filePath);
+				String fileSize = FileUtils.byteCountToDisplaySize(fileChannel.size());
+				LOGGER.info("File {} written successfully in {} with size {}", fileName, dirPath, fileSize);
+			}
 			flag = true;
 		} catch (Exception e) {
 			LOGGER.error("Exception in writing file {}", fileName, e);

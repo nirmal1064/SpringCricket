@@ -32,10 +32,12 @@ public class MatchHtmlScraperTask implements Callable<String> {
 
 	private int matchId;
 	private boolean writeToFile;
+	private boolean overWrite;
 
-	public void init(int matchId, boolean writeToFile) {
+	public void init(int matchId, boolean writeToFile, boolean overWrite) {
 		this.matchId = matchId;
 		this.writeToFile = writeToFile;
+		this.overWrite = overWrite;
 	}
 
 	@Override
@@ -53,7 +55,7 @@ public class MatchHtmlScraperTask implements Callable<String> {
 			String scorecard = element.data();
 			if (writeToFile) {
 				String fileName = String.valueOf(matchId) + ".json";
-				boolean flag = fileUtils.writeToFile(appConfig.getMatchScorecardFileLocation(), fileName, scorecard);
+				boolean flag = fileUtils.writeToFile(appConfig.getMatchScorecardFileLocation(), fileName, scorecard, overWrite);
 				if (!flag) {
 					return String.valueOf(matchId);
 				}

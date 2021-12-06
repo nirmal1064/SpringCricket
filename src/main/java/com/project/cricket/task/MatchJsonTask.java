@@ -32,10 +32,12 @@ public class MatchJsonTask implements Callable<String> {
 
 	private int matchId;
 	private boolean writeToFile;
+	private boolean overWrite;
 
-	public void init(int matchId, boolean writeToFile) {
+	public void init(int matchId, boolean writeToFile, boolean overWrite) {
 		this.matchId = matchId;
 		this.writeToFile = writeToFile;
+		this.overWrite = overWrite;
 	}
 
 	@Override
@@ -45,7 +47,7 @@ public class MatchJsonTask implements Callable<String> {
 			matchJson = getMatchJson(matchId);
 			if (writeToFile) {
 				String fileName = String.valueOf(matchId) + ".json";
-				boolean flag = fileUtils.writeToFile(appConfig.getMatchJsonFileLocation(), fileName, matchJson);
+				boolean flag = fileUtils.writeToFile(appConfig.getMatchJsonFileLocation(), fileName, matchJson, overWrite);
 				if (!flag) {
 					return String.valueOf(matchId);
 				}

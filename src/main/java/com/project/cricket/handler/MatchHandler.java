@@ -32,11 +32,8 @@ public class MatchHandler {
 	@Autowired
 	private ServiceFactory serviceFactory;
 
-	private int count;
-
-	public List<String> getMatchJson(List<Integer> matchIds, boolean writeToFile) {
+	public List<String> getMatchJson(List<Integer> matchIds, boolean writeToFile, boolean overWrite) {
 		LOGGER.info("MatchJson summary for {} matches", matchIds.size());
-		count = matchIds.size();
 		StopWatch stopWatch = new StopWatch();
 		List<String> result = new ArrayList<>();
 		try {
@@ -46,13 +43,13 @@ public class MatchHandler {
 			stopWatch.start();
 			for (Integer matchId : matchIds) {
 				MatchJsonTask matchJsonTask = serviceFactory.matchJsonTask();
-				matchJsonTask.init(matchId, writeToFile);
+				matchJsonTask.init(matchId, writeToFile, overWrite);
 				matchJsonTasks.add(matchJsonTask);
 			}
 			resultsFuture = service.invokeAll(matchJsonTasks);
 			addResults(stopWatch, result, service, resultsFuture);
-			LOGGER.info("MatchJson summary for {} matches completed in {} seconds for {} matches", matchIds.size(),
-					stopWatch.getTotalTimeSeconds(), count);
+			LOGGER.info("MatchJson summary for {} matches completed in {} seconds ", matchIds.size(),
+					stopWatch.getTotalTimeSeconds());
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 			LOGGER.error(e.getMessage(), e);
@@ -62,7 +59,7 @@ public class MatchHandler {
 		return result;
 	}
 
-	public List<String> getMatchScorecard(List<Integer> matchIds, boolean writeToFile) {
+	public List<String> getMatchScorecard(List<Integer> matchIds, boolean writeToFile, boolean overWrite) {
 		LOGGER.info("Match Scorecard summary for {} matches", matchIds.size());
 		StopWatch stopWatch = new StopWatch();
 		List<String> result = new ArrayList<>();
@@ -73,13 +70,13 @@ public class MatchHandler {
 			stopWatch.start();
 			for (Integer matchId : matchIds) {
 				MatchHtmlScraperTask matchHtmlScraperTask = serviceFactory.matchHtmlScraperTask();
-				matchHtmlScraperTask.init(matchId, writeToFile);
+				matchHtmlScraperTask.init(matchId, writeToFile, overWrite);
 				matchHtmlScraperTasks.add(matchHtmlScraperTask);
 			}
 			resultsFuture = service.invokeAll(matchHtmlScraperTasks);
 			addResults(stopWatch, result, service, resultsFuture);
-			LOGGER.info("MatchScorecard summary for {} matches completed in {} seconds for {} matches", matchIds.size(),
-					stopWatch.getTotalTimeSeconds(), count);
+			LOGGER.info("MatchScorecard summary for {} matches completed in {} seconds ", matchIds.size(),
+					stopWatch.getTotalTimeSeconds());
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 			LOGGER.error(e.getMessage(), e);
@@ -96,7 +93,6 @@ public class MatchHandler {
 			String json = future.get();
 			if (json != null) {
 				result.add(json);
-				count--;
 			}
 		}
 		stopWatch.stop();

@@ -2,9 +2,7 @@ package com.project.cricket.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,19 +36,60 @@ public class MatchController {
 	@Autowired
 	private ApplicationConfiguration appConfig;
 
+	/**
+	 * 
+	 * @param classId
+	 * @param startYear
+	 * @param endYear
+	 * @param matchId
+	 * @return
+	 */
 	@PostMapping(value = "/matchjson")
-	public ResponseEntity<List<String>> saveMatchJsonToFile(@RequestParam Integer classId, @RequestParam Integer startYear, 
-			@RequestParam(required = false) Integer endYear) {
+	public ResponseEntity<List<String>> saveMatchJsonToFile(@RequestParam(required = false) Integer classId, @RequestParam(required = false) Integer startYear, 
+			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId, @RequestParam Boolean overWrite) {
 		LOGGER.info("Request to saveMatchJsonToFile");
-		List<Integer> matchIds = getMatchIdsFromDb(classId, startYear, endYear);
-		List<String> matchJson = matchHandler.getMatchJson(matchIds, true);
+		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
+		List<String> matchJson = matchHandler.getMatchJson(matchIds, true, overWrite);
 		return returnResponse(matchJson);
 	}
 
 	@PostMapping(value = "/matchscorecard")
 	public ResponseEntity<List<String>> saveMatchScorecardToFile(@RequestParam(required = false) Integer classId, @RequestParam(required = false) Integer startYear, 
-			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) String matchId) {
+			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId, @RequestParam Boolean overWrite) {
 		LOGGER.info("Request to saveMatchScorecardToFile");
+		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
+		List<String> matchScorecard = matchHandler.getMatchScorecard(matchIds, true, overWrite);
+		return returnResponse(matchScorecard);
+	}
+
+	@GetMapping(value = "/getmissingscorecard")
+	public ResponseEntity<List<Integer>> getMissingMatchScorecardIds(@RequestParam Integer classId, @RequestParam(required = false) Integer startYear, 
+			@RequestParam(required = false) Integer endYear) {
+		LOGGER.info("Request to getMissingMatchIds");
+		List<Integer> matchIds = filterInput(classId, startYear, endYear, null);
+		List<Integer> fileNames = fileUtils.getMatchFilesAsInteger(appConfig.getMatchScorecardFileLocation());
+		matchIds.removeAll(fileNames);
+		return returnResponse(matchIds);
+	}
+
+	@GetMapping(value = "/getmissingjson")
+	public ResponseEntity<List<Integer>> getMissingMatchJsonIds(@RequestParam Integer classId, @RequestParam(required = false) Integer startYear, 
+			@RequestParam(required = false) Integer endYear) {
+		LOGGER.info("Request to getMissingMatchIds");
+		List<Integer> matchIds = filterInput(classId, startYear, endYear, null);
+		List<Integer> fileNames = fileUtils.getMatchFilesAsInteger(appConfig.getMatchJsonFileLocation());
+		matchIds.removeAll(fileNames);
+		return returnResponse(matchIds);
+	}
+
+	private <T> ResponseEntity<List<T>> returnResponse(List<T> response) {
+		if (!CollectionUtils.isEmpty(response)) {
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	private List<Integer> filterInput(Integer classId, Integer startYear, Integer endYear, List<Integer> matchId) {
 		List<Integer> matchIds = new ArrayList<>();
 		if (classId != null) {
 			if (startYear == null) {
@@ -59,45 +98,12 @@ public class MatchController {
 			if (endYear == null) {
 				endYear = LocalDate.now().getYear();
 			}
-			matchIds = getMatchIdsFromDb(classId, startYear, endYear);
+			matchIds = dbController.getMatchIds(classId, startYear, endYear);
 		}
-		if (matchId != null) {
-			List<Integer> ids = Arrays.asList(matchId.split(","))
-					.stream()
-					.map(String::trim)
-					.map(Integer::valueOf)
-					.collect(Collectors.toList());
-			matchIds.addAll(ids);
+		if (!CollectionUtils.isEmpty(matchId)) {
+			matchIds.addAll(matchId);
 		}
-		List<String> matchScorecard = matchHandler.getMatchScorecard(matchIds, true);
-		return returnResponse(matchScorecard);
-	}
-
-	@GetMapping(value = "/getmissingscorecard")
-	public ResponseEntity<List<Integer>> getMissingMatchJsonIds(@RequestParam Integer classId, @RequestParam Integer startYear, 
-			@RequestParam(required = false) Integer endYear) {
-		LOGGER.info("Request to getMissingMatchIds");
-		List<Integer> matchIds = getMatchIdsFromDb(classId, startYear, endYear);
-		List<Integer> fileNames = fileUtils.getMatchFilesAsInteger(appConfig.getMatchScorecardFileLocation());
-		matchIds.removeAll(fileNames);
-		if (!CollectionUtils.isEmpty(matchIds)) {
-			return new ResponseEntity<>(matchIds, HttpStatus.OK);
-		}
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
-
-	private ResponseEntity<List<String>> returnResponse(List<String> responses) {
-		if (!CollectionUtils.isEmpty(responses)) {
-			return new ResponseEntity<>(responses, HttpStatus.OK);
-		}
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
-
-	private List<Integer> getMatchIdsFromDb(Integer classId, Integer startYear, Integer endYear) {
-		if (endYear == null || endYear < startYear) {
-			endYear = startYear;
-		}
-		return dbController.getMatchIds(classId, startYear, endYear);
+		return matchIds;
 	}
 
 }
