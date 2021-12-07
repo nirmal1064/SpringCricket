@@ -3,8 +3,10 @@ package com.project.cricket.model;
 import static com.project.cricket.utils.Constants.TEXT;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -186,7 +188,8 @@ public class Series {
 	@SerializedName("team2_points")
 	private double team2Points;
 
-	//private List<TeamSeries> teams;
+	@Transient
+	private List<TeamSeries> teams;
 
 	@SerializedName("tiebreaker_id")
 	private int tiebreakerId;
