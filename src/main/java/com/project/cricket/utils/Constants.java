@@ -20,4 +20,5 @@ public final class Constants {
 	public static final String NEXT_DATA = "__NEXT_DATA__";
 	public static final String HTML = "HTML";
 	public static final String JSON = "JSON";
+	public static final String TEXT = "TEXT";
 }

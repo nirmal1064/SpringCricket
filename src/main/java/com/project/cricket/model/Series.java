@@ -1,7 +1,10 @@
 package com.project.cricket.model;
 
+import static com.project.cricket.utils.Constants.TEXT;
+
 import java.time.LocalDate;
-import java.util.List;
+
+import javax.persistence.Column;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -16,26 +19,31 @@ public class Series {
 	private int classId;
 
 	@SerializedName("class_name")
+	@Column(length = 30)
 	private String className;
 
 	@SerializedName("content_id")
-	private String contentId;
+	private int contentId;
 
 	@SerializedName("core_recreation_id")
 	private int coreRecreationId;
 
+	@Column(length = 50)
 	private String date;
 
 	@SerializedName("end_date")
+	@Column(length = 20)
 	private String endDate;
 
 	@SerializedName("end_date_raw")
 	private LocalDate endDateRaw;
 
 	@SerializedName("final_type_name")
+	@Column(length = 30)
 	private String finalTypeName;
 
 	@SerializedName("group_title")
+	@Column(length = 30)
 	private String groupTitle;
 
 	@SerializedName("major_trophy")
@@ -45,12 +53,15 @@ public class Series {
 	private int matchNumber;
 
 	@SerializedName("match_title")
+	@Column(length = 30)
 	private String matchTitle;
 
 	@SerializedName("match_type_name")
-	private Object matchTypeName;
+	@Column(length = 30)
+	private String matchTypeName;
 
 	@SerializedName("multiformat_pointstable")
+	@Column(length = 10)
 	private String multiformatPointstable;
 
 	@SerializedName("number_of_hosts")
@@ -68,9 +79,11 @@ public class Series {
 	private int points;
 
 	@SerializedName("primary_series")
+	@Column(length = 10)
 	private String primarySeries;
 
 	@SerializedName("replayed_date")
+	@Column(length = 20)
 	private String replayedDate;
 
 	@SerializedName("schedule_note")
@@ -79,18 +92,22 @@ public class Series {
 	@SerializedName("score_module_position")
 	private int scoreModulePosition;
 
+	@Column(length = 15)
 	private String season;
 
 	@SerializedName("series_abbreviation")
+	@Column(length = 15)
 	private String seriesAbbreviation;
 
 	@SerializedName("series_category_id")
 	private int seriesCategoryId;
 
 	@SerializedName("series_category_name")
+	@Column(length = 15)
 	private String seriesCategoryName;
 
 	@SerializedName("series_filename")
+	@Column(length = 15)
 	private String seriesFilename;
 
 	@SerializedName("series_lead_abandoned")
@@ -100,73 +117,85 @@ public class Series {
 	private int seriesLeadCancelled;
 
 	@SerializedName("series_lead_how_won_name")
-	private Object seriesLeadHowWonName;
+	@Column(length = 20)
+	private String seriesLeadHowWonName;
 
 	@SerializedName("series_lead_lost")
 	private int seriesLeadLost;
 
 	@SerializedName("series_lead_result_name")
-	private Object seriesLeadResultName;
+	@Column(length = 20)
+	private String seriesLeadResultName;
 
 	@SerializedName("series_lead_team_name")
-	private Object seriesLeadTeamName;
+	@Column(length = 50)
+	private String seriesLeadTeamName;
 
 	@SerializedName("series_lead_total")
 	private int seriesLeadTotal;
 
 	@SerializedName("series_lead_type_name")
-	private Object seriesLeadTypeName;
+	@Column(length = 20)
+	private String seriesLeadTypeName;
 
 	@SerializedName("series_lead_won")
 	private int seriesLeadWon;
 
 	@SerializedName("series_long_description")
+	@Column(columnDefinition = TEXT)
 	private String seriesLongDescription;
 
 	@SerializedName("series_name")
 	private String seriesName;
 
 	@SerializedName("series_short_name")
+	@Column(length = 30)
 	private String seriesShortName;
 
 	@SerializedName("series_status")
+	@Column(length = 30)
 	private String seriesStatus;
 
 	@SerializedName("series_type_id")
 	private int seriesTypeId;
 
 	@SerializedName("series_type_name")
+	@Column(length = 30)
 	private String seriesTypeName;
 
 	@SerializedName("short_alternate_name")
+	@Column(length = 30)
 	private String shortAlternateName;
 
 	@SerializedName("site_id")
 	private int siteId;
 
+	@Column(columnDefinition = TEXT)
 	private String slug;
 
 	@SerializedName("start_date")
+	@Column(length = 30)
 	private String startDate;
 
 	@SerializedName("start_date_raw")
 	private LocalDate startDateRaw;
 
 	@SerializedName("team1_points")
-	private String team1Points;
+	private double team1Points;
 
 	@SerializedName("team2_points")
-	private String team2Points;
+	private double team2Points;
 
-	private List<TeamSeries> teams;
+	//private List<TeamSeries> teams;
 
 	@SerializedName("tiebreaker_id")
 	private int tiebreakerId;
 
 	@SerializedName("tiebreaker_name")
-	private Object tiebreakerName;
+	private String tiebreakerName;
 
 	@SerializedName("trophy_abbreviation")
+	@Column(length = 30)
 	private String trophyAbbreviation;
 
 	@SerializedName("trophy_class_id")
@@ -182,9 +211,11 @@ public class Series {
 	private String trophyName;
 
 	@SerializedName("trophy_short_name")
+	@Column(length = 30)
 	private String trophyShortName;
 
 	@SerializedName("url_component")
+	@Column(length = 30)
 	private String urlComponent;
 
 }

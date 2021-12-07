@@ -1,5 +1,7 @@
 package com.project.cricket.model;
 
+import static com.project.cricket.utils.Constants.TEXT;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -35,6 +37,7 @@ public class Match {
 	private int amountBalls;
 
 	@SerializedName("amount_name")
+	@Column(length = 30)
 	private String amountName;
 
 	@SerializedName("amount_type")
@@ -44,35 +47,43 @@ public class Match {
 	private int awayTeamId;
 
 	@SerializedName("ballbyball_source")
+	@Column(length = 20)
 	private String ballbyballSource;
 
 	@SerializedName("batting_first_team_id")
 	private int battingFirstTeamId;
 
 	@SerializedName("bitly_hash")
+	@Column(length = 10)
 	private String bitlyHash;
 
 	private int bpo;
 
 	@SerializedName("cancelled_match")
+	@Column(length = 10)
 	private String cancelledMatch;
 
 	@SerializedName("cms_match_title")
+	@Column(length = 30)
 	private String cmsMatchTitle;
 
 	@SerializedName("commentary_source")
+	@Column(length = 30)
 	private String commentarySource;
 
 	@SerializedName("continent_id")
 	private int continentId;
 
 	@SerializedName("continent_name")
+	@Column(length = 30)
 	private String continentName;
 
 	@SerializedName("country_abbreviation")
+	@Column(length = 30)
 	private String countryAbbreviation;
 
 	@SerializedName("country_filename")
+	@Column(length = 30)
 	private String countryFilename;
 
 	@SerializedName("country_id")
@@ -81,34 +92,40 @@ public class Match {
 	@SerializedName("country_name")
 	private String countryName;
 
+	@Column(length = 30)
 	private String date;
 
 	@SerializedName("date_string")
+	@Column(length = 40)
 	private String dateString;
 
 	@SerializedName("days_extended")
 	private int daysExtended;
 
 	@SerializedName("end_date")
+	@Column(length = 40)
 	private String endDate;
 
 	@SerializedName("end_date_raw")
-	private String endDateRaw;
+	private LocalDate endDateRaw;
 
 	private int floodlit;
 
 	@SerializedName("floodlit_name")
+	@Column(length = 30)
 	private String floodlitName;
 
 	private int followon;
 
 	@SerializedName("general_class_card")
+	@Column(length = 20)
 	private String generalClassCard;
 
 	@SerializedName("general_class_id")
 	private int generalClassId;
 
 	@SerializedName("general_class_name")
+	@Column(length = 30)
 	private String generalClassName;
 
 	@SerializedName("general_number")
@@ -118,15 +135,18 @@ public class Match {
 	private int generalValid;
 
 	@SerializedName("gmt_difference")
+	@Column(length = 10)
 	private String gmtDifference;
 
 	@SerializedName("ground_id")
 	private int groundId;
 
 	@SerializedName("ground_latitude")
+	@Column(length = 20)
 	private String groundLatitude;
 
 	@SerializedName("ground_longitude")
+	@Column(length = 20)
 	private String groundLongitude;
 
 	@SerializedName("ground_name")
@@ -136,27 +156,33 @@ public class Match {
 	private int groundObjectId;
 
 	@SerializedName("ground_small_name")
+	@Column(length = 50)
 	private String groundSmallName;
 
 	@SerializedName("hawkeye_source")
+	@Column(length = 30)
 	private String hawkeyeSource;
 
 	@SerializedName("head2head_source")
+	@Column(length = 30)
 	private String head2headSource;
 
 	@SerializedName("home_team_id")
 	private int homeTeamId;
 
 	@SerializedName("hours_string")
+	@Column(columnDefinition = TEXT)
 	private String hoursString;
 
 	@SerializedName("international_class_card")
+	@Column(length = 20)
 	private String internationalClassCard;
 
 	@SerializedName("international_class_id")
 	private int internationalClassId;
 
 	@SerializedName("international_class_name")
+	@Column(length = 30)
 	private String internationalClassName;
 
 	@SerializedName("international_number")
@@ -166,12 +192,15 @@ public class Match {
 	private int internationalValid;
 
 	@SerializedName("legacy_url")
+	@Column(columnDefinition = TEXT)
 	private String legacyUrl;
 
 	@SerializedName("live_commentator")
+	@Column(length = 30)
 	private String liveCommentator;
 
 	@SerializedName("live_companion")
+	@Column(length = 30)
 	private String liveCompanion;
 
 	@SerializedName("live_day_number")
@@ -181,9 +210,11 @@ public class Match {
 	private int liveInningsNumber;
 
 	@SerializedName("live_match")
+	@Column(length = 10)
 	private String liveMatch;
 
 	@SerializedName("live_note")
+	@Column(length = 40)
 	private String liveNote;
 
 	@SerializedName("live_overs_remaining")
@@ -193,15 +224,18 @@ public class Match {
 	private double liveOversUnique;
 
 	@SerializedName("live_scorer")
+	@Column(length = 40)
 	private String liveScorer;
 
 	@SerializedName("live_session_number")
 	private int liveSessionNumber;
 
 	@SerializedName("live_state")
+	@Column(length = 40)
 	private String liveState;
 
 	@SerializedName("match_clock")
+	@Column(length = 40)
 	private String matchClock;
 
 	@SerializedName("match_day_countdown")
@@ -211,9 +245,11 @@ public class Match {
 	private int matchMinuteCountdown;
 
 	@SerializedName("match_path")
+	@Column(columnDefinition = TEXT)
 	private String matchPath;
 
 	@SerializedName("match_status")
+	@Column(length = 15)
 	private String matchStatus;
 
 	@SerializedName("neutral_match")
@@ -226,6 +262,7 @@ public class Match {
 	private LocalDateTime nextDatetimeLocal;
 
 	@SerializedName("player_rating")
+	@Column(length = 10)
 	private String playerRating;
 
 	@SerializedName("present_date_gmt")
@@ -266,9 +303,11 @@ public class Match {
 	private String resultName;
 
 	@SerializedName("result_short_name")
+	@Column(length = 15)
 	private String resultShortName;
 
 	@SerializedName("schedule_note")
+	@Column(length = 50)
 	private String scheduleNote;
 
 	@SerializedName("scheduled_days")
@@ -281,6 +320,7 @@ public class Match {
 	private double scheduledOvers;
 
 	@SerializedName("scorecard_source")
+	@Column(length = 15)
 	private String scorecardSource;
 
 	@SerializedName("scribble_id")
@@ -292,12 +332,15 @@ public class Match {
 	private int siteId;
 
 	@SerializedName("site_name")
+	@Column(length = 50)
 	private String siteName;
 
 	@SerializedName("start_date")
+	@Column(length = 20)
 	private String startDate;
 
 	@SerializedName("start_date_gmt_offset")
+	@Column(length = 20)
 	private String startDateGmtOffset;
 
 	@SerializedName("start_date_raw")
@@ -313,48 +356,55 @@ public class Match {
 	private LocalDateTime startDatetimeLocal;
 
 	@SerializedName("start_time_gmt")
-	private String startTimeGmt;
+	private LocalTime startTimeGmt;
 
 	@SerializedName("start_time_local")
-	private String startTimeLocal;
+	private LocalTime startTimeLocal;
 
 	@SerializedName("sub_class_id")
 	private int subClassId;
 
 	@SerializedName("team1_abbreviation")
+	@Column(length = 15)
 	private String team1Abbreviation;
 
 	@SerializedName("team1_class_id")
-	private String team1ClassId;
+	private int team1ClassId;
 
 	@SerializedName("team1_country_id")
-	private String team1CountryId;
+	private int team1CountryId;
 
 	@SerializedName("team1_filename")
+	@Column(length = 20)
 	private String team1Filename;
 
 	@SerializedName("team1_id")
 	private int team1Id;
 
 	@SerializedName("team1_logo_alt_id")
+	@Column(length = 10)
 	private String team1LogoAltId;
 
 	@SerializedName("team1_logo_espncdn")
+	@Column(length = 10)
 	private String team1LogoEspncdn;
 
 	@SerializedName("team1_logo_object_id")
 	private int team1LogoObjectId;
 
 	@SerializedName("team1_name")
+	@Column(length = 50)
 	private String team1Name;
 
 	@SerializedName("team1_object_id")
-	private String team1ObjectId;
+	private int team1ObjectId;
 
 	@SerializedName("team1_short_name")
+	@Column(length = 20)
 	private String team1ShortName;
 
 	@SerializedName("team2_abbreviation")
+	@Column(length = 10)
 	private String team2Abbreviation;
 
 	@SerializedName("team2_class_id")
@@ -364,30 +414,36 @@ public class Match {
 	private int team2CountryId;
 
 	@SerializedName("team2_filename")
+	@Column(length = 20)
 	private String team2Filename;
 
 	@SerializedName("team2_id")
 	private int team2Id;
 
 	@SerializedName("team2_logo_alt_id")
+	@Column(length = 10)
 	private String team2LogoAltId;
 
 	@SerializedName("team2_logo_espncdn")
+	@Column(length = 10)
 	private String team2LogoEspncdn;
 
 	@SerializedName("team2_logo_object_id")
 	private int team2LogoObjectId;
 
 	@SerializedName("team2_name")
+	@Column(length = 50)
 	private String team2Name;
 
 	@SerializedName("team2_object_id")
 	private int team2ObjectId;
 
 	@SerializedName("team2_short_name")
+	@Column(length = 20)
 	private String team2ShortName;
 
 	@SerializedName("tiebreaker_name")
+	@Column(length = 20)
 	private String tiebreakerName;
 
 	@SerializedName("tiebreaker_team_id")
@@ -397,15 +453,17 @@ public class Match {
 	private int tiebreakerType;
 
 	@SerializedName("time_zone")
+	@Column(length = 30)
 	private String timeZone;
 
 	@SerializedName("toss_choice_team_id")
 	private int tossChoiceTeamId;
 
 	@SerializedName("toss_decision")
-	private String tossDecision;
+	private int tossDecision;
 
 	@SerializedName("toss_decision_name")
+	@Column(length = 20)
 	private String tossDecisionName;
 
 	@SerializedName("toss_winner_team_id")
@@ -415,24 +473,29 @@ public class Match {
 	private String townAka;
 
 	@SerializedName("town_area")
+	@Column(length = 30)
 	private String townArea;
 
 	@SerializedName("town_id")
 	private int townId;
 
 	@SerializedName("town_name")
+	@Column(length = 50)
 	private String townName;
 
 	@SerializedName("tz_short_name")
+	@Column(length = 10)
 	private String tzShortName;
 
 	@SerializedName("url_component")
+	@Column(length = 20)
 	private String urlComponent;
 
 	@SerializedName("watch_espn_id")
 	private int watchEspnId;
 
 	@SerializedName("weather_location_code")
+	@Column(length = 20)
 	private String weatherLocationCode;
 
 	@SerializedName("winner_team_id")
