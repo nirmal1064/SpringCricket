@@ -1,5 +1,6 @@
 package com.project.cricket.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,9 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.cricket.handler.MatchFileHandler;
+import com.project.cricket.model.MatchJson;
 import com.project.cricket.model.ResultSummary;
 import com.project.cricket.repository.ResultSummaryRepository;
 
@@ -21,6 +25,9 @@ public class DbController {
 
 	@Autowired
 	private ResultSummaryRepository resultSummaryRepository;
+
+	@Autowired
+	private MatchFileHandler matchFileHandler;
 
 	@GetMapping(value = "/resultsummary", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<ResultSummary> getResultsSummaryFromDb() {
@@ -50,6 +57,15 @@ public class DbController {
 	@GetMapping(value = "/matchids", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Integer> getMatchIds(@RequestParam Integer classId, @RequestParam Integer startYear, @RequestParam Integer endYear) {
 		return resultSummaryRepository.findByClassIdAndYearBetween(classId, startYear, endYear).stream().map(ResultSummary::getMatchId).collect(Collectors.toList());
+	}
+
+	@PostMapping(value = "/matchjsondb")
+	public Integer getsas() {
+		List<Integer> matchIds = new ArrayList<>();
+		matchIds.add(62396);
+		matchIds.add(62397);
+		List<MatchJson> matchJson = matchFileHandler.getMatchJson(matchIds);
+		return matchJson.size();
 	}
 
 }

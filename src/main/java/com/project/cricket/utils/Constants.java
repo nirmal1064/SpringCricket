@@ -21,4 +21,7 @@ public final class Constants {
 	public static final String HTML = "HTML";
 	public static final String JSON = "JSON";
 	public static final String TEXT = "TEXT";
+	public static final String SCORECARD_SUMMARY_LOG = "MatchScorecard summary for {} matches completed in {} seconds ";
+	public static final String JSON_SUMMARY_LOG = "MatchJson summary for {} matches completed in {} seconds ";
+	public static final String DATETIMEFORMAT = "yyyy-MM-dd HH:mm:ss";
 }

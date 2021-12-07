@@ -2,6 +2,8 @@ package com.project.cricket.handler;
 
 import static com.project.cricket.utils.Constants.HTML;
 import static com.project.cricket.utils.Constants.JSON;
+import static com.project.cricket.utils.Constants.JSON_SUMMARY_LOG;
+import static com.project.cricket.utils.Constants.SCORECARD_SUMMARY_LOG;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +27,6 @@ import com.project.cricket.utils.ExecutorUtil;
 
 @Component
 public class MatchHandler {
-
-	public static final String SCORECARD_SUMMARY_LOG = "MatchScorecard summary for {} matches completed in {} seconds ";
-
-	public static final String JSON_SUMMARY_LOG = "MatchJson summary for {} matches completed in {} seconds ";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MatchHandler.class);
 

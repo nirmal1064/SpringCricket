@@ -3,12 +3,12 @@ package com.project.cricket.handler;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import com.project.cricket.model.ResultSummary;
 import com.project.cricket.repository.ResultSummaryRepository;
 
-@Configuration
+@Component
 public class DbHandler {
 
 	@Autowired
@@ -22,5 +22,9 @@ public class DbHandler {
 	public int saveResultsSummaryToDb(List<ResultSummary> resultSummary) {
 		List<ResultSummary> saveResults = resultSummaryRepository.saveAll(resultSummary);
 		return saveResults.size();
+	}
+
+	public void dbbb() {
+		
 	}
 }
