@@ -49,6 +49,22 @@ public class Player extends Person implements Serializable {
 
 	private int captain;
 
+	@SerializedName("full_sub")
+	private int fullSub;
+
+	@SerializedName("full_sub_innings")
+	private int fullSubInnings;
+
+	@SerializedName("full_sub_name")
+	@Column(length = 30)
+	private String fullSubName;
+
+	@SerializedName("full_sub_overs")
+	private double fullSubOvers;
+
+	@SerializedName("full_sub_player_id")
+	private int fullSubPlayerId;
+
 	private int keeper;
 
 	@SerializedName("player_primary_role")

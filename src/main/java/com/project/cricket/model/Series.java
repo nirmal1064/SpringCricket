@@ -2,10 +2,14 @@ package com.project.cricket.model;
 
 import static com.project.cricket.utils.Constants.TEXT;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.SerializedName;
@@ -15,7 +19,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Series {
+@Entity
+@Table(name = "series")
+public class Series implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	private int matchId;
 
 	@SerializedName("class_id")
 	private int classId;
@@ -27,10 +38,11 @@ public class Series {
 	@SerializedName("content_id")
 	private int contentId;
 
+	@Id
 	@SerializedName("core_recreation_id")
 	private int coreRecreationId;
 
-	@Column(length = 50)
+	@Column(length = 30)
 	private String date;
 
 	@SerializedName("end_date")
@@ -75,6 +87,7 @@ public class Series {
 	@SerializedName("number_of_teams")
 	private int numberOfTeams;
 
+	@Id
 	@SerializedName("object_id")
 	private int objectId;
 

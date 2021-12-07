@@ -12,7 +12,6 @@ sourceCompatibility = "11"
 
 configurations {
   all*.exclude group: "org.apache.logging.log4j"
-  all*.exclude group: "com.fasterxml.jackson.core"
 }
 
 repositories {
@@ -20,7 +19,9 @@ repositories {
 }
 
 dependencies {
-	implementation "org.springframework.boot:spring-boot-starter-web"
+	implementation ("org.springframework.boot:spring-boot-starter-web") {
+		exclude group: "com.fasterxml.jackson.core"
+	}
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
 	runtimeOnly "mysql:mysql-connector-java"
 	implementation ("org.springdoc:springdoc-openapi-ui:${openApi}") {
