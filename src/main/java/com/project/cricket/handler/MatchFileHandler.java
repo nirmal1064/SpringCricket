@@ -36,7 +36,7 @@ public class MatchFileHandler {
 
 	private ExecutorService service;
 
-	public <T> List<MatchJson> getMatchJson(List<Integer> matchIds) {
+	public List<MatchJson> getMatchJson(List<Integer> matchIds) {
 		LOGGER.info("MatchJson summary for {} matches", matchIds.size());
 		List<MatchJson> matchJsons = new ArrayList<>();
 		StopWatch stopWatch = new StopWatch();

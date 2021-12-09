@@ -1,5 +1,7 @@
 package com.project.cricket.model;
 
+import java.io.Serializable;
+
 import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
@@ -7,7 +9,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TeamSeries {
+public class TeamSeries implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@SerializedName("host_team")
 	private int hostTeam;
