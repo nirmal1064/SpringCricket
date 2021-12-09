@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MatchJson {
+	private int matchId;
 	private String description;
 	private List<Innings> innings;
 	private Match match;

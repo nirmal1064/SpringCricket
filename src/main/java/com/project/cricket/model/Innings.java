@@ -5,9 +5,11 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.SerializedName;
+import com.project.cricket.model.keys.InningsKey;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +18,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "match_innings")
+@IdClass(InningsKey.class)
 public class Innings implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -24,56 +27,56 @@ public class Innings implements Serializable {
 	private Integer matchId;
 
 	@SerializedName("ball_limit")
-	private int ballLimit;
+	private Integer ballLimit;
 
-	private int balls;
+	private Integer balls;
 
-	private int batted;
+	private Integer batted;
 
 	@SerializedName("batting_team_id")
-	private int battingTeamId;
+	private Integer battingTeamId;
 
 	@SerializedName("bowling_team_id")
-	private int bowlingTeamId;
+	private Integer bowlingTeamId;
 
-	private int bpo;
+	private Integer bpo;
 
-	private int byes;
+	private Integer byes;
 
-	private int event;
+	private Integer event;
 
 	@SerializedName("event_name")
 	private String eventName;
 
-	private int extras;
+	private Integer extras;
 
 	@Id
 	@SerializedName("innings_number")
-	private int inningsNumber;
+	private Integer inningsNumber;
 
 	@SerializedName("innings_numth")
 	private String inningsNumth;
 
 	@Column(name = "leadby")
-	private int lead;
+	private Integer lead;
 
-	private int legbyes;
+	private Integer legbyes;
 
 	@SerializedName("live_current")
-	private int liveCurrent;
+	private Integer liveCurrent;
 
 	@SerializedName("live_current_name")
 	private String liveCurrentName;
 
-	private int minutes;
+	private Integer minutes;
 
-	private int noballs;
+	private Integer noballs;
 
 	@SerializedName("old_penalty_or_bonus")
-	private int oldPenaltyOrBonus;
+	private Integer oldPenaltyOrBonus;
 
 	@SerializedName("over_limit")
-	private double overLimit;
+	private Double overLimit;
 
 	@SerializedName("over_limit_run_rate")
 	private String overLimitRunRate;
@@ -81,28 +84,28 @@ public class Innings implements Serializable {
 	@SerializedName("over_split_limit")
 	private String overSplitLimit;
 
-	private double overs;
+	private Double overs;
 
 	@SerializedName("overs_docked")
-	private int oversDocked;
+	private Integer oversDocked;
 
-	private int penalties;
+	private Integer penalties;
 
 	@SerializedName("penalties_field_end")
-	private int penaltiesFieldEnd;
+	private Integer penaltiesFieldEnd;
 
 	@SerializedName("penalties_field_start")
-	private int penaltiesFieldStart;
+	private Integer penaltiesFieldStart;
 
 	@SerializedName("run_rate")
-	private double runRate;
+	private Double runRate;
 
-	private int runs;
+	private Integer runs;
 
-	private int target;
+	private Integer target;
 
-	private int wickets;
+	private Integer wickets;
 
-	private int wides;
+	private Integer wides;
 
 }

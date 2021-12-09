@@ -12,16 +12,16 @@ import lombok.Setter;
 public class Team {
 
 	@SerializedName("batsmen_in_side")
-	private int batsmenInSide;
+	private Integer batsmenInSide;
 
 	@SerializedName("content_id")
-	private int contentId;
+	private Integer contentId;
 
 	@SerializedName("country_id")
-	private int countryId;
+	private Integer countryId;
 
 	@SerializedName("fielders_in_side")
-	private int fieldersInSide;
+	private Integer fieldersInSide;
 
 	@SerializedName("logo_alt_id")
 	private String logoAltId;
@@ -30,36 +30,36 @@ public class Team {
 	private String logoEspncdn;
 
 	@SerializedName("logo_height")
-	private int logoHeight;
+	private Integer logoHeight;
 
 	@SerializedName("logo_image_height")
-	private int logoImageHeight;
+	private Integer logoImageHeight;
 
 	@SerializedName("logo_image_path")
 	private String logoImagePath;
 
 	@SerializedName("logo_image_width")
-	private int logoImageWidth;
+	private Integer logoImageWidth;
 
 	@SerializedName("logo_object_id")
-	private int logoObjectId;
+	private Integer logoObjectId;
 
 	@SerializedName("logo_path")
 	private String logoPath;
 
 	@SerializedName("logo_width")
-	private int logoWidth;
+	private Integer logoWidth;
 
 	@SerializedName("object_id")
-	private int objectId;
+	private Integer objectId;
 
 	private List<Player> player;
 
 	@SerializedName("players_in_side")
-	private int playersInSide;
+	private Integer playersInSide;
 
 	@SerializedName("site_id")
-	private int siteId;
+	private Integer siteId;
 
 	@SerializedName("team_abbreviation")
 	private String teamAbbreviation;
@@ -71,7 +71,7 @@ public class Team {
 	private String teamGeneralName;
 
 	@SerializedName("team_id")
-	private String teamId;
+	private Integer teamId;
 
 	@SerializedName("team_name")
 	private String teamName;

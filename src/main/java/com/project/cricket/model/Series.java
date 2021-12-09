@@ -7,9 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.SerializedName;
@@ -19,28 +17,28 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "series")
+//@Entity
+//@Table(name = "series")
 public class Series implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private int matchId;
+	private Integer matchId;
 
 	@SerializedName("class_id")
-	private int classId;
+	private Integer classId;
 
 	@SerializedName("class_name")
 	@Column(length = 30)
 	private String className;
 
 	@SerializedName("content_id")
-	private int contentId;
+	private Integer contentId;
 
 	@Id
 	@SerializedName("core_recreation_id")
-	private int coreRecreationId;
+	private Integer coreRecreationId;
 
 	@Column(length = 30)
 	private String date;
@@ -61,10 +59,10 @@ public class Series implements Serializable {
 	private String groupTitle;
 
 	@SerializedName("major_trophy")
-	private int majorTrophy;
+	private Integer majorTrophy;
 
 	@SerializedName("match_number")
-	private int matchNumber;
+	private Integer matchNumber;
 
 	@SerializedName("match_title")
 	@Column(length = 30)
@@ -79,19 +77,19 @@ public class Series implements Serializable {
 	private String multiformatPointstable;
 
 	@SerializedName("number_of_hosts")
-	private int numberOfHosts;
+	private Integer numberOfHosts;
 
 	@SerializedName("number_of_matches")
-	private int numberOfMatches;
+	private Integer numberOfMatches;
 
 	@SerializedName("number_of_teams")
-	private int numberOfTeams;
+	private Integer numberOfTeams;
 
 	@Id
 	@SerializedName("object_id")
-	private int objectId;
+	private Integer objectId;
 
-	private int points;
+	private Integer points;
 
 	@SerializedName("primary_series")
 	@Column(length = 10)
@@ -105,7 +103,7 @@ public class Series implements Serializable {
 	private String scheduleNote;
 
 	@SerializedName("score_module_position")
-	private int scoreModulePosition;
+	private Integer scoreModulePosition;
 
 	@Column(length = 15)
 	private String season;
@@ -115,7 +113,7 @@ public class Series implements Serializable {
 	private String seriesAbbreviation;
 
 	@SerializedName("series_category_id")
-	private int seriesCategoryId;
+	private Integer seriesCategoryId;
 
 	@SerializedName("series_category_name")
 	@Column(length = 15)
@@ -126,17 +124,17 @@ public class Series implements Serializable {
 	private String seriesFilename;
 
 	@SerializedName("series_lead_abandoned")
-	private int seriesLeadAbandoned;
+	private Integer seriesLeadAbandoned;
 
 	@SerializedName("series_lead_cancelled")
-	private int seriesLeadCancelled;
+	private Integer seriesLeadCancelled;
 
 	@SerializedName("series_lead_how_won_name")
 	@Column(length = 20)
 	private String seriesLeadHowWonName;
 
 	@SerializedName("series_lead_lost")
-	private int seriesLeadLost;
+	private Integer seriesLeadLost;
 
 	@SerializedName("series_lead_result_name")
 	@Column(length = 20)
@@ -147,14 +145,14 @@ public class Series implements Serializable {
 	private String seriesLeadTeamName;
 
 	@SerializedName("series_lead_total")
-	private int seriesLeadTotal;
+	private Integer seriesLeadTotal;
 
 	@SerializedName("series_lead_type_name")
 	@Column(length = 20)
 	private String seriesLeadTypeName;
 
 	@SerializedName("series_lead_won")
-	private int seriesLeadWon;
+	private Integer seriesLeadWon;
 
 	@SerializedName("series_long_description")
 	@Column(columnDefinition = TEXT)
@@ -172,7 +170,7 @@ public class Series implements Serializable {
 	private String seriesStatus;
 
 	@SerializedName("series_type_id")
-	private int seriesTypeId;
+	private Integer seriesTypeId;
 
 	@SerializedName("series_type_name")
 	@Column(length = 30)
@@ -183,7 +181,7 @@ public class Series implements Serializable {
 	private String shortAlternateName;
 
 	@SerializedName("site_id")
-	private int siteId;
+	private Integer siteId;
 
 	@Column(columnDefinition = TEXT)
 	private String slug;
@@ -205,7 +203,7 @@ public class Series implements Serializable {
 	private List<TeamSeries> teams;
 
 	@SerializedName("tiebreaker_id")
-	private int tiebreakerId;
+	private Integer tiebreakerId;
 
 	@SerializedName("tiebreaker_name")
 	private String tiebreakerName;
@@ -215,13 +213,13 @@ public class Series implements Serializable {
 	private String trophyAbbreviation;
 
 	@SerializedName("trophy_class_id")
-	private int trophyClassId;
+	private Integer trophyClassId;
 
 	@SerializedName("trophy_country_id")
-	private int trophyCountryId;
+	private Integer trophyCountryId;
 
 	@SerializedName("trophy_id")
-	private int trophyId;
+	private Integer trophyId;
 
 	@SerializedName("trophy_name")
 	private String trophyName;

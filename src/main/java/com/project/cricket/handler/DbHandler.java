@@ -24,7 +24,4 @@ public class DbHandler {
 		return saveResults.size();
 	}
 
-	public void dbbb() {
-		
-	}
 }

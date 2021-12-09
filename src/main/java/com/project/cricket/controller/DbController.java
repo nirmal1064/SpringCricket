@@ -1,6 +1,5 @@
 package com.project.cricket.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,12 +59,17 @@ public class DbController {
 	}
 
 	@PostMapping(value = "/matchjsondb")
-	public Integer getsas() {
-		List<Integer> matchIds = new ArrayList<>();
+	public List<Integer> matchJsonDb() {
+		List<Integer> matchIds = getMatchIds(3, 1877, 2021);
+		matchIds.removeAll(matchIds);
 		matchIds.add(62396);
-		matchIds.add(62397);
-		List<MatchJson> matchJson = matchFileHandler.getMatchJson(matchIds);
-		return matchJson.size();
+		List<MatchJson> matchJsons = matchFileHandler.getMatchJson(matchIds);
+		for (MatchJson matchJson : matchJsons) {
+			matchJson.getMatch().setMatchId(matchJson.getMatchId());
+		}
+		List<Integer> resultIds = matchJsons.stream().map(MatchJson::getMatchId).collect(Collectors.toList());
+		matchIds.removeAll(resultIds);
+		return matchIds;
 	}
 
 }

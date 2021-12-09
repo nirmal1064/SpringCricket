@@ -3,9 +3,7 @@ package com.project.cricket.model;
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -14,8 +12,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "squad_summary")
+//@Entity
+//@Table(name = "squad_summary")
 public class Player extends Person implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -47,31 +45,31 @@ public class Player extends Person implements Serializable {
 	@Column(length = 30)
 	private String bowlingStyleLong;
 
-	private int captain;
+	private Integer captain;
 
 	@SerializedName("full_sub")
-	private int fullSub;
+	private Integer fullSub;
 
 	@SerializedName("full_sub_innings")
-	private int fullSubInnings;
+	private Integer fullSubInnings;
 
 	@SerializedName("full_sub_name")
 	@Column(length = 30)
 	private String fullSubName;
 
 	@SerializedName("full_sub_overs")
-	private double fullSubOvers;
+	private Double fullSubOvers;
 
 	@SerializedName("full_sub_player_id")
-	private int fullSubPlayerId;
+	private Integer fullSubPlayerId;
 
-	private int keeper;
+	private Integer keeper;
 
 	@SerializedName("player_primary_role")
 	@Column(length = 30)
 	private String playerPrimaryRole;
 
 	@SerializedName("player_style_id")
-	private int playerStyleId;
+	private Integer playerStyleId;
 
 }

@@ -26,8 +26,11 @@ public class Match {
 	@Column(name = "match_id")
 	private Integer matchId;
 
+//	@OneToMany(mappedBy = "match", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//	private List<Innings> innings = new ArrayList<>();
+
 	@SerializedName("actual_days")
-	private int actualDays;
+	private Integer actualDays;
 
 	private Integer adjusted;
 

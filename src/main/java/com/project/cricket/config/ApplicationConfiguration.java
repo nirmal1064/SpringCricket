@@ -59,9 +59,11 @@ public class ApplicationConfiguration {
 			@Override
 			public LocalDate deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 					throws JsonParseException {
-				String str = json.getAsJsonPrimitive().getAsString();
-				if (StringUtils.hasLength(str)) {
+				try {
+					String str = json.getAsJsonPrimitive().getAsString();
 					return LocalDate.parse(str);
+				} catch (Exception e) {
+					LOGGER.error("LocalDate Exception for {}", json.getAsString(), e);
 				}
 				return null;
 			}
@@ -80,9 +82,9 @@ public class ApplicationConfiguration {
 							LocalDate.parse(str);
 							return LocalDate.parse(str).atStartOfDay();
 						} catch (Exception e2) {
-							LOGGER.info("LocalDateTime Exception for {}", json.getAsString());
+							LOGGER.error("LocalDateTime Exception for {}", json.getAsString(), e2);
 						}
-						LOGGER.info("LocalDateTime Exception for {}", json.getAsString());
+						LOGGER.error("LocalDateTime Exception for {}", json.getAsString(), e);
 						return null;
 					}
 				}

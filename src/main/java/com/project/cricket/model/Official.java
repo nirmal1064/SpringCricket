@@ -13,7 +13,7 @@ public class Official extends Person {
 	private String teamAbbreviation;
 
 	@SerializedName("team_id")
-	private int teamId;
+	private Integer teamId;
 
 	@SerializedName("team_name")
 	private String teamName;

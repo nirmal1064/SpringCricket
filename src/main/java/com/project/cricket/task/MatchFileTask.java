@@ -56,7 +56,9 @@ public class MatchFileTask<T> implements Callable<T> {
 		try {
 			String fileName = String.valueOf(matchId) + ".json";
 			matchJsonStr = fileUtils.readFile(appConfig.getMatchJsonFileLocation(), fileName);
-			return (T) gson.fromJson(matchJsonStr, MatchJson.class);
+			MatchJson matchJson = gson.fromJson(matchJsonStr, MatchJson.class);
+			matchJson.setMatchId(matchId);
+			return (T) matchJson;
 		} catch (Exception e) {
 			LOGGER.error("Exception in match {}", matchId, e);
 		}
