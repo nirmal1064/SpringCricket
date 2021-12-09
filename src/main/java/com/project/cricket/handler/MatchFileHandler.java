@@ -1,9 +1,7 @@
 package com.project.cricket.handler;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -19,8 +17,7 @@ import org.springframework.util.StopWatch;
 import com.project.cricket.config.ApplicationConfiguration;
 import com.project.cricket.config.ServiceFactory;
 import com.project.cricket.model.MatchJson;
-import com.project.cricket.task.MatchFileTask;
-import com.project.cricket.utils.Constants;
+import com.project.cricket.task.MatchJsonTask;
 import com.project.cricket.utils.ExecutorUtil;
 
 @Component
@@ -39,21 +36,20 @@ public class MatchFileHandler {
 
 	private ExecutorService service;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public <T> List<MatchJson> getMatchJson(List<Integer> matchIds) {
 		LOGGER.info("MatchJson summary for {} matches", matchIds.size());
 		List<MatchJson> matchJsons = new ArrayList<>();
 		StopWatch stopWatch = new StopWatch();
-		List<Future<T>> resultsFuture;
+		List<Future<MatchJson>> resultsFuture;
 		try {
-			List<MatchFileTask> matchFileTasks = new ArrayList<>();
+			List<MatchJsonTask> matchJsonTasks = new ArrayList<>();
 			stopWatch.start();
 			for (Integer matchId : matchIds) {
-				MatchFileTask matchFileTask = serviceFactory.matchFileTask();
-				matchFileTask.init(matchId, Constants.JSON);
-				matchFileTasks.add(matchFileTask);
+				MatchJsonTask matchJsonTask = serviceFactory.matchJsonTask();
+				matchJsonTask.init(matchId);
+				matchJsonTasks.add(matchJsonTask);
 			}
-			resultsFuture = service.invokeAll((Collection<? extends Callable<T>>) matchFileTasks);
+			resultsFuture = service.invokeAll(matchJsonTasks);
 			addResults(stopWatch, matchJsons, service, resultsFuture);
 			LOGGER.info("MatchJson completed for {} matches in {} seconds", matchIds.size(), stopWatch.getTotalTimeSeconds());
 		} catch (InterruptedException e) {
@@ -65,11 +61,11 @@ public class MatchFileHandler {
 		return matchJsons;
 	}
 
-	private <T> void addResults(StopWatch stopWatch, List<MatchJson> matchJsons, ExecutorService service,
-			List<Future<T>> resultsFuture) throws InterruptedException, ExecutionException {
+	private void addResults(StopWatch stopWatch, List<MatchJson> matchJsons, ExecutorService service,
+			List<Future<MatchJson>> resultsFuture) throws InterruptedException, ExecutionException {
 		service.shutdown();
-		for (Future<T> future : resultsFuture) {
-			MatchJson json = (MatchJson) future.get();
+		for (Future<MatchJson> future : resultsFuture) {
+			MatchJson json = future.get();
 			if (json != null) {
 				matchJsons.add(json);
 			}
