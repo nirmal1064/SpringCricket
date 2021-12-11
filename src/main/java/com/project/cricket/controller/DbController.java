@@ -1,20 +1,31 @@
 package com.project.cricket.controller;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.cricket.handler.DbHandler;
 import com.project.cricket.handler.MatchFileHandler;
+import com.project.cricket.model.Innings;
+import com.project.cricket.model.Match;
 import com.project.cricket.model.MatchJson;
+import com.project.cricket.model.Official;
+import com.project.cricket.model.Player;
 import com.project.cricket.model.ResultSummary;
+import com.project.cricket.model.Series;
+import com.project.cricket.model.Team;
 import com.project.cricket.repository.ResultSummaryRepository;
 
 @RestController
@@ -28,32 +39,35 @@ public class DbController {
 	@Autowired
 	private MatchFileHandler matchFileHandler;
 
-	@GetMapping(value = "/resultsummary", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Autowired
+	private DbHandler dbHandler;
+
+	@GetMapping(value = "/resultsummary", produces = APPLICATION_JSON_VALUE)
 	public List<ResultSummary> getResultsSummaryFromDb() {
 		LOGGER.info("Getting results summary");
 		return resultSummaryRepository.findAll();
 	}
 
-	@GetMapping(value = "/resultbetweenyears", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/resultbetweenyears", produces = APPLICATION_JSON_VALUE)
 	public List<ResultSummary> getResultsSummaryBetweenYears(@RequestParam Integer startYear, @RequestParam Integer endYear) {
 		LOGGER.info("Getting results summary betweem years {} and {}", startYear, endYear);
 		return resultSummaryRepository.findByYearBetween(startYear, endYear);
 	}
 
-	@GetMapping(value = "/resultsByClass", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/resultsByClass", produces = APPLICATION_JSON_VALUE)
 	public List<ResultSummary> getResultsSummaryClassId(@RequestParam Integer classId) {
 		LOGGER.info("Getting results summary for class {} ", classId);
 		return resultSummaryRepository.findByClassId(classId);
 	}
 
-	@GetMapping(value = "/resultsByClassBetweenYears", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/resultsByClassBetweenYears", produces = APPLICATION_JSON_VALUE)
 	public List<ResultSummary> getResultsSummaryClassIdBetweenYears(@RequestParam Integer classId,
 			@RequestParam Integer startYear, @RequestParam Integer endYear) {
 		LOGGER.info("Getting results summary for class {} between years {} and {}", classId, startYear, endYear);
 		return resultSummaryRepository.findByClassIdAndYearBetween(classId, startYear, endYear);
 	}
 
-	@GetMapping(value = "/matchids", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/matchids", produces = APPLICATION_JSON_VALUE)
 	public List<Integer> getMatchIds(@RequestParam Integer classId, @RequestParam Integer startYear, @RequestParam Integer endYear) {
 		return resultSummaryRepository.findByClassIdAndYearBetween(classId, startYear, endYear).stream().map(ResultSummary::getMatchId).collect(Collectors.toList());
 	}
@@ -65,11 +79,63 @@ public class DbController {
 		matchIds.add(62396);
 		List<MatchJson> matchJsons = matchFileHandler.getMatchJson(matchIds);
 		for (MatchJson matchJson : matchJsons) {
-			matchJson.getMatch().setMatchId(matchJson.getMatchId());
+			Match match = matchJson.getMatch();
+			match.setMatchId(matchJson.getMatchId());
+			List<Innings> innings = matchJson.getInnings();
+			matchJson.setInnings(null);
+			innings.forEach(e -> e.setMatch(matchJson.getMatch()));
+			List<Team> team = matchJson.getTeam();
+			team.forEach(tm -> {
+				tm.getPlayer().forEach(p -> {
+					p.setTeamId(tm.getTeamId());
+				});
+			});
+			List<Player> players = team.stream()
+					.map(Team::getPlayer)
+					.flatMap(List::stream)
+					.collect(Collectors.toList());
+			players.addAll(matchJson.getSubstitute());
+			players.forEach(p -> p.setMatch(match));
+			List<Series> series = matchJson.getSeries();
+			series.forEach(s -> s.setMatch(match));
+			List<Official> official = matchJson.getOfficial();
+			official.forEach(o -> o.setMatch(match));
+			match.setInnings(innings);
+			dbHandler.saveMatchToDb(match);
+//			match.setPlayer(players);
+//			match.setOfficial(official);
+//			match.setSeries(series);
 		}
 		List<Integer> resultIds = matchJsons.stream().map(MatchJson::getMatchId).collect(Collectors.toList());
 		matchIds.removeAll(resultIds);
 		return matchIds;
 	}
+
+	@PostMapping(value = "/matchjsondbs")
+	@Transactional
+	public List<Integer> matchJsonDb1() {
+		Match match = new Match();
+
+		Innings innings1 = new Innings();
+		innings1.setInningsNumber(1);
+		innings1.setMatch(match);
+
+		Innings innings2 = new Innings();
+		innings2.setInningsNumber(2);
+		innings2.setMatch(match);
+
+		List<Innings> innings = new ArrayList<>();
+		innings.add(innings1);
+		innings.add(innings2);
+
+		match.setMatchId(12345);
+		match.setInnings(innings);
+
+//		entityManager.persist(match);
+//		entityManager.persist(innings1);
+//		entityManager.persist(innings2);
+		return new ArrayList<>();
+	}
+
 
 }

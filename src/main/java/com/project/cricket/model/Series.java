@@ -1,30 +1,41 @@
 package com.project.cricket.model;
 
 import static com.project.cricket.utils.Constants.TEXT;
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.FetchType.LAZY;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-//@Entity
-//@Table(name = "series")
+@Entity
+@Table(name = "series")
+@ToString
 public class Series implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private Integer matchId;
+	@ManyToOne(fetch = LAZY, cascade = MERGE)
+	@JoinColumn(name = "match_id", referencedColumnName = "match_id")
+	private Match match;
 
 	@SerializedName("class_id")
 	private Integer classId;
@@ -231,5 +242,23 @@ public class Series implements Serializable {
 	@SerializedName("url_component")
 	@Column(length = 30)
 	private String urlComponent;
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(coreRecreationId, match, objectId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Series)) {
+			return false;
+		}
+		Series other = (Series) obj;
+		return Objects.equals(coreRecreationId, other.coreRecreationId) && Objects.equals(match, other.match)
+				&& Objects.equals(objectId, other.objectId);
+	}
 
 }

@@ -1,6 +1,7 @@
 package com.project.cricket.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -17,10 +18,10 @@ import lombok.Setter;
 public class Person {
 
 	@SerializedName("age_days")
-	protected int ageDays;
+	protected Integer ageDays;
 
 	@SerializedName("age_years")
-	protected int ageYears;
+	protected Integer ageYears;
 
 	@SerializedName("alpha_name")
 	@Column(length = 30)
@@ -62,13 +63,13 @@ public class Person {
 
 	@Id
 	@SerializedName("object_id")
-	protected int objectId;
+	protected Integer objectId;
 
 	@SerializedName("player_id")
-	protected int playerId;
+	protected Integer playerId;
 
 	@SerializedName("player_type")
-	protected int playerType;
+	protected Integer playerType;
 
 	@SerializedName("player_type_name")
 	@Column(length = 30)
@@ -83,9 +84,26 @@ public class Person {
 	protected String portraitAltId;
 
 	@SerializedName("portrait_object_id")
-	protected int portraitObjectId;
+	protected Integer portraitObjectId;
 
 	@SerializedName("status_id")
-	protected int statusId;
+	protected Integer statusId;
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(objectId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Person)) {
+			return false;
+		}
+		Person other = (Person) obj;
+		return Objects.equals(objectId, other.objectId);
+	}
 
 }

@@ -5,12 +5,18 @@ import static com.project.cricket.utils.Constants.TEXT;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
@@ -26,8 +32,21 @@ public class Match {
 	@Column(name = "match_id")
 	private Integer matchId;
 
-//	@OneToMany(mappedBy = "match", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-//	private List<Innings> innings = new ArrayList<>();
+	@Expose(serialize = false, deserialize = false)
+	@OneToMany(mappedBy = "match", cascade = CascadeType.MERGE)
+	private List<Innings> innings = new ArrayList<>();
+
+//	@Expose(serialize = false, deserialize = false)
+//	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
+//	private List<Player> player = new ArrayList<>();
+//
+//	@Expose(serialize = false, deserialize = false)
+//	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
+//	private List<Series> series = new ArrayList<>();
+//
+//	@Expose(serialize = false, deserialize = false)
+//	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
+//	private List<Official> official = new ArrayList<>();
 
 	@SerializedName("actual_days")
 	private Integer actualDays;
@@ -504,4 +523,29 @@ public class Match {
 	@SerializedName("winner_team_id")
 	private int winnerTeamId;
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(matchId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj != null) {
+			return false;
+		}
+		if (!(obj instanceof Match)) {
+			return false;
+		}
+		Match other = (Match) obj;
+		return Objects.equals(matchId, other.matchId);
+	}
+
+	@Override
+	public String toString() {
+		return "Match [matchId=" + matchId + "]";
+	}
+	
 }

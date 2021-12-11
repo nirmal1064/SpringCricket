@@ -1,30 +1,35 @@
 package com.project.cricket.model;
 
+import static javax.persistence.FetchType.LAZY;
+
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.SerializedName;
-import com.project.cricket.model.keys.InningsKey;
 
 import lombok.Getter;
 import lombok.Setter;
+
 
 @Getter
 @Setter
 @Entity
 @Table(name = "match_innings")
-@IdClass(InningsKey.class)
 public class Innings implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private Integer matchId;
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "match_id", referencedColumnName = "match_id")
+	private Match match;
 
 	@SerializedName("ball_limit")
 	private Integer ballLimit;
@@ -107,5 +112,31 @@ public class Innings implements Serializable {
 	private Integer wickets;
 
 	private Integer wides;
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(inningsNumber, match);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Innings)) {
+			return false;
+		}
+		Innings other = (Innings) obj;
+		boolean flag = Objects.equals(inningsNumber, other.inningsNumber) && Objects.equals(match.getMatchId(), other.match.getMatchId());
+		return flag;
+	}
+
+	@Override
+	public String toString() {
+		return "Innings [match=" + match + ", inningsNumber=" + inningsNumber + "]";
+	}
 
 }
