@@ -1,6 +1,7 @@
 package com.project.cricket.model;
 
 import static com.project.cricket.utils.Constants.TEXT;
+import static javax.persistence.CascadeType.MERGE;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -33,20 +33,20 @@ public class Match {
 	private Integer matchId;
 
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = CascadeType.MERGE)
+	@OneToMany(mappedBy = "match", cascade = MERGE)
 	private List<Innings> innings = new ArrayList<>();
 
-//	@Expose(serialize = false, deserialize = false)
-//	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
-//	private List<Player> player = new ArrayList<>();
-//
-//	@Expose(serialize = false, deserialize = false)
-//	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
-//	private List<Series> series = new ArrayList<>();
-//
-//	@Expose(serialize = false, deserialize = false)
-//	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
-//	private List<Official> official = new ArrayList<>();
+	@Expose(serialize = false, deserialize = false)
+	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	private List<Player> player = new ArrayList<>();
+
+	@Expose(serialize = false, deserialize = false)
+	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	private List<Series> series = new ArrayList<>();
+
+	@Expose(serialize = false, deserialize = false)
+	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	private List<Official> official = new ArrayList<>();
 
 	@SerializedName("actual_days")
 	private Integer actualDays;

@@ -15,11 +15,12 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
-public class InningsKey implements Serializable {
+public class PlayerKey implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private Match match;
-	private Integer inningsNumber;
+	private Integer objectId;
+	private Integer teamId;
 
 }

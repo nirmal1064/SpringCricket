@@ -2,11 +2,8 @@ package com.project.cricket.controller;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,7 +79,6 @@ public class DbController {
 			Match match = matchJson.getMatch();
 			match.setMatchId(matchJson.getMatchId());
 			List<Innings> innings = matchJson.getInnings();
-			matchJson.setInnings(null);
 			innings.forEach(e -> e.setMatch(matchJson.getMatch()));
 			List<Team> team = matchJson.getTeam();
 			team.forEach(tm -> {
@@ -101,41 +97,14 @@ public class DbController {
 			List<Official> official = matchJson.getOfficial();
 			official.forEach(o -> o.setMatch(match));
 			match.setInnings(innings);
+			match.setPlayer(players);
+			match.setOfficial(official);
+			match.setSeries(series);
 			dbHandler.saveMatchToDb(match);
-//			match.setPlayer(players);
-//			match.setOfficial(official);
-//			match.setSeries(series);
 		}
 		List<Integer> resultIds = matchJsons.stream().map(MatchJson::getMatchId).collect(Collectors.toList());
 		matchIds.removeAll(resultIds);
 		return matchIds;
 	}
-
-	@PostMapping(value = "/matchjsondbs")
-	@Transactional
-	public List<Integer> matchJsonDb1() {
-		Match match = new Match();
-
-		Innings innings1 = new Innings();
-		innings1.setInningsNumber(1);
-		innings1.setMatch(match);
-
-		Innings innings2 = new Innings();
-		innings2.setInningsNumber(2);
-		innings2.setMatch(match);
-
-		List<Innings> innings = new ArrayList<>();
-		innings.add(innings1);
-		innings.add(innings2);
-
-		match.setMatchId(12345);
-		match.setInnings(innings);
-
-//		entityManager.persist(match);
-//		entityManager.persist(innings1);
-//		entityManager.persist(innings2);
-		return new ArrayList<>();
-	}
-
 
 }

@@ -1,6 +1,5 @@
 package com.project.cricket.model;
 
-import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.FetchType.LAZY;
 
 import java.io.Serializable;
@@ -8,11 +7,13 @@ import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.SerializedName;
+import com.project.cricket.model.keys.OfficialKey;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,12 +24,13 @@ import lombok.ToString;
 @Entity
 @Table(name = "official_summary")
 @ToString
+@IdClass(OfficialKey.class)
 public class Official extends Person implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@ManyToOne(fetch = LAZY, cascade = MERGE)
+	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "match_id", referencedColumnName = "match_id")
 	private Match match;
 
