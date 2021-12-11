@@ -3,7 +3,6 @@ package com.project.cricket.model;
 import static javax.persistence.FetchType.LAZY;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +15,7 @@ import javax.persistence.Table;
 import com.google.gson.annotations.SerializedName;
 import com.project.cricket.model.keys.InningsKey;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +25,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "match_innings")
 @IdClass(InningsKey.class)
+@EqualsAndHashCode
 public class Innings implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -115,27 +116,6 @@ public class Innings implements Serializable {
 	private Integer wickets;
 
 	private Integer wides;
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(inningsNumber, match.getMatchId());
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof Innings)) {
-			return false;
-		}
-		Innings other = (Innings) obj;
-		boolean flag = Objects.equals(inningsNumber, other.inningsNumber) && Objects.equals(match.getMatchId(), other.match.getMatchId());
-		return flag;
-	}
 
 	@Override
 	public String toString() {

@@ -6,7 +6,6 @@ import static javax.persistence.FetchType.LAZY;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +19,7 @@ import javax.persistence.Transient;
 import com.google.gson.annotations.SerializedName;
 import com.project.cricket.model.keys.SeriesKey;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -30,6 +30,7 @@ import lombok.ToString;
 @Table(name = "series")
 @ToString
 @IdClass(SeriesKey.class)
+@EqualsAndHashCode
 public class Series implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -244,23 +245,5 @@ public class Series implements Serializable {
 	@SerializedName("url_component")
 	@Column(length = 30)
 	private String urlComponent;
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(coreRecreationId, match, objectId);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof Series)) {
-			return false;
-		}
-		Series other = (Series) obj;
-		return Objects.equals(coreRecreationId, other.coreRecreationId) && Objects.equals(match, other.match)
-				&& Objects.equals(objectId, other.objectId);
-	}
 
 }

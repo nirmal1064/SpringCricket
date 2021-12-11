@@ -3,12 +3,12 @@ package com.project.cricket.model;
 import static com.project.cricket.utils.Constants.TEXT;
 import static javax.persistence.CascadeType.MERGE;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +27,10 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "match_summary")
-public class Match {
+@EqualsAndHashCode
+public class Match implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(name = "match_id")
@@ -522,26 +526,6 @@ public class Match {
 
 	@SerializedName("winner_team_id")
 	private int winnerTeamId;
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(matchId);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj != null) {
-			return false;
-		}
-		if (!(obj instanceof Match)) {
-			return false;
-		}
-		Match other = (Match) obj;
-		return Objects.equals(matchId, other.matchId);
-	}
 
 	@Override
 	public String toString() {

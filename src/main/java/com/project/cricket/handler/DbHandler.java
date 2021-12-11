@@ -42,11 +42,7 @@ public class DbHandler {
 		List<Innings> innings = matchJson.getInnings();
 		innings.forEach(e -> e.setMatch(matchJson.getMatch()));
 		List<Team> team = matchJson.getTeam();
-		team.forEach(tm -> {
-			tm.getPlayer().forEach(p -> {
-				p.setTeamId(tm.getTeamId());
-			});
-		});
+		team.forEach(tm -> tm.getPlayer().forEach(p -> p.setTeamId(tm.getTeamId())));
 		List<Player> players = team.stream()
 				.map(Team::getPlayer)
 				.flatMap(List::stream)

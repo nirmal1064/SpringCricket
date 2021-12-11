@@ -3,7 +3,6 @@ package com.project.cricket.model;
 import static javax.persistence.FetchType.LAZY;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,6 +14,7 @@ import javax.persistence.Table;
 import com.google.gson.annotations.SerializedName;
 import com.project.cricket.model.keys.OfficialKey;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,6 +25,7 @@ import lombok.ToString;
 @Table(name = "official_summary")
 @ToString
 @IdClass(OfficialKey.class)
+@EqualsAndHashCode(callSuper = true)
 public class Official extends Person implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -45,27 +46,4 @@ public class Official extends Person implements Serializable {
 
 	@SerializedName("team_short_name")
 	private String teamShortName;
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + Objects.hash(match, teamId);
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (!(obj instanceof Official)) {
-			return false;
-		}
-		Official other = (Official) obj;
-		return Objects.equals(match, other.match) && Objects.equals(teamId, other.teamId);
-	}
 }
