@@ -63,7 +63,6 @@ public class MatchFileHandler {
 
 	private void addResults(StopWatch stopWatch, List<MatchJson> matchJsons, ExecutorService service,
 			List<Future<MatchJson>> resultsFuture) throws InterruptedException, ExecutionException {
-		service.shutdown();
 		for (Future<MatchJson> future : resultsFuture) {
 			MatchJson json = future.get();
 			if (json != null) {

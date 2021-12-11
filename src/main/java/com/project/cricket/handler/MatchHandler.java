@@ -78,7 +78,6 @@ public class MatchHandler {
 
 	private void addResults(StopWatch stopWatch, List<String> result, ExecutorService service,
 			List<Future<String>> resultsFuture) throws InterruptedException, ExecutionException {
-		service.shutdown();
 		for (Future<String> future : resultsFuture) {
 			String json = future.get();
 			if (StringUtils.hasLength(json)) {
