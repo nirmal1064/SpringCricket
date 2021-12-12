@@ -72,6 +72,18 @@ public class Match implements Serializable {
 	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
 	private List<Debut> debuts = new ArrayList<>();
 
+	@Expose(serialize = false, deserialize = false)
+	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	private List<PlayersOfTheMatch> playersOfTheMatch = new ArrayList<>();
+
+	@Expose(serialize = false, deserialize = false)
+	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	private List<PlayersOfTheSeries> playersOfTheSeries = new ArrayList<>();
+
+	@Expose(serialize = false, deserialize = false)
+	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	private List<ScorecardOfficial> officials = new ArrayList<>();
+
 	@SerializedName("actual_days")
 	private Integer actualDays;
 
