@@ -2,6 +2,8 @@ package com.project.cricket.model;
 
 import static javax.persistence.FetchType.LAZY;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -18,7 +20,9 @@ import lombok.Data;
 @Entity
 @Table(name = "batting_scorecard")
 @IdClass(BatsmanKey.class)
-public class Batsman {
+public class Batsman implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@ManyToOne(fetch = LAZY)
@@ -30,11 +34,6 @@ public class Batsman {
 
 	@Id
 	private Integer inningsNumber;
-
-	@Id
-	private Integer battingTeamId;
-
-	private Integer bowlingTeamId;
 
 	private String 	playerRoleType;
 

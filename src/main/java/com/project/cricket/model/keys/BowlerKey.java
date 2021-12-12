@@ -2,7 +2,6 @@ package com.project.cricket.model.keys;
 
 import java.io.Serializable;
 
-import com.project.cricket.model.Innings;
 import com.project.cricket.model.Match;
 
 import lombok.EqualsAndHashCode;
@@ -16,12 +15,12 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
-public class BatsmanKey implements Serializable {
+public class BowlerKey implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private Match match;
-	private Innings innings;
-	private Integer batsmanId;
+	private Integer innings;
+	private Integer bowlerId;
 
 }

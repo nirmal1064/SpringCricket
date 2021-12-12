@@ -61,6 +61,7 @@ public class Innings implements Serializable {
 
 	@Id
 	@SerializedName("innings_number")
+	@Column(name = "innings_number")
 	private Integer inningsNumber;
 
 	@SerializedName("innings_numth")
