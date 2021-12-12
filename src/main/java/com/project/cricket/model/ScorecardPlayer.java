@@ -1,5 +1,8 @@
 package com.project.cricket.model;
 
-public class ScorecardPlayer {
+import lombok.Data;
 
+@Data
+public class ScorecardPlayer {
+	private Integer objectId;
 }

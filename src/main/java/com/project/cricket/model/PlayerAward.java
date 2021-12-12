@@ -10,7 +10,6 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ToString
-public class PlayerOfSeries extends MatchPlayer {
-
+@ToString(callSuper = true)
+public class PlayerAward extends MatchPerson {
 }

@@ -82,14 +82,19 @@ public class DbController {
 	public List<Integer> matchScorecardDb() {
 		List<Integer> matchIds = getMatchIds(3, 1877, 2021);
 		matchIds.removeAll(matchIds);
-		matchIds.add(62396);
+		matchIds.add(1288345);
 		List<MatchScorecard> matchScorecards = matchFileHandler.getMatchScorecard(matchIds);
 		for (MatchScorecard matchScorecard : matchScorecards) {
 			LOGGER.info("{}", matchScorecard);
 			if (matchScorecard.getMatch() != null) {
 				LOGGER.info("{}", matchScorecard.getMatch().getDebutPlayers().size());
-			} else {
-				LOGGER.info("Null");
+			}
+			if (matchScorecard.getScorecard() != null) {
+				LOGGER.info("{}", matchScorecard.getScorecard().getInnings().size());
+			}
+			if (matchScorecard.getSupportInfo() != null) {
+				//LOGGER.info("{}", matchScorecard.getSupportInfo().getPlayersOfTheMatch().size());
+				LOGGER.info("{}", matchScorecard.getSupportInfo());
 			}
 			//dbHandler.saveMatchFromJsonToDb(matchScorecard);
 		}

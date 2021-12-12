@@ -6,8 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MatchScorecard {
-	private ScorecardMatch match;
 	private Integer matchId;
-//	private Scorecard scorecard;
-//	private SupportInfo supportInfo;
+	private ScorecardMatch match;
+	private Scorecard scorecard;
+	private SupportInfo supportInfo;
 }

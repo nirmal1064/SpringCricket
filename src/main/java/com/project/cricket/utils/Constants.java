@@ -25,4 +25,13 @@ public final class Constants {
 	public static final String JSON_SUMMARY_LOG = "MatchJson summary for {} matches completed in {} seconds ";
 	public static final String DATETIMEFORMAT = "yyyy-MM-dd HH:mm:ss";
 	public static final String ESPN_JSON_URL = "http://core.espnuk.org/v2/sports/cricket/leagues/%S/";
+	public static final String PROPS = "props";
+	public static final String PAGEPROPS = "pageProps";
+	public static final String DATA = "data";
+	public static final String PAGEDATA = "pageData";
+	public static final String MATCH = "match";
+	public static final String CONTENT = "content";
+	public static final String SCORECARD = "scorecard";
+	public static final String MATCHPLAYERS = "matchPlayers";
+	public static final String SUPPORTINFO = "supportInfo";
 }

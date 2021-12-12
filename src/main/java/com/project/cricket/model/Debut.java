@@ -11,6 +11,5 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class Debut extends MatchPlayer {
-
+public class Debut extends MatchPerson {
 }

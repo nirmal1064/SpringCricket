@@ -11,8 +11,8 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 @NoArgsConstructor
-public class ScorecardOfficial extends MatchPlayer {
+public class ScorecardOfficial extends MatchPerson {
 	private Integer type;
 }
