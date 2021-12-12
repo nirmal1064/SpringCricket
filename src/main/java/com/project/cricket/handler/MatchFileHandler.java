@@ -17,7 +17,9 @@ import org.springframework.util.StopWatch;
 import com.project.cricket.config.ApplicationConfiguration;
 import com.project.cricket.config.ServiceFactory;
 import com.project.cricket.model.MatchJson;
+import com.project.cricket.model.MatchScorecard;
 import com.project.cricket.task.MatchJsonTask;
+import com.project.cricket.task.MatchScorecardTask;
 import com.project.cricket.utils.ExecutorUtil;
 
 @Component
@@ -35,6 +37,32 @@ public class MatchFileHandler {
 	private ServiceFactory serviceFactory;
 
 	private ExecutorService service;
+
+	public List<MatchScorecard> getMatchScorecard(List<Integer> matchIds) {
+		LOGGER.info("Match Scorecard summary for {} matches", matchIds.size());
+		List<MatchScorecard> matchScorecards = new ArrayList<>();
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.shortSummary();
+		List<Future<MatchScorecard>> resultsFuture;
+		try {
+			List<MatchScorecardTask> matchScorecardTasks = new ArrayList<>();
+			stopWatch.start();
+			for (Integer matchId : matchIds) {
+				MatchScorecardTask matchScorecardTask = serviceFactory.matchScorecardTask();
+				matchScorecardTask.init(matchId);
+				matchScorecardTasks.add(matchScorecardTask);
+			}
+			resultsFuture = service.invokeAll(matchScorecardTasks);
+			addResults(stopWatch, matchScorecards, service, resultsFuture);
+			LOGGER.info("Match Scorecard completed for {} matches in {} seconds", matchIds.size(), stopWatch.getTotalTimeSeconds());
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			LOGGER.error(e.getMessage(), e);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+		return matchScorecards;
+	}
 
 	public List<MatchJson> getMatchJson(List<Integer> matchIds) {
 		LOGGER.info("MatchJson summary for {} matches", matchIds.size());
@@ -61,12 +89,12 @@ public class MatchFileHandler {
 		return matchJsons;
 	}
 
-	private void addResults(StopWatch stopWatch, List<MatchJson> matchJsons, ExecutorService service,
-			List<Future<MatchJson>> resultsFuture) throws InterruptedException, ExecutionException {
-		for (Future<MatchJson> future : resultsFuture) {
-			MatchJson json = future.get();
+	private <T> void addResults(StopWatch stopWatch, List<T> results, ExecutorService service,
+			List<Future<T>> resultsFuture) throws InterruptedException, ExecutionException {
+		for (Future<T> future : resultsFuture) {
+			T json = future.get();
 			if (json != null) {
-				matchJsons.add(json);
+				results.add((T) json);
 			}
 		}
 		stopWatch.stop();

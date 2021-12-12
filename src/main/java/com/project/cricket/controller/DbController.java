@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.cricket.handler.DbHandler;
 import com.project.cricket.handler.MatchFileHandler;
 import com.project.cricket.model.MatchJson;
+import com.project.cricket.model.MatchScorecard;
 import com.project.cricket.model.ResultSummary;
 import com.project.cricket.repository.ResultSummaryRepository;
 
@@ -76,5 +77,26 @@ public class DbController {
 		matchIds.removeAll(resultIds);
 		return matchIds;
 	}
+
+	@PostMapping(value = "/matchscorecarddb")
+	public List<Integer> matchScorecardDb() {
+		List<Integer> matchIds = getMatchIds(3, 1877, 2021);
+		matchIds.removeAll(matchIds);
+		matchIds.add(62396);
+		List<MatchScorecard> matchScorecards = matchFileHandler.getMatchScorecard(matchIds);
+		for (MatchScorecard matchScorecard : matchScorecards) {
+			LOGGER.info("{}", matchScorecard);
+			if (matchScorecard.getMatch() != null) {
+				LOGGER.info("{}", matchScorecard.getMatch().getDebutPlayers().size());
+			} else {
+				LOGGER.info("Null");
+			}
+			//dbHandler.saveMatchFromJsonToDb(matchScorecard);
+		}
+		//List<Integer> resultIds = matchScorecards.stream().map(MatchJson::getMatchId).collect(Collectors.toList());
+		//matchIds.removeAll(resultIds);
+		return matchIds;
+	}
+
 
 }

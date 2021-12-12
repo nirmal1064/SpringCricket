@@ -26,6 +26,8 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.project.cricket.model.MatchScorecard;
+import com.project.cricket.utils.PageDataDeserializer;
 
 import lombok.Getter;
 
@@ -114,6 +116,7 @@ public class ApplicationConfiguration {
 				}
 			}
 		});
+		gsonBuilder.registerTypeAdapter(MatchScorecard.class, new PageDataDeserializer<MatchScorecard>());
 		return gsonBuilder.create();
 	}
 
