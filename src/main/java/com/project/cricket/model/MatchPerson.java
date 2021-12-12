@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 public abstract class MatchPerson {
-	private ScorecardPlayer player;
+	private PlayerOrTeam player;
 	private Integer matchId;
 	private Integer objectId;
 }

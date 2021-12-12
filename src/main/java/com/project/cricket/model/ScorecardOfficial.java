@@ -14,5 +14,5 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class ScorecardOfficial extends MatchPerson {
-	private Integer type;
+	private String type;
 }
