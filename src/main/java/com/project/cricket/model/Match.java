@@ -19,15 +19,11 @@ import javax.persistence.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "match_summary")
-@EqualsAndHashCode
+@Data
 public class Match implements Serializable {
 
 	private static final long serialVersionUID = 1L;

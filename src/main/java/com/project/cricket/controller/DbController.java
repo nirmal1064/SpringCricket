@@ -86,17 +86,7 @@ public class DbController {
 		List<MatchScorecard> matchScorecards = matchFileHandler.getMatchScorecard(matchIds);
 		for (MatchScorecard matchScorecard : matchScorecards) {
 			LOGGER.info("{}", matchScorecard);
-			if (matchScorecard.getMatch() != null) {
-				LOGGER.info("{}", matchScorecard.getMatch().getDebutPlayers().size());
-			}
-			if (matchScorecard.getScorecard() != null) {
-				LOGGER.info("{}", matchScorecard.getScorecard().getInnings().size());
-			}
-			if (matchScorecard.getSupportInfo() != null) {
-				//LOGGER.info("{}", matchScorecard.getSupportInfo().getPlayersOfTheMatch().size());
-				LOGGER.info("{}", matchScorecard.getSupportInfo());
-			}
-			//dbHandler.saveMatchFromJsonToDb(matchScorecard);
+			dbHandler.saveMatchFromScorecardToDb(matchScorecard);
 		}
 		//List<Integer> resultIds = matchScorecards.stream().map(MatchJson::getMatchId).collect(Collectors.toList());
 		//matchIds.removeAll(resultIds);

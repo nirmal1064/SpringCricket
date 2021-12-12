@@ -40,7 +40,7 @@ public class Fow implements Serializable {
 	private PlayerOrTeam dismissalBowler;
 
 	@Transient
-	private List<PlayerOrTeam> dismissalFielders = new ArrayList<>();
+	private List<DismissalFielder> dismissalFielders = new ArrayList<>();
 
 	@Transient
 	private Map<String, String> dismissalText = new HashMap<>();
@@ -87,4 +87,9 @@ public class Fow implements Serializable {
 	private Integer ballTotalRuns;
 
 	private Integer ballBatsmanRuns;
+
+	private Integer isKeeper;
+
+	private Integer isSubstitute;
+
 }

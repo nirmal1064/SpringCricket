@@ -34,4 +34,8 @@ public final class Constants {
 	public static final String SCORECARD = "scorecard";
 	public static final String MATCHPLAYERS = "matchPlayers";
 	public static final String SUPPORTINFO = "supportInfo";
+	public static final String FIELDUMPIRE = "field";
+	public static final String TVUMPIRE = "tv";
+	public static final String RESERVEUMPIRE = "reserve";
+	public static final String MATCHREFEREE = "referee";
 }
