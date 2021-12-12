@@ -6,7 +6,6 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -14,12 +13,11 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-@NoArgsConstructor
+@ToString
 @Entity
-@Table(name = "match_official")
-public class ScorecardOfficial extends MatchPerson {
+@Table(name = "playersOfTheSeries")
+public class PlayersOfTheSeries extends MatchPerson {
+
 	private static final long serialVersionUID = 1L;
 
-	private String type;
 }

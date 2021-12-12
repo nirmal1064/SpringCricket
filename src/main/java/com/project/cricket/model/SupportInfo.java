@@ -7,6 +7,6 @@ import lombok.Data;
 
 @Data
 public class SupportInfo {
-	private List<PlayerAward> playersOfTheMatch = new ArrayList<>();
-	private List<PlayerAward> playersOfTheSeries = new ArrayList<>();
+	private List<PlayersOfTheMatch> playersOfTheMatch = new ArrayList<>();
+	private List<PlayersOfTheSeries> playersOfTheSeries = new ArrayList<>();
 }

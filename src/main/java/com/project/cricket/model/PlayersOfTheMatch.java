@@ -1,5 +1,8 @@
 package com.project.cricket.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,6 +13,11 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class PlayerAward extends MatchPerson {
+@ToString
+@Entity
+@Table(name = "playersOfTheMatch")
+public class PlayersOfTheMatch extends MatchPerson {
+
+	private static final long serialVersionUID = 1L;
+
 }
