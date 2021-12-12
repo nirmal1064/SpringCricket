@@ -53,7 +53,7 @@ public class MatchFileHandler {
 				matchScorecardTasks.add(matchScorecardTask);
 			}
 			resultsFuture = service.invokeAll(matchScorecardTasks);
-			addResults(stopWatch, matchScorecards, service, resultsFuture);
+			addResults(stopWatch, matchScorecards, resultsFuture);
 			LOGGER.info("Match Scorecard completed for {} matches in {} seconds", matchIds.size(), stopWatch.getTotalTimeSeconds());
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
@@ -78,7 +78,7 @@ public class MatchFileHandler {
 				matchJsonTasks.add(matchJsonTask);
 			}
 			resultsFuture = service.invokeAll(matchJsonTasks);
-			addResults(stopWatch, matchJsons, service, resultsFuture);
+			addResults(stopWatch, matchJsons, resultsFuture);
 			LOGGER.info("MatchJson completed for {} matches in {} seconds", matchIds.size(), stopWatch.getTotalTimeSeconds());
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
@@ -89,12 +89,11 @@ public class MatchFileHandler {
 		return matchJsons;
 	}
 
-	private <T> void addResults(StopWatch stopWatch, List<T> results, ExecutorService service,
-			List<Future<T>> resultsFuture) throws InterruptedException, ExecutionException {
+	private <T> void addResults(StopWatch stopWatch, List<T> results, List<Future<T>> resultsFuture) throws InterruptedException, ExecutionException {
 		for (Future<T> future : resultsFuture) {
 			T json = future.get();
 			if (json != null) {
-				results.add((T) json);
+				results.add(json);
 			}
 		}
 		stopWatch.stop();

@@ -52,6 +52,10 @@ public class Match implements Serializable {
 	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
 	private List<Official> official = new ArrayList<>();
 
+	@Expose(serialize = false, deserialize = false)
+	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	private List<Batsman> batsmen = new ArrayList<>();
+
 	@SerializedName("actual_days")
 	private Integer actualDays;
 

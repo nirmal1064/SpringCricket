@@ -3,6 +3,6 @@ package com.project.cricket.model;
 import lombok.Data;
 
 @Data
-public class ScorecardTeam {
+public class PlayerOrTeam {
 	private Integer objectId;
 }

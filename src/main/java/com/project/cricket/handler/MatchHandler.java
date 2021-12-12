@@ -65,7 +65,7 @@ public class MatchHandler {
 				matchTasks.add(matchTask);
 			}
 			resultsFuture = service.invokeAll(matchTasks);
-			addResults(stopWatch, result, service, resultsFuture);
+			addResults(stopWatch, result, resultsFuture);
 			LOGGER.info(comments, matchIds.size(), stopWatch.getTotalTimeSeconds());
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
@@ -76,8 +76,7 @@ public class MatchHandler {
 		return result;
 	}
 
-	private void addResults(StopWatch stopWatch, List<String> result, ExecutorService service,
-			List<Future<String>> resultsFuture) throws InterruptedException, ExecutionException {
+	private void addResults(StopWatch stopWatch, List<String> result, List<Future<String>> resultsFuture) throws InterruptedException, ExecutionException {
 		for (Future<String> future : resultsFuture) {
 			String json = future.get();
 			if (StringUtils.hasLength(json)) {
