@@ -2,6 +2,7 @@ package com.project.cricket.controller;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -96,8 +97,7 @@ public class DbController {
 
 	@PostMapping(value = "/matchfulldb")
 	public List<Integer> matchFullDb() {
-		List<Integer> matchIds = getMatchIds(3, 1877, 2021);
-		matchIds.clear();
+		List<Integer> matchIds = new ArrayList<>();
 		matchIds.add(1288345);
 		List<Match> matches = matchFileHandler.getMatches(matchIds);
 		for (Match match : matches) {

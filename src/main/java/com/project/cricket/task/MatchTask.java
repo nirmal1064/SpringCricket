@@ -111,6 +111,8 @@ public class MatchTask implements Callable<Match> {
 		List<Innings> innings = matchJson.getInnings();
 		if (!CollectionUtils.isEmpty(innings)) {
 			innings.forEach(e -> e.setMatch(matchJson.getMatch()));
+		} else {
+			LOGGER.info("Innings is Empty for {}", matchId);
 		}
 
 		List<Player> players = new ArrayList<>();
@@ -123,16 +125,22 @@ public class MatchTask implements Callable<Match> {
 					.collect(Collectors.toList());
 			players.addAll(matchJson.getSubstitute());
 			players.forEach(p -> p.setMatch(match));
+		} else {
+			LOGGER.info("Team is Empty for {}", matchId);
 		}
 
 		List<Series> series = matchJson.getSeries();
 		if (!CollectionUtils.isEmpty(series)) {
 			series.forEach(s -> s.setMatch(match));
+		} else {
+			LOGGER.info("Series is Empty for {}", matchId);
 		}
 
 		List<Official> official = matchJson.getOfficial();
 		if (!CollectionUtils.isEmpty(official)) {
 			official.forEach(o -> o.setMatch(match));
+		} else {
+			LOGGER.info("Official is Empty for {}", matchId);
 		}
 
 		match.setInnings(innings);
@@ -180,7 +188,11 @@ public class MatchTask implements Callable<Match> {
 					match.getPartnerships().addAll(inning.getInningPartnerships());
 					match.getFows().addAll(inning.getInningWickets());
 				}
+			} else {
+				LOGGER.info("Scorecard innings is Empty for {}", matchId);
 			}
+		} else {
+			LOGGER.info("Scorecard is Empty for {}", matchId);
 		}
 	}
 
@@ -224,6 +236,8 @@ public class MatchTask implements Callable<Match> {
 				batsman.setBatsmanId(batsman.getPlayer().getObjectId());
 				batsman.setPosition(i);
 			}
+		} else {
+			LOGGER.info("SCorecard innings batsmen is Empty for {}", matchId);
 		}
 	}
 
@@ -236,6 +250,8 @@ public class MatchTask implements Callable<Match> {
 				bowler.setBowlerId(bowler.getPlayer().getObjectId());
 				bowler.setPosition(i);
 			}
+		} else {
+			LOGGER.info("Scorecard innings bowlers is Empty for {}", matchId);
 		}
 	}
 
@@ -249,6 +265,8 @@ public class MatchTask implements Callable<Match> {
 				partnership.setPlayer2Id(partnership.getPlayer2().getObjectId());
 				partnership.setWicketNumber(i);
 			}
+		} else {
+			LOGGER.info("Partnership is Empty for {}", matchId);
 		}
 	}
 
@@ -266,6 +284,8 @@ public class MatchTask implements Callable<Match> {
 				parseDismissalFielders(e, e.getDismissalFielders());
 				parseDismissalText(e, e.getDismissalText());
 			});
+		} else {
+			LOGGER.info("Fow is Empty for {}", matchId);
 		}
 	}
 
