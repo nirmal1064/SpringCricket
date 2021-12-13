@@ -35,6 +35,8 @@ public class Batsman implements Serializable {
 	@Id
 	private Integer innings;
 
+	private Integer position;
+
 	private String 	playerRoleType;
 
 	private String 	battedType;

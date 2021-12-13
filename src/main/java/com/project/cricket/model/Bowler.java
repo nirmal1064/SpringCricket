@@ -35,6 +35,8 @@ public class Bowler implements Serializable {
 	@Id
 	private Integer innings;
 
+	private Integer position;
+
 	@Id
 	private Integer bowlerId;
 

@@ -1,5 +1,6 @@
 package com.project.cricket.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -11,11 +12,11 @@ public class ScorecardInnings {
 
 	private PlayerOrTeam team;
 
-	private List<Batsman> inningBatsmen;
+	private List<Batsman> inningBatsmen = new ArrayList<>();
 
-	private List<Bowler> inningBowlers;
+	private List<Bowler> inningBowlers = new ArrayList<>();
 
-	private List<Partnership> inningPartnerships;
+	private List<Partnership> inningPartnerships = new ArrayList<>();
 
-	private List<Fow> inningWickets;
+	private List<Fow> inningWickets = new ArrayList<>();
 }

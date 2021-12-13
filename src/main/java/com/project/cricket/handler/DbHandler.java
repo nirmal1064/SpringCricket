@@ -19,6 +19,7 @@ import com.project.cricket.model.Fow;
 import com.project.cricket.model.Innings;
 import com.project.cricket.model.Match;
 import com.project.cricket.model.MatchJson;
+import com.project.cricket.model.MatchPerson;
 import com.project.cricket.model.MatchScorecard;
 import com.project.cricket.model.Official;
 import com.project.cricket.model.Partnership;
@@ -62,6 +63,15 @@ public class DbHandler {
 		}
 	}
 
+	private void addMatchAndId(List<? extends MatchPerson> persons, Match match) {
+		if (!CollectionUtils.isEmpty(persons)) {
+			persons.forEach(person -> {
+				person.setMatch(match);
+				person.setObjectId(person.getPlayer().getObjectId());
+			});
+		}
+	}
+
 	public void saveMatchFromScorecardToDb(MatchScorecard matchScorecard) {
 		Match match = new Match();
 		match.setMatchId(matchScorecard.getMatchId());
@@ -71,46 +81,39 @@ public class DbHandler {
 		addMatchAndType(scorecardMatch.getTvUmpires(), match, TVUMPIRE);
 		addMatchAndType(scorecardMatch.getReserveUmpires(), match, RESERVEUMPIRE);
 		addMatchAndType(scorecardMatch.getMatchReferees(), match, MATCHREFEREE);
-		scorecardMatch.getDebutPlayers().forEach(e -> {
-			e.setMatch(match);
-			e.setObjectId(e.getPlayer().getObjectId());
-		});
+		addMatchAndId(scorecardMatch.getDebutPlayers(), match);
 
 		SupportInfo supportInfo = matchScorecard.getSupportInfo();
-		if (!CollectionUtils.isEmpty(supportInfo.getPlayersOfTheMatch())) {
-			supportInfo.getPlayersOfTheMatch().forEach(e -> {
-				e.setMatch(match);
-				e.setObjectId(e.getPlayer().getObjectId());
-			});
-		}
-		if (!CollectionUtils.isEmpty(supportInfo.getPlayersOfTheSeries())) {
-			supportInfo.getPlayersOfTheSeries().forEach(e -> {
-				e.setMatch(match);
-				e.setObjectId(e.getPlayer().getObjectId());
-			});
-		}
+		addMatchAndId(supportInfo.getPlayersOfTheMatch(), match);
+		addMatchAndId(supportInfo.getPlayersOfTheSeries(), match);
 
 		List<ScorecardInnings> innings = matchScorecard.getScorecard().getInnings();
 		for (ScorecardInnings inning : innings) {
 			List<Batsman> inningBatsmen = inning.getInningBatsmen();
-			inningBatsmen.forEach(e -> {
-				e.setMatch(match);
-				e.setInnings(inning.getInningNumber());
-				e.setBatsmanId(e.getPlayer().getObjectId());
-			});
+			for (int i = 0; i < inningBatsmen.size(); i++) {
+				Batsman batsman = inningBatsmen.get(i);
+				batsman.setMatch(match);
+				batsman.setInnings(inning.getInningNumber());
+				batsman.setBatsmanId(batsman.getPlayer().getObjectId());
+				batsman.setPosition(i);
+			}
 			List<Bowler> inningBowlers = inning.getInningBowlers();
-			inningBowlers.forEach(e -> {
-				e.setMatch(match);
-				e.setInnings(inning.getInningNumber());
-				e.setBowlerId(e.getPlayer().getObjectId());
-			});
+			for (int i = 0; i < inningBowlers.size(); i++) {
+				Bowler bowler = inningBowlers.get(i);
+				bowler.setMatch(match);
+				bowler.setInnings(inning.getInningNumber());
+				bowler.setBowlerId(bowler.getPlayer().getObjectId());
+				bowler.setPosition(i);
+			}
 			List<Partnership> inningPartnerships = inning.getInningPartnerships();
-			inningPartnerships.forEach(e -> {
-				e.setMatch(match);
-				e.setInnings(inning.getInningNumber());
-				e.setPlayer1Id(e.getPlayer1().getObjectId());
-				e.setPlayer2Id(e.getPlayer2().getObjectId());
-			});
+			for (int i = 0; i < inningPartnerships.size(); i++) {
+				Partnership partnership = inningPartnerships.get(i);
+				partnership.setMatch(match);
+				partnership.setInnings(inning.getInningNumber());
+				partnership.setPlayer1Id(partnership.getPlayer1().getObjectId());
+				partnership.setPlayer2Id(partnership.getPlayer2().getObjectId());
+				partnership.setWicketNumber(i);
+			}
 			List<Fow> inningWickets = inning.getInningWickets();
 			inningWickets.forEach(e -> {
 				e.setMatch(match);
@@ -123,18 +126,21 @@ public class DbHandler {
 				}
 				List<DismissalFielder> dismissalFielders = e.getDismissalFielders();
 				for(int i = 0; i < dismissalFielders.size(); i++) {
-					//DismissalFielder dismissalFielder = dismissalFielders.get(i);
-					switch(i) {
-					case 1:
-						break;
-					case 2:
-						break;
-					case 3:
-						break;
-					case 4:
-						break;
-					default:
-						break;
+					DismissalFielder dismissalFielder = dismissalFielders.get(i);
+					if(dismissalFielder.getIsKeeper() == 1) {
+						e.setIsKeeper(1);
+					}
+					if(dismissalFielder.getIsSubstitute() == 1) {
+						e.setIsSubstitute(1);
+					}
+					if(i == 0) {
+						e.setFielder1Id(dismissalFielder.getPlayer().getObjectId());
+					} else if (i == 1) {
+						e.setFielder2Id(dismissalFielder.getPlayer().getObjectId());
+					} else if (i == 2) {
+						e.setFielder3Id(dismissalFielder.getPlayer().getObjectId());
+					} else if (i == 3) {
+						e.setFielder4Id(dismissalFielder.getPlayer().getObjectId());
 					}
 				}
 			});

@@ -46,6 +46,8 @@ public class Partnership implements Serializable {
 
 	private Integer outPlayerId;
 
+	private Integer wicketNumber;
+
 	private Integer player1Runs;
 
 	private Integer player1Balls;
