@@ -1,4 +1,4 @@
-package com.project.cricket.model;
+package com.project.cricket.entity;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -13,7 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.SerializedName;
-import com.project.cricket.model.keys.PlayerKey;
+import com.project.cricket.entity.keys.PlayerKey;
+import com.project.cricket.entity.superclass.Person;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

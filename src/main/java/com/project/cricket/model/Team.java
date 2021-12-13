@@ -3,6 +3,7 @@ package com.project.cricket.model;
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
+import com.project.cricket.entity.Player;
 
 import lombok.Getter;
 import lombok.Setter;

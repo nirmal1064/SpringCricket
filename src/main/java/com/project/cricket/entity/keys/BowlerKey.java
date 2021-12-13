@@ -1,8 +1,8 @@
-package com.project.cricket.model.keys;
+package com.project.cricket.entity.keys;
 
 import java.io.Serializable;
 
-import com.project.cricket.model.Match;
+import com.project.cricket.entity.Match;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,12 +15,12 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
-public class SeriesKey implements Serializable {
+public class BowlerKey implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private Match match;
-	private Integer objectId;
-	private Integer coreRecreationId;
+	private Integer innings;
+	private Integer bowlerId;
 
 }

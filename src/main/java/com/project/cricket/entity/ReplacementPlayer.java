@@ -1,4 +1,4 @@
-package com.project.cricket.model;
+package com.project.cricket.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,6 +6,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.SerializedName;
+import com.project.cricket.entity.superclass.MatchPerson;
+import com.project.cricket.model.PlayerOrTeam;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

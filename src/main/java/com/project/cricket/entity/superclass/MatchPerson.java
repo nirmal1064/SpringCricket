@@ -1,4 +1,4 @@
-package com.project.cricket.model;
+package com.project.cricket.entity.superclass;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -11,7 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import com.project.cricket.model.keys.MatchPersonKey;
+import com.project.cricket.entity.Match;
+import com.project.cricket.entity.keys.MatchPersonKey;
+import com.project.cricket.model.PlayerOrTeam;
 
 import lombok.Data;
 

@@ -3,6 +3,11 @@ package com.project.cricket.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.project.cricket.entity.Batsman;
+import com.project.cricket.entity.Bowler;
+import com.project.cricket.entity.Fow;
+import com.project.cricket.entity.Partnership;
+
 import lombok.Data;
 
 @Data

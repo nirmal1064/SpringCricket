@@ -1,4 +1,4 @@
-package com.project.cricket.model;
+package com.project.cricket.entity;
 
 import static com.project.cricket.utils.Constants.TEXT;
 import static javax.persistence.FetchType.LAZY;
@@ -17,7 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.SerializedName;
-import com.project.cricket.model.keys.SeriesKey;
+import com.project.cricket.entity.keys.SeriesKey;
+import com.project.cricket.model.TeamSeries;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

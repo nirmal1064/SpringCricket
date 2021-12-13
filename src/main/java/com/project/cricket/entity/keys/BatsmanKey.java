@@ -1,8 +1,8 @@
-package com.project.cricket.model.keys;
+package com.project.cricket.entity.keys;
 
 import java.io.Serializable;
 
-import com.project.cricket.model.Match;
+import com.project.cricket.entity.Match;
 
 import lombok.Data;
 

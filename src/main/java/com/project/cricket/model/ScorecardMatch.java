@@ -2,6 +2,10 @@ package com.project.cricket.model;
 
 import java.util.List;
 
+import com.project.cricket.entity.Debut;
+import com.project.cricket.entity.ReplacementPlayer;
+import com.project.cricket.entity.ScorecardOfficial;
+
 import lombok.Data;
 
 @Data

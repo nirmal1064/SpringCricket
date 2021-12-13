@@ -1,7 +1,9 @@
-package com.project.cricket.model;
+package com.project.cricket.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import com.project.cricket.entity.superclass.MatchPerson;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -15,8 +17,8 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString
 @Entity
-@Table(name = "playersOfTheMatch")
-public class PlayersOfTheMatch extends MatchPerson {
+@Table(name = "playersOfTheSeries")
+public class PlayersOfTheSeries extends MatchPerson {
 
 	private static final long serialVersionUID = 1L;
 

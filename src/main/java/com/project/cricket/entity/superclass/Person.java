@@ -1,4 +1,4 @@
-package com.project.cricket.model;
+package com.project.cricket.entity.superclass;
 
 import java.time.LocalDate;
 import java.util.Objects;

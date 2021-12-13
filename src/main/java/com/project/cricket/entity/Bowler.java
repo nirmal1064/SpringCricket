@@ -1,4 +1,4 @@
-package com.project.cricket.model;
+package com.project.cricket.entity;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -12,7 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.project.cricket.model.keys.BowlerKey;
+import com.project.cricket.entity.keys.BowlerKey;
+import com.project.cricket.model.PlayerOrTeam;
 
 import lombok.Data;
 

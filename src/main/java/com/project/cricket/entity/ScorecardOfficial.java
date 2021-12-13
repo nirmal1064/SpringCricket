@@ -1,7 +1,9 @@
-package com.project.cricket.model;
+package com.project.cricket.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import com.project.cricket.entity.superclass.MatchPerson;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

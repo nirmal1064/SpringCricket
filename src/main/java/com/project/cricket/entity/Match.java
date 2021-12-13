@@ -1,4 +1,4 @@
-package com.project.cricket.model;
+package com.project.cricket.entity;
 
 import static com.project.cricket.utils.Constants.TEXT;
 import static javax.persistence.CascadeType.MERGE;
