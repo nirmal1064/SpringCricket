@@ -95,32 +95,16 @@ public class DbHandler {
 
 		List<ScorecardInnings> innings = matchScorecard.getScorecard().getInnings();
 		for (ScorecardInnings inning : innings) {
-			List<Batsman> inningBatsmen = inning.getInningBatsmen();
-			for (int i = 0; i < inningBatsmen.size(); i++) {
-				Batsman batsman = inningBatsmen.get(i);
-				batsman.setMatch(match);
-				batsman.setInnings(inning.getInningNumber());
-				batsman.setBatsmanId(batsman.getPlayer().getObjectId());
-				batsman.setPosition(i);
-			}
-			List<Bowler> inningBowlers = inning.getInningBowlers();
-			for (int i = 0; i < inningBowlers.size(); i++) {
-				Bowler bowler = inningBowlers.get(i);
-				bowler.setMatch(match);
-				bowler.setInnings(inning.getInningNumber());
-				bowler.setBowlerId(bowler.getPlayer().getObjectId());
-				bowler.setPosition(i);
-			}
-			List<Partnership> inningPartnerships = inning.getInningPartnerships();
-			for (int i = 0; i < inningPartnerships.size(); i++) {
-				Partnership partnership = inningPartnerships.get(i);
-				partnership.setMatch(match);
-				partnership.setInnings(inning.getInningNumber());
-				partnership.setPlayer1Id(partnership.getPlayer1().getObjectId());
-				partnership.setPlayer2Id(partnership.getPlayer2().getObjectId());
-				partnership.setWicketNumber(i);
-			}
-			List<Fow> inningWickets = inning.getInningWickets();
+			processBatsmen(match, inning, inning.getInningBatsmen());
+			processBowlers(match, inning, inning.getInningBowlers());
+			processPartnership(match, inning, inning.getInningPartnerships());
+			processWickets(match, inning, inning.getInningWickets());
+		}
+		System.err.println("Hello");
+	}
+
+	private void processWickets(Match match, ScorecardInnings inning, List<Fow> inningWickets) {
+		if (!CollectionUtils.isEmpty(inningWickets)) {
 			inningWickets.forEach(e -> {
 				e.setMatch(match);
 				e.setInnings(inning.getInningNumber());
@@ -130,28 +114,69 @@ public class DbHandler {
 				if(e.getDismissalBowler() != null) {
 					e.setBowlerId(e.getDismissalBowler().getObjectId());
 				}
-				List<DismissalFielder> dismissalFielders = e.getDismissalFielders();
-				for(int i = 0; i < dismissalFielders.size(); i++) {
-					DismissalFielder dismissalFielder = dismissalFielders.get(i);
-					if(dismissalFielder.getIsKeeper() == 1) {
-						e.setIsKeeper(1);
-					}
-					if(dismissalFielder.getIsSubstitute() == 1) {
-						e.setIsSubstitute(1);
-					}
-					if(i == 0) {
-						e.setFielder1Id(dismissalFielder.getPlayer().getObjectId());
-					} else if (i == 1) {
-						e.setFielder2Id(dismissalFielder.getPlayer().getObjectId());
-					} else if (i == 2) {
-						e.setFielder3Id(dismissalFielder.getPlayer().getObjectId());
-					} else if (i == 3) {
-						e.setFielder4Id(dismissalFielder.getPlayer().getObjectId());
-					}
-				}
+				parseDismissalFielders(e, e.getDismissalFielders());
 			});
 		}
-		System.err.println("Hello");
+	}
+
+	private void parseDismissalFielders(Fow e, List<DismissalFielder> dismissalFielders) {
+		if (!CollectionUtils.isEmpty(dismissalFielders)) {
+			for(int i = 0; i < dismissalFielders.size(); i++) {
+				DismissalFielder dismissalFielder = dismissalFielders.get(i);
+				if(dismissalFielder.getIsKeeper() == 1) {
+					e.setIsKeeper(1);
+				}
+				if(dismissalFielder.getIsSubstitute() == 1) {
+					e.setIsSubstitute(1);
+				}
+				if(i == 0) {
+					e.setFielder1Id(dismissalFielder.getPlayer().getObjectId());
+				} else if (i == 1) {
+					e.setFielder2Id(dismissalFielder.getPlayer().getObjectId());
+				} else if (i == 2) {
+					e.setFielder3Id(dismissalFielder.getPlayer().getObjectId());
+				} else if (i == 3) {
+					e.setFielder4Id(dismissalFielder.getPlayer().getObjectId());
+				}
+			}
+		}
+	}
+
+	private void processPartnership(Match match, ScorecardInnings inning, List<Partnership> inningPartnerships) {
+		if (!CollectionUtils.isEmpty(inningPartnerships)) {
+			for (int i = 0; i < inningPartnerships.size(); i++) {
+				Partnership partnership = inningPartnerships.get(i);
+				partnership.setMatch(match);
+				partnership.setInnings(inning.getInningNumber());
+				partnership.setPlayer1Id(partnership.getPlayer1().getObjectId());
+				partnership.setPlayer2Id(partnership.getPlayer2().getObjectId());
+				partnership.setWicketNumber(i);
+			}
+		}
+	}
+
+	private void processBowlers(Match match, ScorecardInnings inning, List<Bowler> inningBowlers) {
+		if (!CollectionUtils.isEmpty(inningBowlers)) {
+			for (int i = 0; i < inningBowlers.size(); i++) {
+				Bowler bowler = inningBowlers.get(i);
+				bowler.setMatch(match);
+				bowler.setInnings(inning.getInningNumber());
+				bowler.setBowlerId(bowler.getPlayer().getObjectId());
+				bowler.setPosition(i);
+			}
+		}
+	}
+
+	private void processBatsmen(Match match, ScorecardInnings inning, List<Batsman> inningBatsmen) {
+		if (!CollectionUtils.isEmpty(inningBatsmen)) {
+			for (int i = 0; i < inningBatsmen.size(); i++) {
+				Batsman batsman = inningBatsmen.get(i);
+				batsman.setMatch(match);
+				batsman.setInnings(inning.getInningNumber());
+				batsman.setBatsmanId(batsman.getPlayer().getObjectId());
+				batsman.setPosition(i);
+			}
+		}
 	}
 
 	public void saveMatchFromJsonToDb(MatchJson matchJson) {
