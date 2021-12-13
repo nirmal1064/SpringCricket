@@ -70,6 +70,10 @@ public class Match implements Serializable {
 
 	@Expose(serialize = false, deserialize = false)
 	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	private List<ReplacementPlayer> replacement = new ArrayList<>();
+
+	@Expose(serialize = false, deserialize = false)
+	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
 	private List<PlayersOfTheMatch> playersOfTheMatch = new ArrayList<>();
 
 	@Expose(serialize = false, deserialize = false)

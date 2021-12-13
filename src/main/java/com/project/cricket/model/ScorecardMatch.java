@@ -12,4 +12,5 @@ public class ScorecardMatch {
 	private List<ScorecardOfficial> reserveUmpires;
 	private List<ScorecardOfficial> matchReferees;
 	private List<Debut> debutPlayers;
+	private List<ReplacementPlayer> replacementPlayers;
 }

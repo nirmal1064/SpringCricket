@@ -82,6 +82,12 @@ public class DbHandler {
 		addMatchAndType(scorecardMatch.getReserveUmpires(), match, RESERVEUMPIRE);
 		addMatchAndType(scorecardMatch.getMatchReferees(), match, MATCHREFEREE);
 		addMatchAndId(scorecardMatch.getDebutPlayers(), match);
+		scorecardMatch.getReplacementPlayers().forEach(e -> {
+			e.setMatch(match);
+			e.setObjectId(e.getPlayer().getObjectId());
+			e.setTeamId(e.getTeam().getObjectId());
+			e.setReplacingPlayerId(e.getReplacingPlayer().getObjectId());
+		});
 
 		SupportInfo supportInfo = matchScorecard.getSupportInfo();
 		addMatchAndId(supportInfo.getPlayersOfTheMatch(), match);
