@@ -1,30 +1,54 @@
 package com.project.cricket.task;
 
-import static com.project.cricket.utils.Constants.HTML;
-import static com.project.cricket.utils.Constants.JSON;
-import static com.project.cricket.utils.Constants.MATCH_URL;
-import static com.project.cricket.utils.Constants.MJSON_URL;
-import static com.project.cricket.utils.Constants.NEXT_DATA;
+import static com.project.cricket.utils.Constants.FIELDUMPIRE;
+import static com.project.cricket.utils.Constants.LONG;
+import static com.project.cricket.utils.Constants.MATCHREFEREE;
+import static com.project.cricket.utils.Constants.RESERVEUMPIRE;
+import static com.project.cricket.utils.Constants.SHORT;
+import static com.project.cricket.utils.Constants.TVUMPIRE;
+import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.util.CollectionUtils;
 
+import com.google.gson.Gson;
 import com.project.cricket.config.ApplicationConfiguration;
+import com.project.cricket.entity.Batsman;
+import com.project.cricket.entity.Bowler;
+import com.project.cricket.entity.Fow;
+import com.project.cricket.entity.Innings;
+import com.project.cricket.entity.Match;
+import com.project.cricket.entity.Official;
+import com.project.cricket.entity.Partnership;
+import com.project.cricket.entity.Player;
+import com.project.cricket.entity.ReplacementPlayer;
+import com.project.cricket.entity.ScorecardOfficial;
+import com.project.cricket.entity.Series;
+import com.project.cricket.entity.superclass.MatchPerson;
+import com.project.cricket.model.DismissalFielder;
+import com.project.cricket.model.MatchJson;
+import com.project.cricket.model.MatchScorecard;
+import com.project.cricket.model.PlayerOrTeam;
+import com.project.cricket.model.Scorecard;
+import com.project.cricket.model.ScorecardInnings;
+import com.project.cricket.model.ScorecardMatch;
+import com.project.cricket.model.SupportInfo;
+import com.project.cricket.model.Team;
 import com.project.cricket.utils.FileOperationUtils;
 
 @Component
-@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class MatchTask implements Callable<String> {
+@Scope(value = SCOPE_PROTOTYPE)
+public class MatchTask implements Callable<Match> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MatchTask.class);
 
@@ -35,86 +59,253 @@ public class MatchTask implements Callable<String> {
 	private FileOperationUtils fileUtils;
 
 	@Autowired
-	private RestTemplate restTemplate;
+	private Gson gson;
 
 	private int matchId;
-	private boolean writeToFile;
-	private boolean overWrite;
-	private String task;
-	private boolean fromFile;
 
-	public void init(int matchId, boolean writeToFile, boolean overWrite, String task, boolean fromFile) {
+	private Match match;
+
+	public void init(int matchId) {
 		this.matchId = matchId;
-		this.writeToFile = writeToFile;
-		this.overWrite = overWrite;
-		this.task = task;
-		this.fromFile = fromFile;
 	}
 
 	@Override
-	public String call() throws Exception {
-		if (task.equalsIgnoreCase(JSON)) {
-			return matchJson();
-		} else if (task.equalsIgnoreCase(HTML)) {
-			return scrapeWebsite();
-		}
-		return null;
-	}
-
-	private String matchJson() {
-		String matchJson = "";
+	public Match call() throws Exception {
 		try {
-			String fileName = String.valueOf(matchId) + ".json";
-			if (fromFile) {
-				matchJson = fileUtils.readFile(appConfig.getMatchJsonFileLocation(), fileName);
-				return matchJson;
-			} else {
-				matchJson = getMatchJson(matchId);
-				if (writeToFile) {
-					boolean flag = fileUtils.writeToFile(appConfig.getMatchJsonFileLocation(), fileName, matchJson, overWrite);
-					if (!flag) {
-						return String.valueOf(matchId);
-					}
-				}
-			}
+			LOGGER.info("Match Task Started for {}", matchId);
+			MatchJson matchJson = getMatchJson();
+			MatchScorecard matchScorecard = getMatchScorecard();
+			match = matchJson.getMatch();
+			parseMatchJson(matchJson);
+			parseMatchScorecard(matchScorecard);
+			LOGGER.info("Match Task Completed for {}", matchId);
 		} catch (Exception e) {
-			LOGGER.error("Exception in json task for match {}", matchId, e);
+			LOGGER.error("Exception in match {}", matchId, e);
+			return null;
 		}
-		return null;
+		return match;
 	}
 
-	private String scrapeWebsite() {
+	private MatchJson getMatchJson() {
+		String matchJsonStr = "";
 		String fileName = String.valueOf(matchId) + ".json";
-		if (fromFile) {
-			return fileUtils.readFile(appConfig.getMatchScorecardFileLocation(), fileName);
-		}
-		String url = String.format(MATCH_URL, matchId);
-		LOGGER.info("scrapting html for {}", url);
-		Document document = null;
-		try {
-			document = Jsoup.connect(url).get();
-			Element element = document.getElementById(NEXT_DATA);
-			String scorecard = element.data();
-			if (writeToFile) {
-				boolean flag = fileUtils.writeToFile(appConfig.getMatchScorecardFileLocation(), fileName, scorecard, overWrite);
-				if (!flag) {
-					return String.valueOf(matchId);
-				}
-			}
-		} catch (Exception e) {
-			LOGGER.error("Exception in extracting scorecard for match {}", matchId, e);
-		}
-		return null;
+		matchJsonStr = fileUtils.readFile(appConfig.getMatchJsonFileLocation(), fileName);
+		MatchJson matchJson = gson.fromJson(matchJsonStr, MatchJson.class);
+		matchJson.setMatchId(matchId);
+		return matchJson;
 	}
 
-	private String getMatchJson(int matchId) {
-		String response = "";
-		try {
-			String url = String.format(MJSON_URL, matchId);
-			response = restTemplate.getForObject(url, String.class);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-		}
-		return response;
+	public MatchScorecard getMatchScorecard() {
+		String matchJsonStr = "";
+		String fileName = String.valueOf(matchId) + ".json";
+		matchJsonStr = fileUtils.readFile(appConfig.getMatchScorecardFileLocation(), fileName);
+		MatchScorecard matchScorecard = gson.fromJson(matchJsonStr, MatchScorecard.class);
+		matchScorecard.setMatchId(matchId);
+		return matchScorecard;
 	}
+
+	private void parseMatchJson(MatchJson matchJson) {
+
+		match.setMatchId(matchJson.getMatchId());
+
+		List<Innings> innings = matchJson.getInnings();
+		if (!CollectionUtils.isEmpty(innings)) {
+			innings.forEach(e -> e.setMatch(matchJson.getMatch()));
+		}
+
+		List<Player> players = new ArrayList<>();
+		List<Team> team = matchJson.getTeam();
+		if (!CollectionUtils.isEmpty(team)) {
+			team.forEach(tm -> tm.getPlayer().forEach(p -> p.setTeamId(tm.getTeamId())));
+			players = team.stream()
+					.map(Team::getPlayer)
+					.flatMap(List::stream)
+					.collect(Collectors.toList());
+			players.addAll(matchJson.getSubstitute());
+			players.forEach(p -> p.setMatch(match));
+		}
+
+		List<Series> series = matchJson.getSeries();
+		if (!CollectionUtils.isEmpty(series)) {
+			series.forEach(s -> s.setMatch(match));
+		}
+
+		List<Official> official = matchJson.getOfficial();
+		if (!CollectionUtils.isEmpty(official)) {
+			official.forEach(o -> o.setMatch(match));
+		}
+
+		match.setInnings(innings);
+		match.setPlayer(players);
+		match.setSeries(series);
+		match.setOfficial(official);
+	}
+
+	private void parseMatchScorecard(MatchScorecard matchScorecard) {
+
+		match.setMatchId(matchScorecard.getMatchId());
+
+		ScorecardMatch scorecardMatch = matchScorecard.getMatch();
+		addMatchAndType(scorecardMatch.getUmpires(), FIELDUMPIRE);
+		addMatchAndType(scorecardMatch.getTvUmpires(), TVUMPIRE);
+		addMatchAndType(scorecardMatch.getReserveUmpires(), RESERVEUMPIRE);
+		addMatchAndType(scorecardMatch.getMatchReferees(), MATCHREFEREE);
+		addMatchAndId(scorecardMatch.getDebutPlayers());
+		parseReplacements(scorecardMatch.getReplacementPlayers());
+
+		match.setDebuts(scorecardMatch.getDebutPlayers());
+		match.setReplacement(scorecardMatch.getReplacementPlayers());
+
+		SupportInfo supportInfo = matchScorecard.getSupportInfo();
+		addMatchAndId(supportInfo.getPlayersOfTheMatch());
+		addMatchAndId(supportInfo.getPlayersOfTheSeries());
+		match.setPlayersOfTheMatch(supportInfo.getPlayersOfTheMatch());
+		match.setPlayersOfTheSeries(supportInfo.getPlayersOfTheSeries());
+
+		parseInnings(matchScorecard.getScorecard());
+	}
+
+	private void parseInnings(Scorecard scorecard) {
+		if (scorecard != null) {
+			List<ScorecardInnings> innings = scorecard.getInnings();
+			if (!CollectionUtils.isEmpty(innings)) {
+				for (ScorecardInnings inning : innings) {
+					processBatsmen(inning, inning.getInningBatsmen());
+					processBowlers(inning, inning.getInningBowlers());
+					processPartnership(inning, inning.getInningPartnerships());
+					processWickets(inning, inning.getInningWickets());
+
+					match.getBatsmen().addAll(inning.getInningBatsmen());
+					match.getBowlers().addAll(inning.getInningBowlers());
+					match.getPartnerships().addAll(inning.getInningPartnerships());
+					match.getFows().addAll(inning.getInningWickets());
+				}
+			}
+		}
+	}
+
+	private void parseReplacements(List<ReplacementPlayer> replacementPlayers) {
+		if (!CollectionUtils.isEmpty(replacementPlayers)) {
+			replacementPlayers.forEach(e -> {
+				e.setMatch(match);
+				e.setObjectId(e.getPlayer().getObjectId());
+				e.setTeamId(e.getTeam().getObjectId());
+				e.setReplacingPlayerId(e.getReplacingPlayer().getObjectId());
+			});
+		}
+	}
+
+	private void addMatchAndType(List<ScorecardOfficial> umps, String type) {
+		if (!CollectionUtils.isEmpty(umps)) {
+			umps.forEach(e -> {
+				e.setMatch(match);
+				e.setType(type);
+				e.setObjectId(e.getPlayer().getObjectId());
+			});
+			match.getOfficials().addAll(umps);
+		}
+	}
+
+	private void addMatchAndId(List<? extends MatchPerson> persons) {
+		if (!CollectionUtils.isEmpty(persons)) {
+			persons.forEach(person -> {
+				person.setMatch(match);
+				person.setObjectId(person.getPlayer().getObjectId());
+			});
+		}
+	}
+
+	private void processBatsmen(ScorecardInnings inning, List<Batsman> inningBatsmen) {
+		if (!CollectionUtils.isEmpty(inningBatsmen)) {
+			for (int i = 0; i < inningBatsmen.size(); i++) {
+				Batsman batsman = inningBatsmen.get(i);
+				batsman.setMatch(match);
+				batsman.setInnings(inning.getInningNumber());
+				batsman.setBatsmanId(batsman.getPlayer().getObjectId());
+				batsman.setPosition(i);
+			}
+		}
+	}
+
+	private void processBowlers(ScorecardInnings inning, List<Bowler> inningBowlers) {
+		if (!CollectionUtils.isEmpty(inningBowlers)) {
+			for (int i = 0; i < inningBowlers.size(); i++) {
+				Bowler bowler = inningBowlers.get(i);
+				bowler.setMatch(match);
+				bowler.setInnings(inning.getInningNumber());
+				bowler.setBowlerId(bowler.getPlayer().getObjectId());
+				bowler.setPosition(i);
+			}
+		}
+	}
+
+	private void processPartnership(ScorecardInnings inning, List<Partnership> inningPartnerships) {
+		if (!CollectionUtils.isEmpty(inningPartnerships)) {
+			for (int i = 0; i < inningPartnerships.size(); i++) {
+				Partnership partnership = inningPartnerships.get(i);
+				partnership.setMatch(match);
+				partnership.setInnings(inning.getInningNumber());
+				partnership.setPlayer1Id(partnership.getPlayer1().getObjectId());
+				partnership.setPlayer2Id(partnership.getPlayer2().getObjectId());
+				partnership.setWicketNumber(i);
+			}
+		}
+	}
+
+	private void processWickets(ScorecardInnings inning, List<Fow> inningWickets) {
+		if (!CollectionUtils.isEmpty(inningWickets)) {
+			inningWickets.forEach(e -> {
+				e.setMatch(match);
+				e.setInnings(inning.getInningNumber());
+				if(e.getDismissalBatsman() != null) {
+					e.setBatsmanId(e.getDismissalBatsman().getObjectId());
+				}
+				if(e.getDismissalBowler() != null) {
+					e.setBowlerId(e.getDismissalBowler().getObjectId());
+				}
+				parseDismissalFielders(e, e.getDismissalFielders());
+				parseDismissalText(e, e.getDismissalText());
+			});
+		}
+	}
+
+	private void parseDismissalText(Fow e, Map<String, String> dismissalText) {
+		if (dismissalText != null) {
+			if (dismissalText.containsKey(SHORT)) {
+				e.setDismissalTextShort(dismissalText.get(SHORT));
+			}
+			if (dismissalText.containsKey(LONG)) {
+				e.setDismissalTextLong(dismissalText.get(LONG));
+			}
+		} else {
+			LOGGER.info("dismissalText is NULL");
+		}
+	}
+
+	private void parseDismissalFielders(Fow e, List<DismissalFielder> dismissalFielders) {
+		if (!CollectionUtils.isEmpty(dismissalFielders)) {
+			e.setIsKeeper(0);
+			e.setIsSubstitute(0);
+			for(int i = 0; i < dismissalFielders.size(); i++) {
+				DismissalFielder dismissalFielder = dismissalFielders.get(i);
+				PlayerOrTeam player = dismissalFielder.getPlayer();
+				if(dismissalFielder.getIsKeeper() == 1) {
+					e.setIsKeeper(1);
+				}
+				if(dismissalFielder.getIsSubstitute() == 1) {
+					e.setIsSubstitute(1);
+				}
+				if(i == 0) {
+					e.setFielder1Id(player != null ? player.getObjectId() : null);
+				} else if (i == 1) {
+					e.setFielder2Id(player != null ? player.getObjectId() : null);
+				} else if (i == 2) {
+					e.setFielder3Id(player != null ? player.getObjectId() : null);
+				} else if (i == 3) {
+					e.setFielder4Id(player != null ? player.getObjectId() : null);
+				}
+			}
+		}
+	}
+
 }

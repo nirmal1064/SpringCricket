@@ -22,7 +22,7 @@ import org.springframework.util.StringUtils;
 
 import com.project.cricket.config.ApplicationConfiguration;
 import com.project.cricket.config.ServiceFactory;
-import com.project.cricket.task.MatchTask;
+import com.project.cricket.task.MatchStringTask;
 import com.project.cricket.utils.ExecutorUtil;
 
 @Component
@@ -56,11 +56,11 @@ public class MatchHandler {
 		List<String> result = new ArrayList<>();
 		StopWatch stopWatch = new StopWatch();
 		try {
-			List<MatchTask> matchTasks = new ArrayList<>();
+			List<MatchStringTask> matchTasks = new ArrayList<>();
 			List<Future<String>> resultsFuture;
 			stopWatch.start();
 			for (Integer matchId : matchIds) {
-				MatchTask matchTask = serviceFactory.matchTask();
+				MatchStringTask matchTask = serviceFactory.matchStringTask();
 				matchTask.init(matchId, writeToFile, overWrite, type, false);
 				matchTasks.add(matchTask);
 			}

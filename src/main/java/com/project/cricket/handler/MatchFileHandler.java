@@ -16,10 +16,12 @@ import org.springframework.util.StopWatch;
 
 import com.project.cricket.config.ApplicationConfiguration;
 import com.project.cricket.config.ServiceFactory;
+import com.project.cricket.entity.Match;
 import com.project.cricket.model.MatchJson;
 import com.project.cricket.model.MatchScorecard;
 import com.project.cricket.task.MatchJsonTask;
 import com.project.cricket.task.MatchScorecardTask;
+import com.project.cricket.task.MatchTask;
 import com.project.cricket.utils.ExecutorUtil;
 
 @Component
@@ -62,6 +64,31 @@ public class MatchFileHandler {
 			LOGGER.error(e.getMessage(), e);
 		}
 		return matchScorecards;
+	}
+
+	public List<Match> getMatches(List<Integer> matchIds) {
+		LOGGER.info("MatchJson summary for {} matches", matchIds.size());
+		List<Match> matches = new ArrayList<>();
+		StopWatch stopWatch = new StopWatch();
+		List<Future<Match>> resultsFuture;
+		try {
+			List<MatchTask> matchJsonTasks = new ArrayList<>();
+			stopWatch.start();
+			for (Integer matchId : matchIds) {
+				MatchTask matchTask = serviceFactory.matchTask();
+				matchTask.init(matchId);
+				matchJsonTasks.add(matchTask);
+			}
+			resultsFuture = service.invokeAll(matchJsonTasks);
+			addResults(stopWatch, matches, resultsFuture);
+			LOGGER.info("MatchJson completed for {} matches in {} seconds", matchIds.size(), stopWatch.getTotalTimeSeconds());
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			LOGGER.error(e.getMessage(), e);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+		return matches;
 	}
 
 	public List<MatchJson> getMatchJson(List<Integer> matchIds) {
