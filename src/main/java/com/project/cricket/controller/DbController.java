@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.cricket.entity.ResultSummary;
 import com.project.cricket.handler.DbHandler;
 import com.project.cricket.handler.MatchFileHandler;
 import com.project.cricket.model.MatchJson;
 import com.project.cricket.model.MatchScorecard;
-import com.project.cricket.model.ResultSummary;
 import com.project.cricket.repository.ResultSummaryRepository;
 
 @RestController

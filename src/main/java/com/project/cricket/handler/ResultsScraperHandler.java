@@ -14,7 +14,7 @@ import org.springframework.util.StopWatch;
 
 import com.project.cricket.config.ApplicationConfiguration;
 import com.project.cricket.config.ServiceFactory;
-import com.project.cricket.model.ResultSummary;
+import com.project.cricket.entity.ResultSummary;
 import com.project.cricket.task.ResultsScraperTask;
 import com.project.cricket.utils.ExecutorUtil;
 
