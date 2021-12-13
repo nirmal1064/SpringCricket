@@ -13,6 +13,7 @@ import com.project.cricket.entity.Player;
 import com.project.cricket.entity.ResultSummary;
 import com.project.cricket.entity.Series;
 import com.project.cricket.model.MatchJson;
+import com.project.cricket.model.MatchScorecard;
 import com.project.cricket.model.Team;
 import com.project.cricket.repository.MatchSummaryRepository;
 import com.project.cricket.repository.ResultSummaryRepository;
@@ -58,6 +59,9 @@ public class DbHandler {
 		match.setOfficial(official);
 		match.setSeries(series);
 		matchSummaryRepository.save(match);
+	}
+
+	public void saveMatchFromScorecardToDb(MatchScorecard matchScorecard) {
 	}
 
 }
