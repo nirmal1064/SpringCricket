@@ -1,35 +1,18 @@
 package com.project.cricket.handler;
 
-import static com.project.cricket.utils.Constants.FIELDUMPIRE;
-import static com.project.cricket.utils.Constants.MATCHREFEREE;
-import static com.project.cricket.utils.Constants.RESERVEUMPIRE;
-import static com.project.cricket.utils.Constants.TVUMPIRE;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
-import com.project.cricket.entity.Batsman;
-import com.project.cricket.entity.Bowler;
-import com.project.cricket.entity.Fow;
 import com.project.cricket.entity.Innings;
 import com.project.cricket.entity.Match;
 import com.project.cricket.entity.Official;
-import com.project.cricket.entity.Partnership;
 import com.project.cricket.entity.Player;
 import com.project.cricket.entity.ResultSummary;
-import com.project.cricket.entity.ScorecardOfficial;
 import com.project.cricket.entity.Series;
-import com.project.cricket.entity.superclass.MatchPerson;
-import com.project.cricket.model.DismissalFielder;
 import com.project.cricket.model.MatchJson;
-import com.project.cricket.model.MatchScorecard;
-import com.project.cricket.model.ScorecardInnings;
-import com.project.cricket.model.ScorecardMatch;
-import com.project.cricket.model.SupportInfo;
 import com.project.cricket.model.Team;
 import com.project.cricket.repository.MatchSummaryRepository;
 import com.project.cricket.repository.ResultSummaryRepository;
@@ -51,132 +34,6 @@ public class DbHandler {
 	public int saveResultsSummaryToDb(List<ResultSummary> resultSummary) {
 		List<ResultSummary> saveResults = resultSummaryRepository.saveAll(resultSummary);
 		return saveResults.size();
-	}
-
-	private void addMatchAndType(List<ScorecardOfficial> umps, Match match, String type) {
-		if (!CollectionUtils.isEmpty(umps)) {
-			umps.forEach(e -> {
-				e.setMatch(match);
-				e.setType(type);
-				e.setObjectId(e.getPlayer().getObjectId());
-			});
-		}
-	}
-
-	private void addMatchAndId(List<? extends MatchPerson> persons, Match match) {
-		if (!CollectionUtils.isEmpty(persons)) {
-			persons.forEach(person -> {
-				person.setMatch(match);
-				person.setObjectId(person.getPlayer().getObjectId());
-			});
-		}
-	}
-
-	public void saveMatchFromScorecardToDb(MatchScorecard matchScorecard) {
-		Match match = new Match();
-		match.setMatchId(matchScorecard.getMatchId());
-
-		ScorecardMatch scorecardMatch = matchScorecard.getMatch();
-		addMatchAndType(scorecardMatch.getUmpires(), match, FIELDUMPIRE);
-		addMatchAndType(scorecardMatch.getTvUmpires(), match, TVUMPIRE);
-		addMatchAndType(scorecardMatch.getReserveUmpires(), match, RESERVEUMPIRE);
-		addMatchAndType(scorecardMatch.getMatchReferees(), match, MATCHREFEREE);
-		addMatchAndId(scorecardMatch.getDebutPlayers(), match);
-		scorecardMatch.getReplacementPlayers().forEach(e -> {
-			e.setMatch(match);
-			e.setObjectId(e.getPlayer().getObjectId());
-			e.setTeamId(e.getTeam().getObjectId());
-			e.setReplacingPlayerId(e.getReplacingPlayer().getObjectId());
-		});
-
-		SupportInfo supportInfo = matchScorecard.getSupportInfo();
-		addMatchAndId(supportInfo.getPlayersOfTheMatch(), match);
-		addMatchAndId(supportInfo.getPlayersOfTheSeries(), match);
-
-		List<ScorecardInnings> innings = matchScorecard.getScorecard().getInnings();
-		for (ScorecardInnings inning : innings) {
-			processBatsmen(match, inning, inning.getInningBatsmen());
-			processBowlers(match, inning, inning.getInningBowlers());
-			processPartnership(match, inning, inning.getInningPartnerships());
-			processWickets(match, inning, inning.getInningWickets());
-		}
-		System.err.println("Hello");
-	}
-
-	private void processWickets(Match match, ScorecardInnings inning, List<Fow> inningWickets) {
-		if (!CollectionUtils.isEmpty(inningWickets)) {
-			inningWickets.forEach(e -> {
-				e.setMatch(match);
-				e.setInnings(inning.getInningNumber());
-				if(e.getDismissalBatsman() != null) {
-					e.setBatsmanId(e.getDismissalBatsman().getObjectId());
-				}
-				if(e.getDismissalBowler() != null) {
-					e.setBowlerId(e.getDismissalBowler().getObjectId());
-				}
-				parseDismissalFielders(e, e.getDismissalFielders());
-			});
-		}
-	}
-
-	private void parseDismissalFielders(Fow e, List<DismissalFielder> dismissalFielders) {
-		if (!CollectionUtils.isEmpty(dismissalFielders)) {
-			for(int i = 0; i < dismissalFielders.size(); i++) {
-				DismissalFielder dismissalFielder = dismissalFielders.get(i);
-				if(dismissalFielder.getIsKeeper() == 1) {
-					e.setIsKeeper(1);
-				}
-				if(dismissalFielder.getIsSubstitute() == 1) {
-					e.setIsSubstitute(1);
-				}
-				if(i == 0) {
-					e.setFielder1Id(dismissalFielder.getPlayer().getObjectId());
-				} else if (i == 1) {
-					e.setFielder2Id(dismissalFielder.getPlayer().getObjectId());
-				} else if (i == 2) {
-					e.setFielder3Id(dismissalFielder.getPlayer().getObjectId());
-				} else if (i == 3) {
-					e.setFielder4Id(dismissalFielder.getPlayer().getObjectId());
-				}
-			}
-		}
-	}
-
-	private void processPartnership(Match match, ScorecardInnings inning, List<Partnership> inningPartnerships) {
-		if (!CollectionUtils.isEmpty(inningPartnerships)) {
-			for (int i = 0; i < inningPartnerships.size(); i++) {
-				Partnership partnership = inningPartnerships.get(i);
-				partnership.setMatch(match);
-				partnership.setInnings(inning.getInningNumber());
-				partnership.setPlayer1Id(partnership.getPlayer1().getObjectId());
-				partnership.setPlayer2Id(partnership.getPlayer2().getObjectId());
-				partnership.setWicketNumber(i);
-			}
-		}
-	}
-
-	private void processBowlers(Match match, ScorecardInnings inning, List<Bowler> inningBowlers) {
-		if (!CollectionUtils.isEmpty(inningBowlers)) {
-			for (int i = 0; i < inningBowlers.size(); i++) {
-				Bowler bowler = inningBowlers.get(i);
-				bowler.setMatch(match);
-				bowler.setInnings(inning.getInningNumber());
-				bowler.setBowlerId(bowler.getPlayer().getObjectId());
-				bowler.setPosition(i);
-			}
-		}
-	}
-
-	private void processBatsmen(Match match, ScorecardInnings inning, List<Batsman> inningBatsmen) {
-		if (!CollectionUtils.isEmpty(inningBatsmen)) {
-			for (int i = 0; i < inningBatsmen.size(); i++) {
-				Batsman batsman = inningBatsmen.get(i);
-				batsman.setMatch(match);
-				batsman.setInnings(inning.getInningNumber());
-				batsman.setBatsmanId(batsman.getPlayer().getObjectId());
-				batsman.setPosition(i);
-			}
-		}
 	}
 
 	public void saveMatchFromJsonToDb(MatchJson matchJson) {
