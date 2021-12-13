@@ -38,4 +38,7 @@ public final class Constants {
 	public static final String TVUMPIRE = "tv";
 	public static final String RESERVEUMPIRE = "reserve";
 	public static final String MATCHREFEREE = "referee";
+	public static final String SHORT = "short";
+	public static final String LONG = "long";
+	public static final String COMMENTARY = "commentary";
 }

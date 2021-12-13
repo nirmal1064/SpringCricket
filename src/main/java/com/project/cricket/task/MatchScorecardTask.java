@@ -1,12 +1,15 @@
 package com.project.cricket.task;
 
 import static com.project.cricket.utils.Constants.FIELDUMPIRE;
+import static com.project.cricket.utils.Constants.LONG;
 import static com.project.cricket.utils.Constants.MATCHREFEREE;
 import static com.project.cricket.utils.Constants.RESERVEUMPIRE;
+import static com.project.cricket.utils.Constants.SHORT;
 import static com.project.cricket.utils.Constants.TVUMPIRE;
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import org.slf4j.Logger;
@@ -28,6 +31,7 @@ import com.project.cricket.entity.ScorecardOfficial;
 import com.project.cricket.entity.superclass.MatchPerson;
 import com.project.cricket.model.DismissalFielder;
 import com.project.cricket.model.MatchScorecard;
+import com.project.cricket.model.PlayerOrTeam;
 import com.project.cricket.model.Scorecard;
 import com.project.cricket.model.ScorecardInnings;
 import com.project.cricket.model.ScorecardMatch;
@@ -135,7 +139,7 @@ public class MatchScorecardTask implements Callable<MatchScorecard> {
 				e.setType(type);
 				e.setObjectId(e.getPlayer().getObjectId());
 			});
-			match.setOfficials(umps);
+			match.getOfficials().addAll(umps);
 		}
 	}
 
@@ -197,14 +201,29 @@ public class MatchScorecardTask implements Callable<MatchScorecard> {
 					e.setBowlerId(e.getDismissalBowler().getObjectId());
 				}
 				parseDismissalFielders(e, e.getDismissalFielders());
+				parseDismissalText(e, e.getDismissalText());
 			});
+		}
+	}
+
+	private void parseDismissalText(Fow e, Map<String, String> dismissalText) {
+		if (dismissalText != null) {
+			if (dismissalText.containsKey(SHORT)) {
+				e.setDismissalTextShort(dismissalText.get(SHORT));
+			}
+			if (dismissalText.containsKey(LONG)) {
+				e.setDismissalTextLong(dismissalText.get(LONG));
+			}
 		}
 	}
 
 	private void parseDismissalFielders(Fow e, List<DismissalFielder> dismissalFielders) {
 		if (!CollectionUtils.isEmpty(dismissalFielders)) {
+			e.setIsKeeper(0);
+			e.setIsSubstitute(0);
 			for(int i = 0; i < dismissalFielders.size(); i++) {
 				DismissalFielder dismissalFielder = dismissalFielders.get(i);
+				PlayerOrTeam player = dismissalFielder.getPlayer();
 				if(dismissalFielder.getIsKeeper() == 1) {
 					e.setIsKeeper(1);
 				}
@@ -212,13 +231,13 @@ public class MatchScorecardTask implements Callable<MatchScorecard> {
 					e.setIsSubstitute(1);
 				}
 				if(i == 0) {
-					e.setFielder1Id(dismissalFielder.getPlayer().getObjectId());
+					e.setFielder1Id(player != null ? player.getObjectId() : null);
 				} else if (i == 1) {
-					e.setFielder2Id(dismissalFielder.getPlayer().getObjectId());
+					e.setFielder2Id(player != null ? player.getObjectId() : null);
 				} else if (i == 2) {
-					e.setFielder3Id(dismissalFielder.getPlayer().getObjectId());
+					e.setFielder3Id(player != null ? player.getObjectId() : null);
 				} else if (i == 3) {
-					e.setFielder4Id(dismissalFielder.getPlayer().getObjectId());
+					e.setFielder4Id(player != null ? player.getObjectId() : null);
 				}
 			}
 		}
