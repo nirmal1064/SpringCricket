@@ -62,6 +62,12 @@ public class DbHandler {
 	}
 
 	public void saveMatchFromScorecardToDb(MatchScorecard matchScorecard) {
+		// TODO: Finish
+	}
+
+	public Integer saveMatchToDb(Match match) {
+		Match savedMatch = matchSummaryRepository.save(match);
+		return savedMatch.getMatchId();
 	}
 
 }

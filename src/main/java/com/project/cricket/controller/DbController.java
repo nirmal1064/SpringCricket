@@ -88,10 +88,24 @@ public class DbController {
 			LOGGER.info("{}", matchScorecard);
 			dbHandler.saveMatchFromScorecardToDb(matchScorecard);
 		}
-		//List<Integer> resultIds = matchScorecards.stream().map(MatchJson::getMatchId).collect(Collectors.toList());
-		//matchIds.removeAll(resultIds);
+		List<Integer> resultIds = matchScorecards.stream().map(MatchScorecard::getMatchId).collect(Collectors.toList());
+		matchIds.removeAll(resultIds);
 		return matchIds;
 	}
 
+	@PostMapping(value = "/matchfulldb")
+	public List<Integer> matchFullDb() {
+		List<Integer> matchIds = getMatchIds(3, 1877, 2021);
+		matchIds.removeAll(matchIds);
+		matchIds.add(1288345);
+		List<MatchScorecard> matchScorecards = matchFileHandler.getMatchScorecard(matchIds);
+		for (MatchScorecard matchScorecard : matchScorecards) {
+			LOGGER.info("{}", matchScorecard);
+			dbHandler.saveMatchFromScorecardToDb(matchScorecard);
+		}
+		List<Integer> resultIds = matchScorecards.stream().map(MatchScorecard::getMatchId).collect(Collectors.toList());
+		matchIds.removeAll(resultIds);
+		return matchIds;
+	}
 
 }
