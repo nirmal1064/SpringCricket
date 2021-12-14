@@ -28,9 +28,9 @@ public class DbHandler {
 	 * @param resultSummary
 	 * @return
 	 */
-	public List<ResultSummary> saveResultsSummaryToDb(List<ResultSummary> resultSummary) {
+	public int saveResultsSummaryToDb(List<ResultSummary> resultSummary) {
 		List<ResultSummary> saveResults = resultSummaryRepository.saveAll(resultSummary);
-		return saveResults;
+		return saveResults.size();
 	}
 
 	public Integer saveMatchToDb(Match match) {

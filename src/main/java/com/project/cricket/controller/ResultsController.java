@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.cricket.entity.ResultSummary;
-import com.project.cricket.handler.DbHandler;
 import com.project.cricket.handler.ResultsScraperHandler;
 import com.project.cricket.utils.CricUtils;
 
@@ -27,11 +26,9 @@ public class ResultsController {
 	@Autowired
 	private CricUtils cricUtils;
 
-	@Autowired
-	private DbHandler dbHandler;
-
 	@GetMapping(value = "/results")
 	public ResponseEntity<List<ResultSummary>> getMatchResults(@RequestParam Integer classId, @RequestParam Integer startYear, @RequestParam(required = false) Integer endYear) {
+		LOGGER.info("Getting results");
 		if (endYear == null || endYear < startYear) {
 			endYear = startYear;
 		}
@@ -41,12 +38,11 @@ public class ResultsController {
 
 	@PostMapping(value = "/results")
 	public ResponseEntity<List<ResultSummary>> postMatchResults(@RequestParam Integer classId, @RequestParam Integer startYear, @RequestParam(required = false) Integer endYear) {
+		LOGGER.info("Posting results");
 		if (endYear == null || endYear < startYear) {
 			endYear = startYear;
 		}
 		List<ResultSummary> summary = resultsScraperHandler.postSummary(classId, startYear, endYear, true);
-		List<ResultSummary> resultsSummaryToDb = dbHandler.saveResultsSummaryToDb(summary);
-		summary.removeAll(resultsSummaryToDb);
 		return cricUtils.getListResponse(summary);
 	}
 
