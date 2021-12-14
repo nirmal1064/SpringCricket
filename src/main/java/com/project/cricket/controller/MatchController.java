@@ -3,6 +3,7 @@ package com.project.cricket.controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.cricket.config.ApplicationConfiguration;
 import com.project.cricket.entity.Match;
-import com.project.cricket.handler.DbHandler;
 import com.project.cricket.handler.MatchFileHandler;
 import com.project.cricket.handler.MatchHandler;
 import com.project.cricket.utils.CricUtils;
@@ -41,9 +41,6 @@ public class MatchController {
 
 	@Autowired
 	private MatchFileHandler matchFileHandler;
-
-	@Autowired
-	private DbHandler dbHandler;
 
 	@Autowired
 	private CricUtils cricUtils;
@@ -99,10 +96,7 @@ public class MatchController {
 			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId) {
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
 		List<Match> matches = matchFileHandler.getMatches(matchIds);
-		for (Match match : matches) {
-			Integer saveMatchId = dbHandler.saveMatchToDb(match);
-			matchIds.remove(saveMatchId);
-		}
+		matchIds.removeAll(matches.parallelStream().map(Match::getMatchId).collect(Collectors.toList()));
 		return cricUtils.getListResponse(matchIds);
 	}
 

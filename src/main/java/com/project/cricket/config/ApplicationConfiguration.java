@@ -65,7 +65,7 @@ public class ApplicationConfiguration {
 					String str = json.getAsJsonPrimitive().getAsString();
 					return LocalDate.parse(str);
 				} catch (Exception e) {
-					LOGGER.error("LocalDate Exception for {}", json.getAsString(), e);
+					LOGGER.error("LocalDate Exception for {}", json.getAsString());
 				}
 				return null;
 			}

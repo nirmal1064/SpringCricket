@@ -48,7 +48,6 @@ public class Player extends Person implements Serializable {
 	private String battingStyle;
 
 	@SerializedName("batting_style_long")
-	@Column(length = 30)
 	private String battingStyleLong;
 
 	@SerializedName("bowling_style")
@@ -56,7 +55,6 @@ public class Player extends Person implements Serializable {
 	private String bowlingStyle;
 
 	@SerializedName("bowling_style_long")
-	@Column(length = 30)
 	private String bowlingStyleLong;
 
 	private Integer captain;
