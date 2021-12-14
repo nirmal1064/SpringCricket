@@ -99,6 +99,7 @@ public class DbController {
 	public List<Integer> matchFullDb() {
 		List<Integer> matchIds = new ArrayList<>();
 		matchIds.add(1288345);
+		matchIds.add(1152847);
 		List<Match> matches = matchFileHandler.getMatches(matchIds);
 		for (Match match : matches) {
 			Integer saveMatchId = dbHandler.saveMatchToDb(match);

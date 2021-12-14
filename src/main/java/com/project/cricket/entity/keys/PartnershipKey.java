@@ -15,5 +15,6 @@ public class PartnershipKey implements Serializable {
 	private Integer innings;
 	private Integer player1Id;
 	private Integer player2Id;
+	private Integer wicketNumber;
 
 }

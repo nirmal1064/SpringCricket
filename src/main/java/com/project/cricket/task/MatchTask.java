@@ -1,10 +1,12 @@
 package com.project.cricket.task;
 
+import static com.project.cricket.utils.Constants.DNB;
 import static com.project.cricket.utils.Constants.FIELDUMPIRE;
 import static com.project.cricket.utils.Constants.LONG;
 import static com.project.cricket.utils.Constants.MATCHREFEREE;
 import static com.project.cricket.utils.Constants.RESERVEUMPIRE;
 import static com.project.cricket.utils.Constants.SHORT;
+import static com.project.cricket.utils.Constants.SUB;
 import static com.project.cricket.utils.Constants.TVUMPIRE;
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
@@ -229,12 +231,15 @@ public class MatchTask implements Callable<Match> {
 
 	private void processBatsmen(ScorecardInnings inning, List<Batsman> inningBatsmen) {
 		if (!CollectionUtils.isEmpty(inningBatsmen)) {
+			int position = 1;
 			for (int i = 0; i < inningBatsmen.size(); i++) {
 				Batsman batsman = inningBatsmen.get(i);
 				batsman.setMatch(match);
 				batsman.setInnings(inning.getInningNumber());
 				batsman.setBatsmanId(batsman.getPlayer().getObjectId());
-				batsman.setPosition(i);
+				if (!(batsman.getBattedType().equalsIgnoreCase(SUB) || batsman.getBattedType().equalsIgnoreCase(DNB))) {
+					batsman.setPosition(position++);
+				}
 			}
 		} else {
 			LOGGER.info("SCorecard innings batsmen is Empty for {}", matchId);
@@ -248,7 +253,7 @@ public class MatchTask implements Callable<Match> {
 				bowler.setMatch(match);
 				bowler.setInnings(inning.getInningNumber());
 				bowler.setBowlerId(bowler.getPlayer().getObjectId());
-				bowler.setPosition(i);
+				bowler.setPosition(i+1);
 			}
 		} else {
 			LOGGER.info("Scorecard innings bowlers is Empty for {}", matchId);
@@ -263,7 +268,12 @@ public class MatchTask implements Callable<Match> {
 				partnership.setInnings(inning.getInningNumber());
 				partnership.setPlayer1Id(partnership.getPlayer1().getObjectId());
 				partnership.setPlayer2Id(partnership.getPlayer2().getObjectId());
-				partnership.setWicketNumber(i);
+				partnership.setWicketNumber(i+1);
+				if (partnership.getPlayer1().getId().equals(partnership.getOutPlayerId())) {
+					partnership.setOutPlayerObjectId(partnership.getPlayer1Id());
+				} else if (partnership.getPlayer2().getId().equals(partnership.getOutPlayerId())) {
+					partnership.setOutPlayerObjectId(partnership.getPlayer2Id());
+				}
 			}
 		} else {
 			LOGGER.info("Partnership is Empty for {}", matchId);
@@ -308,23 +318,27 @@ public class MatchTask implements Callable<Match> {
 			e.setIsSubstitute(0);
 			for(int i = 0; i < dismissalFielders.size(); i++) {
 				DismissalFielder dismissalFielder = dismissalFielders.get(i);
-				PlayerOrTeam player = dismissalFielder.getPlayer();
 				if(dismissalFielder.getIsKeeper() == 1) {
 					e.setIsKeeper(1);
 				}
 				if(dismissalFielder.getIsSubstitute() == 1) {
 					e.setIsSubstitute(1);
 				}
-				if(i == 0) {
-					e.setFielder1Id(player != null ? player.getObjectId() : null);
-				} else if (i == 1) {
-					e.setFielder2Id(player != null ? player.getObjectId() : null);
-				} else if (i == 2) {
-					e.setFielder3Id(player != null ? player.getObjectId() : null);
-				} else if (i == 3) {
-					e.setFielder4Id(player != null ? player.getObjectId() : null);
-				}
+				parseFielders(e, i, dismissalFielder);
 			}
+		}
+	}
+
+	private void parseFielders(Fow e, int i, DismissalFielder dismissalFielder) {
+		PlayerOrTeam player = dismissalFielder.getPlayer();
+		if(i == 0) {
+			e.setFielder1Id(player != null ? player.getObjectId() : null);
+		} else if (i == 1) {
+			e.setFielder2Id(player != null ? player.getObjectId() : null);
+		} else if (i == 2) {
+			e.setFielder3Id(player != null ? player.getObjectId() : null);
+		} else if (i == 3) {
+			e.setFielder4Id(player != null ? player.getObjectId() : null);
 		}
 	}
 

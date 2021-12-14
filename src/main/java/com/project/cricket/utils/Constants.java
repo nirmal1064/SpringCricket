@@ -41,4 +41,6 @@ public final class Constants {
 	public static final String SHORT = "short";
 	public static final String LONG = "long";
 	public static final String COMMENTARY = "commentary";
+	public static final String SUB = "sub";
+	public static final String DNB = "DNB";
 }

@@ -84,7 +84,7 @@ public class Fow implements Serializable {
 
 	private Integer fowOverNumber;
 
-	private Double 	fowOversActual;
+	private Double 	ballOversActual;
 
 	private Integer ballTotalRuns;
 
