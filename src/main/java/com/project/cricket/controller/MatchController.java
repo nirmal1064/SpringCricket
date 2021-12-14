@@ -7,7 +7,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.cricket.config.ApplicationConfiguration;
+import com.project.cricket.entity.Match;
+import com.project.cricket.handler.DbHandler;
+import com.project.cricket.handler.MatchFileHandler;
 import com.project.cricket.handler.MatchHandler;
+import com.project.cricket.utils.CricUtils;
 import com.project.cricket.utils.FileOperationUtils;
 
 @RestController
@@ -36,6 +39,15 @@ public class MatchController {
 	@Autowired
 	private ApplicationConfiguration appConfig;
 
+	@Autowired
+	private MatchFileHandler matchFileHandler;
+
+	@Autowired
+	private DbHandler dbHandler;
+
+	@Autowired
+	private CricUtils cricUtils;
+
 	/**
 	 * 
 	 * @param classId
@@ -50,7 +62,7 @@ public class MatchController {
 		LOGGER.info("Request to saveMatchJsonToFile");
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
 		List<String> matchJson = matchHandler.getMatchJson(matchIds, true, overWrite);
-		return returnResponse(matchJson);
+		return cricUtils.getListResponse(matchJson);
 	}
 
 	@PostMapping(value = "/matchscorecard")
@@ -59,7 +71,7 @@ public class MatchController {
 		LOGGER.info("Request to saveMatchScorecardToFile");
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
 		List<String> matchScorecard = matchHandler.getMatchScorecard(matchIds, true, overWrite);
-		return returnResponse(matchScorecard);
+		return cricUtils.getListResponse(matchScorecard);
 	}
 
 	@GetMapping(value = "/getmissingscorecard")
@@ -69,7 +81,7 @@ public class MatchController {
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, null);
 		List<Integer> fileNames = fileUtils.getMatchFilesAsInteger(appConfig.getMatchScorecardFileLocation());
 		matchIds.removeAll(fileNames);
-		return returnResponse(matchIds);
+		return cricUtils.getListResponse(matchIds);
 	}
 
 	@GetMapping(value = "/getmissingjson")
@@ -79,14 +91,19 @@ public class MatchController {
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, null);
 		List<Integer> fileNames = fileUtils.getMatchFilesAsInteger(appConfig.getMatchJsonFileLocation());
 		matchIds.removeAll(fileNames);
-		return returnResponse(matchIds);
+		return cricUtils.getListResponse(matchIds);
 	}
 
-	private <T> ResponseEntity<List<T>> returnResponse(List<T> response) {
-		if (!CollectionUtils.isEmpty(response)) {
-			return new ResponseEntity<>(response, HttpStatus.OK);
+	@PostMapping(value = "/matchfulldb")
+	public ResponseEntity<List<Integer>> saveMatchToDbFromFile(@RequestParam(required = false) Integer classId, @RequestParam(required = false) Integer startYear, 
+			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId) {
+		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
+		List<Match> matches = matchFileHandler.getMatches(matchIds);
+		for (Match match : matches) {
+			Integer saveMatchId = dbHandler.saveMatchToDb(match);
+			matchIds.remove(saveMatchId);
 		}
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return cricUtils.getListResponse(matchIds);
 	}
 
 	private List<Integer> filterInput(Integer classId, Integer startYear, Integer endYear, List<Integer> matchId) {

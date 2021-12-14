@@ -2,7 +2,6 @@ package com.project.cricket.controller;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,16 +9,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.cricket.entity.Match;
 import com.project.cricket.entity.ResultSummary;
-import com.project.cricket.handler.DbHandler;
-import com.project.cricket.handler.MatchFileHandler;
 import com.project.cricket.repository.ResultSummaryRepository;
 
+/**
+ * TODO: Convert return types to reponse entity
+ * @author Nirmal
+ *
+ */
 @RestController
 public class DbController {
 
@@ -27,12 +27,6 @@ public class DbController {
 
 	@Autowired
 	private ResultSummaryRepository resultSummaryRepository;
-
-	@Autowired
-	private MatchFileHandler matchFileHandler;
-
-	@Autowired
-	private DbHandler dbHandler;
 
 	@GetMapping(value = "/resultsummary", produces = APPLICATION_JSON_VALUE)
 	public List<ResultSummary> getResultsSummaryFromDb() {
@@ -62,19 +56,6 @@ public class DbController {
 	@GetMapping(value = "/matchids", produces = APPLICATION_JSON_VALUE)
 	public List<Integer> getMatchIds(@RequestParam Integer classId, @RequestParam Integer startYear, @RequestParam Integer endYear) {
 		return resultSummaryRepository.findByClassIdAndYearBetween(classId, startYear, endYear).stream().map(ResultSummary::getMatchId).collect(Collectors.toList());
-	}
-
-	@PostMapping(value = "/matchfulldb")
-	public List<Integer> matchFullDb() {
-		List<Integer> matchIds = new ArrayList<>();
-		matchIds.add(1288345);
-		matchIds.add(1152847);
-		List<Match> matches = matchFileHandler.getMatches(matchIds);
-		for (Match match : matches) {
-			Integer saveMatchId = dbHandler.saveMatchToDb(match);
-			matchIds.remove(saveMatchId);
-		}
-		return matchIds;
 	}
 
 }
