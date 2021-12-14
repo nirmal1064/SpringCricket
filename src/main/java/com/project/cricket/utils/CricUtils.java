@@ -5,13 +5,11 @@ import static com.project.cricket.utils.Constants.HREF;
 
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 @Component
 public class CricUtils {
 
 	public String cleanString(String string) {
-		StringUtils.trimWhitespace(string);
 		return string.trim();
 	}
 

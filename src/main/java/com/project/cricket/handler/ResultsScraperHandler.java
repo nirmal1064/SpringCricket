@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,8 @@ public class ResultsScraperHandler {
 	@Autowired
 	private ExecutorUtil executorUtil;
 
+	private ExecutorService service;
+
 	public List<ResultSummary> getSummary(int classId, int startYear, int endYear, boolean saveToDb) {
 		LOGGER.info("Getting results for class: {} between {} and {}", classId, startYear, endYear);
 		return summaryBetweenYears(classId, startYear, endYear, saveToDb);
@@ -50,7 +54,6 @@ public class ResultsScraperHandler {
 		List<ResultSummary> result = new ArrayList<>();
 		List<Future<List<ResultSummary>>> resultsFuture = new ArrayList<>();
 		List<ResultsScraperTask> resultsScraperTasks = new ArrayList<>();
-		ExecutorService service = executorUtil.getThreadPool(appConfig.getNumOfThreads());
 		int sum = 0;
 		try {
 			stopWatch.start();
@@ -60,7 +63,6 @@ public class ResultsScraperHandler {
 				resultsScraperTasks.add(resultsScraperTask);
 			}
 			resultsFuture = service.invokeAll(resultsScraperTasks);
-			service.shutdown();
 			for (Future<List<ResultSummary>> future : resultsFuture) {
 				List<ResultSummary> summary = future.get();
 				if (!CollectionUtils.isEmpty(summary)) {
@@ -75,7 +77,7 @@ public class ResultsScraperHandler {
 			stopWatch.stop();
 		} catch (InterruptedException e) {
 			LOGGER.warn("Interrupted Exception ", e);
-		    Thread.currentThread().interrupt();
+			Thread.currentThread().interrupt();
 		} catch (Exception e) {
 			LOGGER.info("Exception ", e);
 		}
@@ -85,5 +87,9 @@ public class ResultsScraperHandler {
 		return result;
 	}
 
+	@PostConstruct
+	public void init() {
+		service = executorUtil.getThreadPool(appConfig.getNumOfThreads());
+	}
 
 }

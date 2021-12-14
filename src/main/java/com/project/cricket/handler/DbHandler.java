@@ -1,25 +1,21 @@
 package com.project.cricket.handler;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.project.cricket.entity.Innings;
 import com.project.cricket.entity.Match;
-import com.project.cricket.entity.Official;
-import com.project.cricket.entity.Player;
 import com.project.cricket.entity.ResultSummary;
-import com.project.cricket.entity.Series;
-import com.project.cricket.model.MatchJson;
-import com.project.cricket.model.MatchScorecard;
-import com.project.cricket.model.Team;
 import com.project.cricket.repository.MatchSummaryRepository;
 import com.project.cricket.repository.ResultSummaryRepository;
 
 @Service
 public class DbHandler {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(DbHandler.class);
 
 	@Autowired
 	private ResultSummaryRepository resultSummaryRepository;
@@ -37,37 +33,14 @@ public class DbHandler {
 		return saveResults.size();
 	}
 
-	public void saveMatchFromJsonToDb(MatchJson matchJson) {
-		Match match = matchJson.getMatch();
-		match.setMatchId(matchJson.getMatchId());
-		List<Innings> innings = matchJson.getInnings();
-		innings.forEach(e -> e.setMatch(matchJson.getMatch()));
-		List<Team> team = matchJson.getTeam();
-		team.forEach(tm -> tm.getPlayer().forEach(p -> p.setTeamId(tm.getTeamId())));
-		List<Player> players = team.stream()
-				.map(Team::getPlayer)
-				.flatMap(List::stream)
-				.collect(Collectors.toList());
-		players.addAll(matchJson.getSubstitute());
-		players.forEach(p -> p.setMatch(match));
-		List<Series> series = matchJson.getSeries();
-		series.forEach(s -> s.setMatch(match));
-		List<Official> official = matchJson.getOfficial();
-		official.forEach(o -> o.setMatch(match));
-		match.setInnings(innings);
-		match.setPlayer(players);
-		match.setOfficial(official);
-		match.setSeries(series);
-		matchSummaryRepository.save(match);
-	}
-
-	public void saveMatchFromScorecardToDb(MatchScorecard matchScorecard) {
-		// TODO: Finish
-	}
-
 	public Integer saveMatchToDb(Match match) {
-		Match savedMatch = matchSummaryRepository.save(match);
-		return savedMatch.getMatchId();
+		try {
+			Match savedMatch = matchSummaryRepository.save(match);
+			return savedMatch.getMatchId();
+		} catch (Exception e) {
+			LOGGER.error("Error in saving match {}", match.getMatchId(), e);
+		}
+		return null;
 	}
 
 }

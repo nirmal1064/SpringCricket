@@ -24,4 +24,5 @@ public class ScorecardInnings {
 	private List<Partnership> inningPartnerships = new ArrayList<>();
 
 	private List<Fow> inningWickets = new ArrayList<>();
+
 }

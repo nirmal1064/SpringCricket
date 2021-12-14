@@ -153,8 +153,6 @@ public class MatchTask implements Callable<Match> {
 
 	private void parseMatchScorecard(MatchScorecard matchScorecard) {
 
-		match.setMatchId(matchScorecard.getMatchId());
-
 		ScorecardMatch scorecardMatch = matchScorecard.getMatch();
 		addMatchAndType(scorecardMatch.getUmpires(), FIELDUMPIRE);
 		addMatchAndType(scorecardMatch.getTvUmpires(), TVUMPIRE);
@@ -169,8 +167,13 @@ public class MatchTask implements Callable<Match> {
 		SupportInfo supportInfo = matchScorecard.getSupportInfo();
 		addMatchAndId(supportInfo.getPlayersOfTheMatch());
 		addMatchAndId(supportInfo.getPlayersOfTheSeries());
-		match.setPlayersOfTheMatch(supportInfo.getPlayersOfTheMatch());
-		match.setPlayersOfTheSeries(supportInfo.getPlayersOfTheSeries());
+
+		if (!CollectionUtils.isEmpty(supportInfo.getPlayersOfTheMatch())) {
+			match.setPlayersOfTheMatch(supportInfo.getPlayersOfTheMatch());
+		}
+		if (!CollectionUtils.isEmpty(supportInfo.getPlayersOfTheSeries())) {
+			match.setPlayersOfTheSeries(supportInfo.getPlayersOfTheSeries());
+		}
 
 		parseInnings(matchScorecard.getScorecard());
 	}

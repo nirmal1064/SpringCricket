@@ -1,7 +1,6 @@
 package com.project.cricket.entity.superclass;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -9,11 +8,9 @@ import javax.persistence.MappedSuperclass;
 
 import com.google.gson.annotations.SerializedName;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @MappedSuperclass
 public class Person {
 
@@ -88,22 +85,5 @@ public class Person {
 
 	@SerializedName("status_id")
 	protected Integer statusId;
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(objectId);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof Person)) {
-			return false;
-		}
-		Person other = (Person) obj;
-		return Objects.equals(objectId, other.objectId);
-	}
 
 }

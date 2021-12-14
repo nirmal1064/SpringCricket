@@ -30,10 +30,12 @@ public class PageDataDeserializer<T> implements JsonDeserializer<T> {
 		JsonElement content = pageData.getAsJsonObject().get(CONTENT);
 		JsonElement scorecard = content.getAsJsonObject().get(SCORECARD);
 		JsonElement supportInfo = content.getAsJsonObject().get(SUPPORTINFO);
+
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.add(MATCH, match);
 		jsonObject.add(SCORECARD, scorecard);
 		jsonObject.add(SUPPORTINFO, supportInfo);
+
 		return new Gson().fromJson(jsonObject.toString(), typeOfT);
 	}
 

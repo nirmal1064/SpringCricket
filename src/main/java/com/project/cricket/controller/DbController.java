@@ -18,8 +18,6 @@ import com.project.cricket.entity.Match;
 import com.project.cricket.entity.ResultSummary;
 import com.project.cricket.handler.DbHandler;
 import com.project.cricket.handler.MatchFileHandler;
-import com.project.cricket.model.MatchJson;
-import com.project.cricket.model.MatchScorecard;
 import com.project.cricket.repository.ResultSummaryRepository;
 
 @RestController
@@ -64,35 +62,6 @@ public class DbController {
 	@GetMapping(value = "/matchids", produces = APPLICATION_JSON_VALUE)
 	public List<Integer> getMatchIds(@RequestParam Integer classId, @RequestParam Integer startYear, @RequestParam Integer endYear) {
 		return resultSummaryRepository.findByClassIdAndYearBetween(classId, startYear, endYear).stream().map(ResultSummary::getMatchId).collect(Collectors.toList());
-	}
-
-	@PostMapping(value = "/matchjsondb")
-	public List<Integer> matchJsonDb() {
-		List<Integer> matchIds = getMatchIds(3, 1877, 2021);
-		matchIds.removeAll(matchIds);
-		matchIds.add(62396);
-		List<MatchJson> matchJsons = matchFileHandler.getMatchJson(matchIds);
-		for (MatchJson matchJson : matchJsons) {
-			dbHandler.saveMatchFromJsonToDb(matchJson);
-		}
-		List<Integer> resultIds = matchJsons.stream().map(MatchJson::getMatchId).collect(Collectors.toList());
-		matchIds.removeAll(resultIds);
-		return matchIds;
-	}
-
-	@PostMapping(value = "/matchscorecarddb")
-	public List<Integer> matchScorecardDb() {
-		List<Integer> matchIds = getMatchIds(3, 1877, 2021);
-		matchIds.removeAll(matchIds);
-		matchIds.add(1288345);
-		List<MatchScorecard> matchScorecards = matchFileHandler.getMatchScorecard(matchIds);
-		for (MatchScorecard matchScorecard : matchScorecards) {
-			LOGGER.info("{}", matchScorecard);
-			dbHandler.saveMatchFromScorecardToDb(matchScorecard);
-		}
-		List<Integer> resultIds = matchScorecards.stream().map(MatchScorecard::getMatchId).collect(Collectors.toList());
-		matchIds.removeAll(resultIds);
-		return matchIds;
 	}
 
 	@PostMapping(value = "/matchfulldb")

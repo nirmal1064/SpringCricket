@@ -9,4 +9,5 @@ public class ResultNotFoundException extends Exception {
 	public ResultNotFoundException(String errMsg) {
 		super(errMsg);
 	}
+
 }
