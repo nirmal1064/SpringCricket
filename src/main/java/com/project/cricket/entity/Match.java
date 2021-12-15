@@ -154,7 +154,7 @@ public class Match implements Serializable {
 	private String date;
 
 	@SerializedName("date_string")
-	@Column(length = 40)
+	@Column(length = 100)
 	private String dateString;
 
 	@SerializedName("days_extended")

@@ -46,7 +46,6 @@ import com.project.cricket.model.ScorecardInnings;
 import com.project.cricket.model.ScorecardMatch;
 import com.project.cricket.model.SupportInfo;
 import com.project.cricket.model.Team;
-import com.project.cricket.repository.MatchSummaryRepository;
 import com.project.cricket.utils.FileOperationUtils;
 
 @Component
@@ -63,9 +62,6 @@ public class MatchTask implements Callable<Match> {
 
 	@Autowired
 	private Gson gson;
-
-	@Autowired
-	private MatchSummaryRepository matchSummaryRepository;
 
 	private int matchId;
 
@@ -84,13 +80,12 @@ public class MatchTask implements Callable<Match> {
 			match = matchJson.getMatch();
 			parseMatchJson(matchJson);
 			parseMatchScorecard(matchScorecard);
-			Match savedMatch = matchSummaryRepository.save(match);
 			LOGGER.info("Match Task Completed for {}", matchId);
-			return savedMatch;
 		} catch (Exception e) {
 			LOGGER.error("Exception in match {}", matchId, e);
 			return null;
 		}
+		return match;
 	}
 
 	private MatchJson getMatchJson() {

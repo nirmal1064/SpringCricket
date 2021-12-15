@@ -10,7 +10,7 @@ spring:
       url: jdbc:mysql://localhost:3306/cricketdb
       username: root
       password: password
-threads: 20
+threads: 30
 ---
 spring:
    profiles: prod

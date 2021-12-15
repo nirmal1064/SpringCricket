@@ -28,14 +28,14 @@ public class Player extends Person implements Serializable {
 	private String teamName;
 
 	@SerializedName("batting_style")
-	@Column(length = 10)
+	@Column(length = 50)
 	private String battingStyle;
 
 	@SerializedName("batting_style_long")
 	private String battingStyleLong;
 
 	@SerializedName("bowling_style")
-	@Column(length = 10)
+	@Column(length = 50)
 	private String bowlingStyle;
 
 	@SerializedName("bowling_style_long")
