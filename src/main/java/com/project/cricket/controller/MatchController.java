@@ -99,7 +99,7 @@ public class MatchController {
 	@PostMapping(value = "/matchfulldb")
 	public ResponseEntity<List<Integer>> saveMatchToDbFromFile(@RequestParam(required = false) Integer classId, @RequestParam(required = false) Integer startYear, 
 			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId) {
-		List<Integer> exceptions = Arrays.asList(63006, 62994, 63007);
+		List<Integer> exceptions = Arrays.asList(63006, 62994, 63007, 63009, 63026);
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
 		matchIds.removeAll(exceptions);
 		List<Match> matches = matchFileHandler.getMatches(matchIds);

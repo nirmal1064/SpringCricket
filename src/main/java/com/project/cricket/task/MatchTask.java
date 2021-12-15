@@ -13,6 +13,7 @@ import static org.springframework.beans.factory.config.ConfigurableBeanFactory.S
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
@@ -201,7 +202,7 @@ public class MatchTask implements Callable<Match> {
 		}
 	}
 
-	private void parseReplacements(List<ReplacementPlayer> replacementPlayers) {
+	private void parseReplacements(Set<ReplacementPlayer> replacementPlayers) {
 		if (!CollectionUtils.isEmpty(replacementPlayers)) {
 			replacementPlayers.forEach(e -> {
 				e.setMatch(match);
@@ -212,7 +213,7 @@ public class MatchTask implements Callable<Match> {
 		}
 	}
 
-	private void addMatchAndType(List<ScorecardOfficial> umps, String type) {
+	private void addMatchAndType(Set<ScorecardOfficial> umps, String type) {
 		if (!CollectionUtils.isEmpty(umps)) {
 			umps.forEach(e -> {
 				e.setMatch(match);
@@ -223,7 +224,7 @@ public class MatchTask implements Callable<Match> {
 		}
 	}
 
-	private void addMatchAndId(List<? extends MatchPerson> persons) {
+	private void addMatchAndId(Set<? extends MatchPerson> persons) {
 		if (!CollectionUtils.isEmpty(persons)) {
 			persons.forEach(person -> {
 				person.setMatch(match);

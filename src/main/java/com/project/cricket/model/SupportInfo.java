@@ -1,7 +1,7 @@
 package com.project.cricket.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import com.project.cricket.entity.PlayersOfTheMatch;
 import com.project.cricket.entity.PlayersOfTheSeries;
@@ -11,8 +11,8 @@ import lombok.Data;
 @Data
 public class SupportInfo {
 
-	private List<PlayersOfTheMatch> playersOfTheMatch = new ArrayList<>();
+	private Set<PlayersOfTheMatch> playersOfTheMatch = new LinkedHashSet<>();
 
-	private List<PlayersOfTheSeries> playersOfTheSeries = new ArrayList<>();
+	private Set<PlayersOfTheSeries> playersOfTheSeries = new LinkedHashSet<>();
 
 }

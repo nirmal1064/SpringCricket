@@ -39,4 +39,5 @@ public abstract class MatchPerson implements Serializable {
 
 	@Id
 	private Integer objectId;
+
 }

@@ -1,6 +1,7 @@
 package com.project.cricket.model;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import com.project.cricket.entity.Debut;
 import com.project.cricket.entity.ReplacementPlayer;
@@ -13,16 +14,16 @@ public class ScorecardMatch {
 
 	private Integer objectId;
 
-	private List<ScorecardOfficial> umpires;
+	private Set<ScorecardOfficial> umpires = new LinkedHashSet<>();
 
-	private List<ScorecardOfficial> tvUmpires;
+	private Set<ScorecardOfficial> tvUmpires = new LinkedHashSet<>();
 
-	private List<ScorecardOfficial> reserveUmpires;
+	private Set<ScorecardOfficial> reserveUmpires = new LinkedHashSet<>();
 
-	private List<ScorecardOfficial> matchReferees;
+	private Set<ScorecardOfficial> matchReferees = new LinkedHashSet<>();
 
-	private List<Debut> debutPlayers;
+	private Set<Debut> debutPlayers = new LinkedHashSet<>();
 
-	private List<ReplacementPlayer> replacementPlayers;
+	private Set<ReplacementPlayer> replacementPlayers = new LinkedHashSet<>();
 
 }
