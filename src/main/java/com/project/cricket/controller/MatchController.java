@@ -107,16 +107,16 @@ public class MatchController {
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 		LOGGER.info("Inserting {} matches", matches.size());
-		result = dbHandler.saveAllMatches(matches);
-//		int count = 0;
-//		for (Match match : matches) {
-//			Integer saveMatchToDb = dbHandler.saveMatchToDb(match);
-//			result.add(saveMatchToDb);
-//			count++;
-//			if (count % 100 == 0) {
-//				LOGGER.info("{} matches completed", count);
-//			}
-//		}
+//		result = dbHandler.saveAllMatches(matches);
+		int count = 0;
+		for (Match match : matches) {
+			Integer saveMatchToDb = dbHandler.saveMatchToDb(match);
+			result.add(saveMatchToDb);
+			count++;
+			if (count % 100 == 0) {
+				LOGGER.info("{} matches completed", count);
+			}
+		}
 		matchIds.removeAll(result);
 		stopWatch.stop();
 		LOGGER.info("{} Matches saved in db in {} seconds", result.size(), stopWatch.getTotalTimeSeconds());

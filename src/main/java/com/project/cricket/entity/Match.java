@@ -8,9 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -68,23 +66,23 @@ public class Match implements Serializable {
 
 	@Expose(serialize = false, deserialize = false)
 	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
-	private Set<Debut> debuts = new LinkedHashSet<>();
+	private List<Debut> debuts = new ArrayList<>();
 
 	@Expose(serialize = false, deserialize = false)
 	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
-	private Set<ReplacementPlayer> replacement = new LinkedHashSet<>();
+	private List<ReplacementPlayer> replacement = new ArrayList<>();
 
 	@Expose(serialize = false, deserialize = false)
 	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
-	private Set<PlayersOfTheMatch> playersOfTheMatch = new LinkedHashSet<>();
+	private List<PlayersOfTheMatch> playersOfTheMatch = new ArrayList<>();
 
 	@Expose(serialize = false, deserialize = false)
 	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
-	private Set<PlayersOfTheSeries> playersOfTheSeries = new LinkedHashSet<>();
+	private List<PlayersOfTheSeries> playersOfTheSeries = new ArrayList<>();
 
 	@Expose(serialize = false, deserialize = false)
 	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
-	private Set<ScorecardOfficial> officials = new LinkedHashSet<>();
+	private List<ScorecardOfficial> officials = new ArrayList<>();
 
 	@SerializedName("actual_days")
 	private Integer actualDays;

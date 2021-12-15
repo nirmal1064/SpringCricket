@@ -18,6 +18,7 @@ import com.project.cricket.model.PlayerOrTeam;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -25,9 +26,10 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @ToString
-@Entity
+@NoArgsConstructor
 @EqualsAndHashCode
 @IdClass(DebutKey.class)
+@Entity
 @Table(name = "debuts")
 public class Debut implements Serializable {
 

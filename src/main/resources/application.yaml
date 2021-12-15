@@ -1,6 +1,6 @@
 springdoc.swagger-ui.operationsSorter: method
 spring.jpa.hibernate.ddl-auto: update
-spring.jpa.show-sql: true
+spring.jpa.show-sql: false
 file.matchjson.location: /path/to/store
 file.matchscorecard.location: /path/to/store
 ---
@@ -10,7 +10,7 @@ spring:
       url: jdbc:mysql://localhost:3306/cricketdb
       username: root
       password: password
-threads: 30
+threads: 20
 ---
 spring:
    profiles: prod

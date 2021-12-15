@@ -13,7 +13,6 @@ import static org.springframework.beans.factory.config.ConfigurableBeanFactory.S
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
@@ -28,6 +27,7 @@ import com.google.gson.Gson;
 import com.project.cricket.config.ApplicationConfiguration;
 import com.project.cricket.entity.Batsman;
 import com.project.cricket.entity.Bowler;
+import com.project.cricket.entity.Debut;
 import com.project.cricket.entity.Fow;
 import com.project.cricket.entity.Innings;
 import com.project.cricket.entity.Match;
@@ -112,6 +112,9 @@ public class MatchTask implements Callable<Match> {
 		match.setMatchId(matchJson.getMatchId());
 
 		List<Innings> innings = matchJson.getInnings();
+		if (checkIfInningsZero(innings)) {
+			innings = null;
+		}
 		if (!CollectionUtils.isEmpty(innings)) {
 			innings.forEach(e -> e.setMatch(matchJson.getMatch()));
 		} else {
@@ -152,6 +155,16 @@ public class MatchTask implements Callable<Match> {
 		match.setOfficial(official);
 	}
 
+	private boolean checkIfInningsZero(List<Innings> innings) {
+		for (Innings inning : innings) {
+			if (inning.getInningsNumber() == 0) {
+				LOGGER.info("Innings number zero for {}", match.getMatchId());
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private void parseMatchScorecard(MatchScorecard matchScorecard) {
 
 		ScorecardMatch scorecardMatch = matchScorecard.getMatch();
@@ -159,7 +172,7 @@ public class MatchTask implements Callable<Match> {
 		addMatchAndType(scorecardMatch.getTvUmpires(), TVUMPIRE);
 		addMatchAndType(scorecardMatch.getReserveUmpires(), RESERVEUMPIRE);
 		addMatchAndType(scorecardMatch.getMatchReferees(), MATCHREFEREE);
-		addMatchAndId(scorecardMatch.getDebutPlayers());
+		addMatchAndIdToDebuts(scorecardMatch.getDebutPlayers());
 		parseReplacements(scorecardMatch.getReplacementPlayers());
 
 		match.setDebuts(scorecardMatch.getDebutPlayers());
@@ -202,7 +215,7 @@ public class MatchTask implements Callable<Match> {
 		}
 	}
 
-	private void parseReplacements(Set<ReplacementPlayer> replacementPlayers) {
+	private void parseReplacements(List<ReplacementPlayer> replacementPlayers) {
 		if (!CollectionUtils.isEmpty(replacementPlayers)) {
 			replacementPlayers.forEach(e -> {
 				e.setMatch(match);
@@ -213,7 +226,7 @@ public class MatchTask implements Callable<Match> {
 		}
 	}
 
-	private void addMatchAndType(Set<ScorecardOfficial> umps, String type) {
+	private void addMatchAndType(List<ScorecardOfficial> umps, String type) {
 		if (!CollectionUtils.isEmpty(umps)) {
 			umps.forEach(e -> {
 				e.setMatch(match);
@@ -224,9 +237,18 @@ public class MatchTask implements Callable<Match> {
 		}
 	}
 
-	private void addMatchAndId(Set<? extends MatchPerson> persons) {
+	private void addMatchAndId(List<? extends MatchPerson> persons) {
 		if (!CollectionUtils.isEmpty(persons)) {
 			persons.forEach(person -> {
+				person.setMatch(match);
+				person.setObjectId(person.getPlayer().getObjectId());
+			});
+		}
+	}
+
+	private void addMatchAndIdToDebuts(List<Debut> debuts) {
+		if (!CollectionUtils.isEmpty(debuts)) {
+			debuts.forEach(person -> {
 				person.setMatch(match);
 				person.setObjectId(person.getPlayer().getObjectId());
 			});
