@@ -1,18 +1,35 @@
 package com.project.cricket.entity.superclass;
 
+import static javax.persistence.FetchType.LAZY;
+
 import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 import com.google.gson.annotations.SerializedName;
+import com.project.cricket.entity.Match;
+import com.project.cricket.entity.keys.PlayerKey;
 
 import lombok.Data;
 
 @Data
 @MappedSuperclass
+@IdClass(PlayerKey.class)
 public class Person {
+
+	@Id
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "match_id", referencedColumnName = "match_id")
+	private Match match;
+
+	@Id
+	@SerializedName(value = "team_id")
+	private Integer teamId;
 
 	@SerializedName("age_days")
 	protected Integer ageDays;
@@ -21,7 +38,7 @@ public class Person {
 	protected Integer ageYears;
 
 	@SerializedName("alpha_name")
-	@Column(length = 30)
+	@Column(length = 50)
 	protected String alphaName;
 
 	@SerializedName("batting_hand")
@@ -51,11 +68,11 @@ public class Person {
 	protected LocalDate dob;
 
 	@SerializedName("known_as")
-	@Column(length = 40)
+	@Column(length = 100)
 	protected String knownAs;
 
 	@SerializedName("mobile_name")
-	@Column(length = 40)
+	@Column(length = 50)
 	protected String mobileName;
 
 	@Id
@@ -69,11 +86,11 @@ public class Person {
 	protected Integer playerType;
 
 	@SerializedName("player_type_name")
-	@Column(length = 30)
+	@Column(length = 50)
 	protected String playerTypeName;
 
 	@SerializedName("popular_name")
-	@Column(length = 30)
+	@Column(length = 50)
 	protected String popularName;
 
 	@SerializedName("portrait_alt_id")
