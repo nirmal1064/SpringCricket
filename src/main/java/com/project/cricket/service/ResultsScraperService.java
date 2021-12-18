@@ -1,4 +1,4 @@
-package com.project.cricket.handler;
+package com.project.cricket.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +21,9 @@ import com.project.cricket.task.ResultsScraperTask;
 import com.project.cricket.utils.ExecutorUtil;
 
 @Component
-public class ResultsScraperHandler {
+public class ResultsScraperService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ResultsScraperHandler.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResultsScraperService.class);
 
 	@Autowired
 	private ServiceFactory serviceFactory;
@@ -32,7 +32,7 @@ public class ResultsScraperHandler {
 	private ApplicationConfiguration appConfig;
 
 	@Autowired
-	private DbHandler dbHandler;
+	private DbService dbService;
 
 	@Autowired
 	private ExecutorUtil executorUtil;
@@ -68,7 +68,7 @@ public class ResultsScraperHandler {
 				if (!CollectionUtils.isEmpty(summary)) {
 					sum = sum + summary.size();
 					if (saveToDb) {
-						int recordsCount = dbHandler.saveResultsSummaryToDb(summary);
+						int recordsCount = dbService.saveResultsSummaryToDb(summary);
 						LOGGER.info("{}/{} results summary stored in db for class {} and year {}", recordsCount, summary.size(), classId, summary.get(0).getYear());
 					}
 				}

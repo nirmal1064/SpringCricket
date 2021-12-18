@@ -19,7 +19,7 @@ import org.testng.annotations.Test;
 import com.project.cricket.controller.DbController;
 import com.project.cricket.controller.ResultsController;
 import com.project.cricket.entity.ResultSummary;
-import com.project.cricket.handler.DbHandler;
+import com.project.cricket.service.DbService;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -34,7 +34,7 @@ public class CricketApplicationIT extends AbstractTestNGSpringContextTests {
 	private DbController dbController;
 
 	@Autowired
-	private DbHandler dbHandler;
+	private DbService dbService;
 
 	@Autowired
 	private Environment env;
@@ -90,7 +90,7 @@ public class CricketApplicationIT extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void testDbController() {
-		int resultSize = dbHandler.saveResultsSummaryToDb(matchResults);
+		int resultSize = dbService.saveResultsSummaryToDb(matchResults);
 		Assert.assertNotEquals(resultSize, 0, "No Records to save in db");
 		Assert.assertTrue(!CollectionUtils.isEmpty(dbController.getResultsSummaryFromDb()));
 		Assert.assertTrue(!CollectionUtils.isEmpty(dbController.getResultsSummaryBetweenYears(2020, 2021)));

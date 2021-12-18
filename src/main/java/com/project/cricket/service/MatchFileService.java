@@ -1,4 +1,4 @@
-package com.project.cricket.handler;
+package com.project.cricket.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +21,9 @@ import com.project.cricket.task.MatchTask;
 import com.project.cricket.utils.ExecutorUtil;
 
 @Component
-public class MatchFileHandler {
+public class MatchFileService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(MatchFileHandler.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MatchFileService.class);
 
 	@Autowired
 	private ApplicationConfiguration appConfig;

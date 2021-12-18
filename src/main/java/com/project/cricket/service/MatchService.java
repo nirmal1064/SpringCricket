@@ -1,4 +1,4 @@
-package com.project.cricket.handler;
+package com.project.cricket.service;
 
 import static com.project.cricket.utils.Constants.HTML;
 import static com.project.cricket.utils.Constants.JSON;
@@ -26,9 +26,9 @@ import com.project.cricket.task.MatchStringTask;
 import com.project.cricket.utils.ExecutorUtil;
 
 @Component
-public class MatchHandler {
+public class MatchService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(MatchHandler.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MatchService.class);
 
 	@Autowired
 	private ApplicationConfiguration appConfig;

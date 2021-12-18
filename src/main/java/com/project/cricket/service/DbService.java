@@ -1,4 +1,4 @@
-package com.project.cricket.handler;
+package com.project.cricket.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +25,9 @@ import com.project.cricket.utils.ExecutorUtil;
 
 @Service
 @Transactional
-public class DbHandler {
+public class DbService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DbHandler.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DbService.class);
 
 	@Autowired
 	private ApplicationConfiguration appConfig;

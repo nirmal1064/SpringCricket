@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.cricket.config.ApplicationConfiguration;
 import com.project.cricket.entity.Match;
-import com.project.cricket.handler.DbHandler;
-import com.project.cricket.handler.MatchFileHandler;
-import com.project.cricket.handler.MatchHandler;
+import com.project.cricket.service.DbService;
+import com.project.cricket.service.MatchFileService;
+import com.project.cricket.service.MatchService;
 import com.project.cricket.utils.CricUtils;
 import com.project.cricket.utils.FileOperationUtils;
 
@@ -34,7 +34,7 @@ public class MatchController {
 	private DbController dbController;
 
 	@Autowired
-	private MatchHandler matchHandler;
+	private MatchService matchService;
 
 	@Autowired
 	private FileOperationUtils fileUtils;
@@ -43,13 +43,13 @@ public class MatchController {
 	private ApplicationConfiguration appConfig;
 
 	@Autowired
-	private MatchFileHandler matchFileHandler;
+	private MatchFileService matchFileService;
 
 	@Autowired
 	private CricUtils cricUtils;
 
 	@Autowired
-	private DbHandler dbHandler;
+	private DbService dbService;
 
 	/**
 	 * 
@@ -64,7 +64,7 @@ public class MatchController {
 			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId, @RequestParam Boolean overWrite) {
 		LOGGER.info("Request to saveMatchJsonToFile");
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
-		List<String> matchJson = matchHandler.getMatchJson(matchIds, true, overWrite);
+		List<String> matchJson = matchService.getMatchJson(matchIds, true, overWrite);
 		return cricUtils.getListResponse(matchJson);
 	}
 
@@ -73,7 +73,7 @@ public class MatchController {
 			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId, @RequestParam Boolean overWrite) {
 		LOGGER.info("Request to saveMatchScorecardToFile");
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
-		List<String> matchScorecard = matchHandler.getMatchScorecard(matchIds, true, overWrite);
+		List<String> matchScorecard = matchService.getMatchScorecard(matchIds, true, overWrite);
 		return cricUtils.getListResponse(matchScorecard);
 	}
 
@@ -101,7 +101,7 @@ public class MatchController {
 	public ResponseEntity<List<Integer>> checkMatchJson(@RequestParam(required = false) Integer classId, @RequestParam(required = false) Integer startYear, 
 			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId) {
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
-		List<Match> matches = matchFileHandler.getMatches(matchIds);
+		List<Match> matches = matchFileService.getMatches(matchIds);
 		List<Integer> result = matches.parallelStream().map(Match::getMatchId).collect(Collectors.toList());
 		matchIds.removeAll(result);
 		return cricUtils.getListResponse(matchIds);
@@ -113,13 +113,13 @@ public class MatchController {
 		List<Integer> exceptions = Arrays.asList(1104471);
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
 		matchIds.removeAll(exceptions);
-		List<Match> matches = matchFileHandler.getMatches(matchIds);
+		List<Match> matches = matchFileService.getMatches(matchIds);
 		List<Integer> result = new ArrayList<>();
 		//result = matches.parallelStream().map(Match::getMatchId).collect(Collectors.toList());
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 		LOGGER.info("Inserting {} matches", matches.size());
-		result = dbHandler.saveInBatches(matches);
+		result = dbService.saveInBatches(matches);
 		LOGGER.info("Inserted {} matches", result.size());
 
 		matchIds.removeAll(result);

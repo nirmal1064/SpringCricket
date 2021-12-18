@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.cricket.entity.ResultSummary;
-import com.project.cricket.handler.ResultsScraperHandler;
+import com.project.cricket.service.ResultsScraperService;
 import com.project.cricket.utils.CricUtils;
 
 @RestController
@@ -21,7 +21,7 @@ public class ResultsController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResultsController.class);
 
 	@Autowired
-	private ResultsScraperHandler resultsScraperHandler;
+	private ResultsScraperService resultsScraperService;
 
 	@Autowired
 	private CricUtils cricUtils;
@@ -32,7 +32,7 @@ public class ResultsController {
 		if (endYear == null || endYear < startYear) {
 			endYear = startYear;
 		}
-		List<ResultSummary> summary = resultsScraperHandler.getSummary(classId, startYear, endYear, false);
+		List<ResultSummary> summary = resultsScraperService.getSummary(classId, startYear, endYear, false);
 		return cricUtils.getListResponse(summary);
 	}
 
@@ -42,7 +42,7 @@ public class ResultsController {
 		if (endYear == null || endYear < startYear) {
 			endYear = startYear;
 		}
-		List<ResultSummary> summary = resultsScraperHandler.postSummary(classId, startYear, endYear, true);
+		List<ResultSummary> summary = resultsScraperService.postSummary(classId, startYear, endYear, true);
 		return cricUtils.getListResponse(summary);
 	}
 
