@@ -3,6 +3,7 @@ package com.project.cricket.handler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -11,7 +12,9 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.project.cricket.config.ApplicationConfiguration;
 import com.project.cricket.entity.Match;
@@ -21,6 +24,7 @@ import com.project.cricket.repository.ResultSummaryRepository;
 import com.project.cricket.utils.ExecutorUtil;
 
 @Service
+@Transactional
 public class DbHandler {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DbHandler.class);
@@ -54,6 +58,20 @@ public class DbHandler {
 		return matchSummaryRepository.saveAllAndFlush(matches);
 	}
 
+	@Async
+	public CompletableFuture<List<Match>> saveMatchesFuture(List<Match> matches){
+		try {
+			final long start = System.currentTimeMillis();
+			LOGGER.info("Saving {} matches", matches.size());
+			List<Match> result = matchSummaryRepository.saveAll(matches);
+			LOGGER.info("Elapsed time: {}", (System.currentTimeMillis() - start));
+			return CompletableFuture.completedFuture(result);
+		} catch (Exception e) {
+			LOGGER.error(e.getLocalizedMessage(), e);
+		}
+		return null;
+	}
+
 	public List<Integer> saveInBatches(List<Match> matches) {
 		List<Integer> result = new ArrayList<>();
 		int batchSize = 100;
@@ -71,7 +89,7 @@ public class DbHandler {
 			LOGGER.info("Total batchsize {}", batchMatches.size());
 			List<Callable<List<Match>>> callables = batchMatches.stream()
 					.map(subMatches -> (Callable<List<Match>>) () -> {
-					    int count = counter.getAndIncrement();
+						int count = counter.getAndIncrement();
 						LOGGER.info("Executing batch {}", count);
 						return saveMatches(subMatches);
 					}).collect(Collectors.toList());

@@ -119,7 +119,6 @@ public class MatchController {
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 		LOGGER.info("Inserting {} matches", matches.size());
-		//result = dbHandler.saveAllMatches(matches);
 		result = dbHandler.saveInBatches(matches);
 		LOGGER.info("Inserted {} matches", result.size());
 
