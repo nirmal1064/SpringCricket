@@ -1,18 +1,16 @@
 package com.project.cricket.task;
 
 import static com.project.cricket.utils.Constants.DNB;
-import static com.project.cricket.utils.Constants.FIELDUMPIRE;
 import static com.project.cricket.utils.Constants.LONG;
-import static com.project.cricket.utils.Constants.MATCHREFEREE;
-import static com.project.cricket.utils.Constants.RESERVEUMPIRE;
 import static com.project.cricket.utils.Constants.SHORT;
 import static com.project.cricket.utils.Constants.SUB;
-import static com.project.cricket.utils.Constants.TVUMPIRE;
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
@@ -35,7 +33,6 @@ import com.project.cricket.entity.Official;
 import com.project.cricket.entity.Partnership;
 import com.project.cricket.entity.Player;
 import com.project.cricket.entity.ReplacementPlayer;
-import com.project.cricket.entity.ScorecardOfficial;
 import com.project.cricket.entity.Series;
 import com.project.cricket.entity.superclass.MatchPerson;
 import com.project.cricket.model.DismissalFielder;
@@ -82,11 +79,11 @@ public class MatchTask implements Callable<Match> {
 			parseMatchJson(matchJson);
 			parseMatchScorecard(matchScorecard);
 			LOGGER.info("Match Task Completed for {}", matchId);
+			return match;
 		} catch (Exception e) {
 			LOGGER.error("Exception in match {}", matchId, e);
 			return null;
 		}
-		return match;
 	}
 
 	private MatchJson getMatchJson() {
@@ -168,28 +165,32 @@ public class MatchTask implements Callable<Match> {
 	private void parseMatchScorecard(MatchScorecard matchScorecard) {
 
 		ScorecardMatch scorecardMatch = matchScorecard.getMatch();
-		addMatchAndType(scorecardMatch.getUmpires(), FIELDUMPIRE);
-		addMatchAndType(scorecardMatch.getTvUmpires(), TVUMPIRE);
-		addMatchAndType(scorecardMatch.getReserveUmpires(), RESERVEUMPIRE);
-		addMatchAndType(scorecardMatch.getMatchReferees(), MATCHREFEREE);
+		//addMatchAndType(scorecardMatch.getUmpires(), FIELDUMPIRE);
+		//addMatchAndType(scorecardMatch.getTvUmpires(), TVUMPIRE);
+		//addMatchAndType(scorecardMatch.getReserveUmpires(), RESERVEUMPIRE);
+		//addMatchAndType(scorecardMatch.getMatchReferees(), MATCHREFEREE);
 		addMatchAndIdToDebuts(scorecardMatch.getDebutPlayers());
 		parseReplacements(scorecardMatch.getReplacementPlayers());
-
-		match.setDebuts(scorecardMatch.getDebutPlayers());
-		match.setReplacement(scorecardMatch.getReplacementPlayers());
 
 		SupportInfo supportInfo = matchScorecard.getSupportInfo();
 		addMatchAndId(supportInfo.getPlayersOfTheMatch());
 		addMatchAndId(supportInfo.getPlayersOfTheSeries());
 
 		if (!CollectionUtils.isEmpty(supportInfo.getPlayersOfTheMatch())) {
-			match.setPlayersOfTheMatch(supportInfo.getPlayersOfTheMatch());
+			match.setPlayersOfTheMatch(removeDuplicates(supportInfo.getPlayersOfTheMatch()));
 		}
 		if (!CollectionUtils.isEmpty(supportInfo.getPlayersOfTheSeries())) {
-			match.setPlayersOfTheSeries(supportInfo.getPlayersOfTheSeries());
+			match.setPlayersOfTheSeries(removeDuplicates(supportInfo.getPlayersOfTheSeries()));
 		}
-
 		parseInnings(matchScorecard.getScorecard());
+	}
+
+	private <T> List<T> removeDuplicates(List<T> items) {
+		Set<T> set = new LinkedHashSet<>();
+		set.addAll(items);
+		items.clear();
+		items.addAll(set);
+		return items;
 	}
 
 	private void parseInnings(Scorecard scorecard) {
@@ -223,19 +224,20 @@ public class MatchTask implements Callable<Match> {
 				e.setTeamId(e.getTeam().getObjectId());
 				e.setReplacingPlayerId(e.getReplacingPlayer().getObjectId());
 			});
+			match.setReplacement(replacementPlayers);;
 		}
 	}
 
-	private void addMatchAndType(List<ScorecardOfficial> umps, String type) {
-		if (!CollectionUtils.isEmpty(umps)) {
-			umps.forEach(e -> {
-				e.setMatch(match);
-				e.setType(type);
-				e.setObjectId(e.getPlayer().getObjectId());
-			});
-			match.getOfficials().addAll(umps);
-		}
-	}
+//	private void addMatchAndType(List<ScorecardOfficial> umps, String type) {
+//		if (!CollectionUtils.isEmpty(umps)) {
+//			umps.forEach(e -> {
+//				e.setMatch(match);
+//				e.setType(type);
+//				e.setObjectId(e.getPlayer().getObjectId());
+//			});
+//			match.getOfficials().addAll(umps);
+//		}
+//	}
 
 	private void addMatchAndId(List<? extends MatchPerson> persons) {
 		if (!CollectionUtils.isEmpty(persons)) {
@@ -252,6 +254,7 @@ public class MatchTask implements Callable<Match> {
 				person.setMatch(match);
 				person.setObjectId(person.getPlayer().getObjectId());
 			});
+			match.setDebuts(debuts);
 		}
 	}
 

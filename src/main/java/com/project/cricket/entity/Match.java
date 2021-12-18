@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,11 +20,15 @@ import javax.persistence.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "match_summary")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Match implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -80,9 +85,9 @@ public class Match implements Serializable {
 	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
 	private List<PlayersOfTheSeries> playersOfTheSeries = new ArrayList<>();
 
-	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
-	private List<ScorecardOfficial> officials = new ArrayList<>();
+//	@Expose(serialize = false, deserialize = false)
+//	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+//	private List<ScorecardOfficial> officials = new ArrayList<>();
 
 	@SerializedName("actual_days")
 	private Integer actualDays;
@@ -122,7 +127,7 @@ public class Match implements Serializable {
 	private String cancelledMatch;
 
 	@SerializedName("cms_match_title")
-	@Column(length = 30)
+	@Column(length = 50)
 	private String cmsMatchTitle;
 
 	@SerializedName("commentary_source")
@@ -254,7 +259,7 @@ public class Match implements Serializable {
 	private String legacyUrl;
 
 	@SerializedName("live_commentator")
-	@Column(length = 30)
+	@Column(length = 50)
 	private String liveCommentator;
 
 	@SerializedName("live_companion")
@@ -289,7 +294,7 @@ public class Match implements Serializable {
 	private Integer liveSessionNumber;
 
 	@SerializedName("live_state")
-	@Column(length = 40)
+	@Column(length = 100)
 	private String liveState;
 
 	@SerializedName("match_clock")
@@ -546,7 +551,7 @@ public class Match implements Serializable {
 	private String tzShortName;
 
 	@SerializedName("url_component")
-	@Column(length = 20)
+	@Column(length = 50)
 	private String urlComponent;
 
 	@SerializedName("watch_espn_id")
@@ -562,6 +567,23 @@ public class Match implements Serializable {
 	@Override
 	public String toString() {
 		return "Match [matchId=" + matchId + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(matchId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Match)) {
+			return false;
+		}
+		Match other = (Match) obj;
+		return Objects.equals(matchId, other.matchId);
 	}
 
 }

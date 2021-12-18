@@ -3,13 +3,24 @@ spring.jpa.hibernate.ddl-auto: update
 spring.jpa.show-sql: false
 file.matchjson.location: /path/to/store
 file.matchscorecard.location: /path/to/store
+spring.jpa.properties.hibernate:
+   jdbc.batch_size: 100
+   order_inserts: true
+   generate_statistics: true
 ---
 spring:
    profiles: dev
    datasource:
-      url: jdbc:mysql://localhost:3306/cricketdb
+      url: jdbc:mysql://localhost:3306/cricketdb?serverTimezone=UTC&cachePrepStmts=true&useServerPrepStmts=true&rewriteBatchedStatements=true
       username: root
       password: password
+      hikari:
+         maximum-pool-size: 20
+         connection-timeout: 120000
+         minimum-idle: 20
+         idle-timeout: 10000
+         max-lifetime: 1000
+         auto-commit: true
 threads: 20
 ---
 spring:

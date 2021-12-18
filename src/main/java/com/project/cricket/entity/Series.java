@@ -45,7 +45,7 @@ public class Series implements Serializable {
 	private Integer classId;
 
 	@SerializedName("class_name")
-	@Column(length = 30)
+	@Column(length = 50)
 	private String className;
 
 	@SerializedName("content_id")
@@ -131,11 +131,11 @@ public class Series implements Serializable {
 	private Integer seriesCategoryId;
 
 	@SerializedName("series_category_name")
-	@Column(length = 15)
+	@Column(length = 30)
 	private String seriesCategoryName;
 
 	@SerializedName("series_filename")
-	@Column(length = 15)
+	@Column(length = 50)
 	private String seriesFilename;
 
 	@SerializedName("series_lead_abandoned")
@@ -177,7 +177,7 @@ public class Series implements Serializable {
 	private String seriesName;
 
 	@SerializedName("series_short_name")
-	@Column(length = 30)
+	@Column(length = 60)
 	private String seriesShortName;
 
 	@SerializedName("series_status")
@@ -188,11 +188,11 @@ public class Series implements Serializable {
 	private Integer seriesTypeId;
 
 	@SerializedName("series_type_name")
-	@Column(length = 30)
+	@Column(length = 60)
 	private String seriesTypeName;
 
 	@SerializedName("short_alternate_name")
-	@Column(length = 30)
+	@Column(length = 60)
 	private String shortAlternateName;
 
 	@SerializedName("site_id")
@@ -202,7 +202,7 @@ public class Series implements Serializable {
 	private String slug;
 
 	@SerializedName("start_date")
-	@Column(length = 30)
+	@Column(length = 50)
 	private String startDate;
 
 	@SerializedName("start_date_raw")
@@ -240,11 +240,11 @@ public class Series implements Serializable {
 	private String trophyName;
 
 	@SerializedName("trophy_short_name")
-	@Column(length = 30)
+	@Column(length = 50)
 	private String trophyShortName;
 
 	@SerializedName("url_component")
-	@Column(length = 30)
+	@Column(length = 50)
 	private String urlComponent;
 
 }

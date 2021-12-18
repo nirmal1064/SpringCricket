@@ -32,75 +32,76 @@ public class Person {
 	private Integer teamId;
 
 	@SerializedName("age_days")
-	protected Integer ageDays;
+	private Integer ageDays;
 
 	@SerializedName("age_years")
-	protected Integer ageYears;
+	private Integer ageYears;
 
 	@SerializedName("alpha_name")
 	@Column(length = 50)
-	protected String alphaName;
+	private String alphaName;
 
 	@SerializedName("batting_hand")
 	@Column(length = 40)
-	protected String battingHand;
+	private String battingHand;
 
 	@SerializedName("bowling_hand")
 	@Column(length = 40)
-	protected String bowlingHand;
+	private String bowlingHand;
 
 	@SerializedName("bowling_pacespin")
 	@Column(length = 40)
-	protected String bowlingPacespin;
+	private String bowlingPacespin;
 
 	@SerializedName("card_long")
 	@Column(length = 40)
-	protected String cardLong;
+	private String cardLong;
 
 	@SerializedName("card_qualifier")
 	@Column(length = 40)
-	protected String cardQualifier;
+	private String cardQualifier;
 
 	@SerializedName("card_short")
 	@Column(length = 40)
-	protected String cardShort;
+	private String cardShort;
 
-	protected LocalDate dob;
+	private LocalDate dob;
 
 	@SerializedName("known_as")
 	@Column(length = 100)
-	protected String knownAs;
+	private String knownAs;
 
 	@SerializedName("mobile_name")
 	@Column(length = 50)
-	protected String mobileName;
+	private String mobileName;
 
 	@Id
 	@SerializedName("object_id")
-	protected Integer objectId;
+	private Integer objectId;
 
 	@SerializedName("player_id")
-	protected Integer playerId;
+	private Integer playerId;
 
+	@Id
 	@SerializedName("player_type")
-	protected Integer playerType;
+	private Integer playerType;
 
 	@SerializedName("player_type_name")
 	@Column(length = 50)
-	protected String playerTypeName;
+	private String playerTypeName;
 
 	@SerializedName("popular_name")
 	@Column(length = 50)
-	protected String popularName;
+	private String popularName;
 
 	@SerializedName("portrait_alt_id")
 	@Column(length = 30)
-	protected String portraitAltId;
+	private String portraitAltId;
 
 	@SerializedName("portrait_object_id")
-	protected Integer portraitObjectId;
+	private Integer portraitObjectId;
 
 	@SerializedName("status_id")
-	protected Integer statusId;
+	private Integer statusId;
 
 }

@@ -22,5 +22,5 @@ public class PlayerKey implements Serializable {
 	private Match match;
 	private Integer objectId;
 	private Integer teamId;
-
+	private Integer playerType;
 }

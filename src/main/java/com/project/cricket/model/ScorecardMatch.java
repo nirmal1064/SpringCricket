@@ -1,10 +1,10 @@
 package com.project.cricket.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.project.cricket.entity.Debut;
 import com.project.cricket.entity.ReplacementPlayer;
-import com.project.cricket.entity.ScorecardOfficial;
 
 import lombok.Data;
 
@@ -13,16 +13,16 @@ public class ScorecardMatch {
 
 	private Integer objectId;
 
-	private List<ScorecardOfficial> umpires;
+//	private List<ScorecardOfficial> umpires = new ArrayList<>();
+//
+//	private List<ScorecardOfficial> tvUmpires = new ArrayList<>();
+//
+//	private List<ScorecardOfficial> reserveUmpires = new ArrayList<>();
+//
+//	private List<ScorecardOfficial> matchReferees = new ArrayList<>();
 
-	private List<ScorecardOfficial> tvUmpires;
+	private List<Debut> debutPlayers = new ArrayList<>();
 
-	private List<ScorecardOfficial> reserveUmpires;
-
-	private List<ScorecardOfficial> matchReferees;
-
-	private List<Debut> debutPlayers;
-
-	private List<ReplacementPlayer> replacementPlayers;
+	private List<ReplacementPlayer> replacementPlayers = new ArrayList<>();
 
 }

@@ -1,9 +1,10 @@
 package com.project.cricket.utils;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,17 +29,26 @@ public class FileOperationUtils {
 		FileChannel fileChannel = null;
 		try {
 			LOGGER.info("Writing file {} in {}", fileName, dirPath);
+			String response = readFile(dirPath, fileName);
 			Path path = Paths.get(dirPath);
 			Files.createDirectories(path);
 			Path filePath = Paths.get(path.toString(), fileName);
-			if (!overWrite && filePath.toFile().exists()) {
-				LOGGER.info("File {} already exists in {}", fileName, dirPath);
-			} else {
+			if ("".equalsIgnoreCase(response) || !response.equalsIgnoreCase(content)) {
 				Files.write(filePath, content.getBytes());
 				fileChannel = FileChannel.open(filePath);
 				String fileSize = FileUtils.byteCountToDisplaySize(fileChannel.size());
 				LOGGER.info("File {} written successfully in {} with size {}", fileName, dirPath, fileSize);
+			} else {
+				LOGGER.info("File {} already exists in {}", fileName, dirPath);
 			}
+//			if (!overWrite && filePath.toFile().exists()) {
+//				LOGGER.info("File {} already exists in {}", fileName, dirPath);
+//			} else {
+//				Files.write(filePath, content.getBytes());
+//				fileChannel = FileChannel.open(filePath);
+//				String fileSize = FileUtils.byteCountToDisplaySize(fileChannel.size());
+//				LOGGER.info("File {} written successfully in {} with size {}", fileName, dirPath, fileSize);
+//			}
 			flag = true;
 		} catch (Exception e) {
 			LOGGER.error("Exception in writing file {}", fileName, e);
@@ -76,7 +86,7 @@ public class FileOperationUtils {
 			Path filePath = Paths.get(path.toString(), fileName);
 			File file = filePath.toFile();
 			if (file.exists()) {
-				response = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+				response = FileUtils.readFileToString(file, UTF_8);
 			}
 		} catch (Exception e) {
 			LOGGER.error("Error in reading filename {} from {}", fileName, dirPath, e);
