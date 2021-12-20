@@ -15,8 +15,6 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-//@Entity
-//@Table(name = "match_officials")
 public class ScorecardOfficial extends MatchPerson {
 	private static final long serialVersionUID = 1L;
 

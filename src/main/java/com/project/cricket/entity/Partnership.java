@@ -15,9 +15,15 @@ import javax.persistence.Transient;
 import com.project.cricket.entity.keys.PartnershipKey;
 import com.project.cricket.model.PlayerOrTeam;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(of = {"match", "innings", "player1Id", "player2Id", "wicketNumber"})
 @Entity
 @Table(name = "partnership_summary")
 @IdClass(PartnershipKey.class)

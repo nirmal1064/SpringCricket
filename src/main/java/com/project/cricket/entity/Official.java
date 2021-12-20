@@ -8,7 +8,6 @@ import javax.persistence.Table;
 import com.google.gson.annotations.SerializedName;
 import com.project.cricket.entity.superclass.Person;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,7 +17,6 @@ import lombok.ToString;
 @Entity
 @Table(name = "official_summary")
 @ToString
-@EqualsAndHashCode(callSuper = true)
 public class Official extends Person implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -31,4 +29,27 @@ public class Official extends Person implements Serializable {
 
 	@SerializedName("team_short_name")
 	private String teamShortName;
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (!(obj instanceof Player)) {
+			return false;
+		}
+		return true;
+	}
+
 }

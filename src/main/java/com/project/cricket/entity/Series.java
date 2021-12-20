@@ -31,7 +31,7 @@ import lombok.ToString;
 @Table(name = "series")
 @ToString
 @IdClass(SeriesKey.class)
-@EqualsAndHashCode
+@EqualsAndHashCode(of = {"match", "coreRecreationId", "objectId"})
 public class Series implements Serializable {
 
 	private static final long serialVersionUID = 1L;

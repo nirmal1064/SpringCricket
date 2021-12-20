@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ import com.project.cricket.utils.CricUtils;
 import com.project.cricket.utils.FileOperationUtils;
 
 @RestController
+@Transactional
 public class MatchController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MatchController.class);
@@ -110,22 +112,25 @@ public class MatchController {
 	@PostMapping(value = "/matchfulldb")
 	public ResponseEntity<List<Integer>> saveMatchToDbFromFile(@RequestParam(required = false) Integer classId, @RequestParam(required = false) Integer startYear, 
 			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId) {
-		List<Integer> exceptions = Arrays.asList(1104471);
+
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
+		List<Integer> exceptions = Arrays.asList(1104471);
 		matchIds.removeAll(exceptions);
 		List<Match> matches = matchFileService.getMatches(matchIds);
 		List<Integer> result = new ArrayList<>();
-		//result = matches.parallelStream().map(Match::getMatchId).collect(Collectors.toList());
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 		LOGGER.info("Inserting {} matches", matches.size());
-		result = dbService.saveInBatches(matches);
-		LOGGER.info("Inserted {} matches", result.size());
 
+		result = dbService.saveInBatches(matches);
+		//result = dbService.saveMatchesInBatches(matches);
+
+		LOGGER.info("Inserted {} matches", result.size());
 		matchIds.removeAll(result);
 		stopWatch.stop();
 		LOGGER.info("{} Matches saved in db in {} seconds", result.size(), stopWatch.getTotalTimeSeconds());
 		return cricUtils.getListResponse(matchIds);
+
 	}
 
 	private List<Integer> filterInput(Integer classId, Integer startYear, Integer endYear, List<Integer> matchId) {

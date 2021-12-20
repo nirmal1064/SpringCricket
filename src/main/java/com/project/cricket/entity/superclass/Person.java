@@ -15,9 +15,15 @@ import com.google.gson.annotations.SerializedName;
 import com.project.cricket.entity.Match;
 import com.project.cricket.entity.keys.PlayerKey;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(of = {"match", "teamId", "objectId", "playerType"})
 @MappedSuperclass
 @IdClass(PlayerKey.class)
 public class Person {

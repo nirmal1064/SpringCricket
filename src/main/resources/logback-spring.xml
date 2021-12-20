@@ -19,6 +19,19 @@
 			<appender-ref ref="CONSOLE" />
 			<appender-ref ref="FILE" />
 		</logger>
+		<!--
+		<logger name="org.hibernate.engine.jdbc.batch.internal.BatchingBatch" level="DEBUG">
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="FILE" />
+		</logger>
+		<logger name="org.hibernate.SQL" level="DEBUG">
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="FILE" />
+		</logger>
+		<logger name="org.hibernate.type.descriptor.sql" level="TRACE">
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="FILE" />
+		</logger> -->
 		<root level="INFO">
 			<appender-ref ref="CONSOLE" />
 			<appender-ref ref="FILE" />

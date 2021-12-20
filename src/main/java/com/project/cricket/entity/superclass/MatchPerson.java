@@ -15,14 +15,20 @@ import com.project.cricket.entity.Match;
 import com.project.cricket.entity.keys.MatchPersonKey;
 import com.project.cricket.model.PlayerOrTeam;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Base class that can be used to represent a match and player
  * @author Nirmal
  *
  */
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(of = {"match", "objectId"})
 @MappedSuperclass
 @IdClass(MatchPersonKey.class)
 public abstract class MatchPerson implements Serializable {

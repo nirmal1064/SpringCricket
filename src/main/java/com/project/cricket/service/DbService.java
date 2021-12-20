@@ -9,9 +9,13 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +33,9 @@ public class DbService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DbService.class);
 
+	@Value("${spring.jpa.properties.hibernate.jdbc.batch_size}")
+	private int batchSize;
+
 	@Autowired
 	private ApplicationConfiguration appConfig;
 
@@ -39,9 +46,12 @@ public class DbService {
 	private MatchSummaryRepository matchSummaryRepository;
 
 	@Autowired
+    private EntityManagerFactory emf;
+
+	@Autowired
 	private ExecutorUtil executorUtil;
 
-	private static AtomicInteger counter = new AtomicInteger(1);
+	private static AtomicInteger counter;
 
 
 	/**
@@ -54,8 +64,28 @@ public class DbService {
 		return saveResults.size();
 	}
 
-	private List<Match> saveMatches(List<Match> matches) {
-		return matchSummaryRepository.saveAllAndFlush(matches);
+	private void saveMatches(List<Match> matches) {
+		LOGGER.info("Saving {} matches from batch {}", matches.size(), counter);
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		for (Match match : matches) {
+			em.persist(match);
+//			match.getInnings().stream().forEach(e -> em.persist(e));
+//			match.getPlayer().stream().forEach(e -> em.persist(e));
+//			match.getSeries().stream().forEach(e -> em.persist(e));
+//			match.getOfficial().stream().forEach(e -> em.persist(e));
+//			match.getBatsmen().stream().forEach(e -> em.persist(e));
+//			match.getBowlers().stream().forEach(e -> em.persist(e));
+//			match.getPartnerships().stream().forEach(e -> em.persist(e));
+//			match.getFows().stream().forEach(e -> em.persist(e));
+//			match.getDebuts().stream().forEach(e -> em.persist(e));
+//			match.getReplacement().stream().forEach(e -> em.persist(e));
+//			match.getPlayersOfTheMatch().stream().forEach(e -> em.persist(e));
+//			match.getPlayersOfTheSeries().stream().forEach(e -> em.persist(e));
+		}
+		LOGGER.info("Saving {} matches from batch {}", matches.size(), counter);
+		em.getTransaction().commit();
+		em.clear();
 	}
 
 	@Async
@@ -73,14 +103,14 @@ public class DbService {
 	}
 
 	public List<Integer> saveInBatches(List<Match> matches) {
+		counter = new AtomicInteger(1);
 		List<Integer> result = new ArrayList<>();
-		int batchSize = 100;
 		int totalMatches = matches.size();
 		List<List<Match>> batchMatches = new ArrayList<>();
 		try {
 			ExecutorService service = executorUtil.getThreadPool(appConfig.getNumOfThreads());
 			for (int i = 0; i < totalMatches; i = i + batchSize) {
-				if (i+ batchSize > totalMatches) {
+				if (i + batchSize > totalMatches) {
 					batchMatches.add(matches.subList(i, totalMatches));
 				} else {
 					batchMatches.add(matches.subList(i, i + batchSize));
@@ -91,7 +121,10 @@ public class DbService {
 					.map(subMatches -> (Callable<List<Match>>) () -> {
 						int count = counter.getAndIncrement();
 						LOGGER.info("Executing batch {}", count);
-						return saveMatches(subMatches);
+						saveMatches(subMatches);
+						//matchSummaryRepository.saveAllAndFlush(subMatches);
+						LOGGER.info("Executed batch {}", count);
+						return subMatches;
 					}).collect(Collectors.toList());
 
 			LOGGER.info("Submitting matches to executorservice ");
@@ -99,7 +132,9 @@ public class DbService {
 			LOGGER.info("Executorservice Completed");
 			for (Future<List<Match>> future : invokeAll) {
 				List<Match> list = future.get();
-				result.addAll(list.stream().map(Match::getMatchId).collect(Collectors.toList()));
+				if (list != null) {
+					result.addAll(list.stream().map(Match::getMatchId).collect(Collectors.toList()));
+				}
 			}
 			LOGGER.info("Sending back results");
 			service.shutdown();
@@ -139,21 +174,22 @@ public class DbService {
 	}
 
 	public List<Integer> saveMatchesInBatches(List<Match> matches) {
-		int batchSize = 100;
 		int totalMatches = matches.size();
 		List<Integer> result = new ArrayList<>();
 		try {
 			for (int i = 0; i < totalMatches; i = i + batchSize) {
 				if (i+ batchSize > totalMatches) {
 					List<Match> matchBatch = matches.subList(i, totalMatches);
-					List<Match> saveAll = saveMatches(matchBatch);
-					result.addAll(saveAll.parallelStream().map(Match::getMatchId).collect(Collectors.toList()));
+					matchSummaryRepository.saveAll(matchBatch);
+					//saveMatches(matchBatch);
+					result.addAll(matchBatch.parallelStream().map(Match::getMatchId).collect(Collectors.toList()));
 					LOGGER.info("Final Batch Completed");
 					break;
 				}
 				List<Match> matchBatch = matches.subList(i, i + batchSize);
-				List<Match> savedMatches = matchSummaryRepository.saveAll(matchBatch);
-				result.addAll(savedMatches.parallelStream().map(Match::getMatchId).collect(Collectors.toList()));
+				matchSummaryRepository.saveAll(matchBatch);
+				//saveMatches(matchBatch);
+				result.addAll(matchBatch.parallelStream().map(Match::getMatchId).collect(Collectors.toList()));
 				LOGGER.info("{} matches completed", i + batchSize);
 			}
 			LOGGER.info("Sending back results");

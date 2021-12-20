@@ -20,9 +20,15 @@ import com.project.cricket.entity.keys.FowKey;
 import com.project.cricket.model.DismissalFielder;
 import com.project.cricket.model.PlayerOrTeam;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(of = {"match", "innings", "bowlerId", "fowWicketNum"})
 @Entity
 @Table(name = "fow_summary")
 @IdClass(FowKey.class)

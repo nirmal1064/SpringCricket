@@ -1,7 +1,7 @@
 package com.project.cricket.entity;
 
 import static com.project.cricket.utils.Constants.TEXT;
-import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +19,7 @@ import javax.persistence.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,6 +29,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode(of = {"matchId"})
 public class Match implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -38,56 +39,136 @@ public class Match implements Serializable {
 	private Integer matchId;
 
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = MERGE)
+	@OneToMany(mappedBy = "match", cascade = PERSIST)
 	private List<Innings> innings = new ArrayList<>();
 
+	public List<Innings> getInnings() {
+		if (innings == null) {
+			return new ArrayList<>();
+		}
+		return innings;
+	}
+
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
 	private List<Player> player = new ArrayList<>();
 
+	public List<Player> getPlayer() {
+		if (player == null) {
+			return new ArrayList<>();
+		}
+		return player;
+	}
+
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
 	private List<Series> series = new ArrayList<>();
 
+	public List<Series> getSeries() {
+		if (series == null) {
+			return new ArrayList<>();
+		}
+		return series;
+	}
+
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
 	private List<Official> official = new ArrayList<>();
 
+	public List<Official> getOfficial() {
+		if (official == null) {
+			return new ArrayList<>();
+		}
+		return official;
+	}
+
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
 	private List<Batsman> batsmen = new ArrayList<>();
 
+	public List<Batsman> getBatsmen() {
+		if (batsmen == null) {
+			return new ArrayList<>();
+		}
+		return batsmen;
+	}
+
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
 	private List<Bowler> bowlers = new ArrayList<>();
 
+	public List<Bowler> getBowlers() {
+		if (bowlers == null) {
+			return new ArrayList<>();
+		}
+		return bowlers;
+	}
+
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
 	private List<Partnership> partnerships = new ArrayList<>();
 
+	public List<Partnership> getPartnerships() {
+		if (partnerships == null) {
+			return new ArrayList<>();
+		}
+		return partnerships;
+	}
+
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
 	private List<Fow> fows = new ArrayList<>();
 
+	public List<Fow> getFows() {
+		if (fows == null) {
+			return new ArrayList<>();
+		}
+		return fows;
+	}
+
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
 	private List<Debut> debuts = new ArrayList<>();
 
+	public List<Debut> getDebuts() {
+		if (debuts == null) {
+			return new ArrayList<>();
+		}
+		return debuts;
+	}
+
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
 	private List<ReplacementPlayer> replacement = new ArrayList<>();
 
+	public List<ReplacementPlayer> getReplacement() {
+		if (replacement == null) {
+			return new ArrayList<>();
+		}
+		return replacement;
+	}
+
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
 	private List<PlayersOfTheMatch> playersOfTheMatch = new ArrayList<>();
 
+	public List<PlayersOfTheMatch> getPlayersOfTheMatch() {
+		if (playersOfTheMatch == null) {
+			return new ArrayList<>();
+		}
+		return playersOfTheMatch;
+	}
+
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
 	private List<PlayersOfTheSeries> playersOfTheSeries = new ArrayList<>();
 
-//	@Expose(serialize = false, deserialize = false)
-//	@OneToMany(mappedBy = "match", cascade = MERGE, orphanRemoval = true)
-//	private List<ScorecardOfficial> officials = new ArrayList<>();
+	public List<PlayersOfTheSeries> getPlayersOfTheSeries() {
+		if (playersOfTheSeries == null) {
+			return new ArrayList<>();
+		}
+		return playersOfTheSeries;
+	}
 
 	@SerializedName("actual_days")
 	private Integer actualDays;
@@ -567,23 +648,6 @@ public class Match implements Serializable {
 	@Override
 	public String toString() {
 		return "Match [matchId=" + matchId + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(matchId);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof Match)) {
-			return false;
-		}
-		Match other = (Match) obj;
-		return Objects.equals(matchId, other.matchId);
 	}
 
 }

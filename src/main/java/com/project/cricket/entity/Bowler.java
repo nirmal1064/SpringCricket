@@ -15,9 +15,15 @@ import javax.persistence.Transient;
 import com.project.cricket.entity.keys.BowlerKey;
 import com.project.cricket.model.PlayerOrTeam;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(of = {"match", "innings", "bowlerId"})
 @Entity
 @Table(name = "bowling_scorecard")
 @IdClass(BowlerKey.class)
