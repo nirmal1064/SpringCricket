@@ -63,7 +63,7 @@ public class MatchController {
 	 */
 	@PostMapping(value = "/matchjson")
 	public ResponseEntity<List<Integer>> saveMatchJsonToFile(@RequestParam(required = false) Integer classId, @RequestParam(required = false) Integer startYear, 
-			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId, @RequestParam Boolean overWrite) {
+			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId) {
 		LOGGER.info("Request to saveMatchJsonToFile");
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
 		List<Integer> matchJson = matchService.getMatchJson(matchIds);
@@ -73,7 +73,7 @@ public class MatchController {
 
 	@PostMapping(value = "/matchscorecard")
 	public ResponseEntity<List<Integer>> saveMatchScorecardToFile(@RequestParam(required = false) Integer classId, @RequestParam(required = false) Integer startYear, 
-			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId, @RequestParam Boolean overWrite) {
+			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId) {
 		LOGGER.info("Request to saveMatchScorecardToFile");
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
 		List<Integer> matchScorecard = matchService.getMatchScorecard(matchIds);
