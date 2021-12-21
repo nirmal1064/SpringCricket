@@ -3,6 +3,7 @@ package com.project.cricket.config;
 import static com.project.cricket.utils.Constants.DATETIMEFORMAT;
 
 import java.lang.reflect.Type;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ServiceLocatorFactoryBean;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
@@ -121,8 +123,11 @@ public class ApplicationConfiguration {
 	}
 
 	@Bean
-	public RestTemplate restTemplate() {
-		return new RestTemplate();
+	public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
+		return restTemplateBuilder
+				.setConnectTimeout(Duration.ofSeconds(20))
+				.setReadTimeout(Duration.ofSeconds(20))
+				.build();
 	}
 
 	@PostConstruct

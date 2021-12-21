@@ -74,7 +74,6 @@ public class MatchOnlineTask implements Callable<Integer> {
 	private Integer scrapeWebsite() {
 		String fileName = String.valueOf(matchId) + ".json";
 		String url = String.format(MATCH_URL, matchId);
-		LOGGER.info("scrapting html for {}", url);
 		Document document = null;
 		try {
 			document = Jsoup.connect(url).get();

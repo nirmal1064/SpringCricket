@@ -28,7 +28,6 @@ public class FileOperationUtils {
 		boolean flag = false;
 		FileChannel fileChannel = null;
 		try {
-			LOGGER.info("Writing file {} in {}", fileName, dirPath);
 			String response = readFile(dirPath, fileName);
 			Path path = Paths.get(dirPath);
 			Files.createDirectories(path);
