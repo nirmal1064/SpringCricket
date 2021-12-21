@@ -165,10 +165,6 @@ public class MatchTask implements Callable<Match> {
 	private void parseMatchScorecard(MatchScorecard matchScorecard) {
 
 		ScorecardMatch scorecardMatch = matchScorecard.getMatch();
-		//addMatchAndType(scorecardMatch.getUmpires(), FIELDUMPIRE);
-		//addMatchAndType(scorecardMatch.getTvUmpires(), TVUMPIRE);
-		//addMatchAndType(scorecardMatch.getReserveUmpires(), RESERVEUMPIRE);
-		//addMatchAndType(scorecardMatch.getMatchReferees(), MATCHREFEREE);
 		addMatchAndIdToDebuts(scorecardMatch.getDebutPlayers());
 		parseReplacements(scorecardMatch.getReplacementPlayers());
 
@@ -224,20 +220,9 @@ public class MatchTask implements Callable<Match> {
 				e.setTeamId(e.getTeam().getObjectId());
 				e.setReplacingPlayerId(e.getReplacingPlayer().getObjectId());
 			});
-			match.setReplacement(replacementPlayers);;
+			match.setReplacement(replacementPlayers);
 		}
 	}
-
-//	private void addMatchAndType(List<ScorecardOfficial> umps, String type) {
-//		if (!CollectionUtils.isEmpty(umps)) {
-//			umps.forEach(e -> {
-//				e.setMatch(match);
-//				e.setType(type);
-//				e.setObjectId(e.getPlayer().getObjectId());
-//			});
-//			match.getOfficials().addAll(umps);
-//		}
-//	}
 
 	private void addMatchAndId(List<? extends MatchPerson> persons) {
 		if (!CollectionUtils.isEmpty(persons)) {

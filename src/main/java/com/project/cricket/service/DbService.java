@@ -19,6 +19,7 @@ import com.project.cricket.entity.ResultSummary;
 import com.project.cricket.repository.ResultSummaryRepository;
 
 @Service
+@Transactional
 public class DbService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DbService.class);
@@ -42,7 +43,6 @@ public class DbService {
 		return saveResults.size();
 	}
 
-	@Transactional
 	public void saveMatches(List<Match> matches) {
 		for (Match match : matches) {
 			em.persist(match);

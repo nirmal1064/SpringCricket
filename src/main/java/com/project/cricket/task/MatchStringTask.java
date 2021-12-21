@@ -112,6 +112,6 @@ public class MatchStringTask implements Callable<String> {
 		String response = "";
 		String url = String.format(MJSON_URL, matchId);
 		response = restTemplate.getForObject(url, String.class);
-		return StringUtils.trimWhitespace(response);
+		return response.trim();
 	}
 }
