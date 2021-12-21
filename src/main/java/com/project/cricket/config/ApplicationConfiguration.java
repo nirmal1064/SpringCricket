@@ -125,8 +125,8 @@ public class ApplicationConfiguration {
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
 		return restTemplateBuilder
-				.setConnectTimeout(Duration.ofSeconds(20))
-				.setReadTimeout(Duration.ofSeconds(20))
+				.setConnectTimeout(Duration.ofSeconds(100))
+				.setReadTimeout(Duration.ofSeconds(100))
 				.build();
 	}
 

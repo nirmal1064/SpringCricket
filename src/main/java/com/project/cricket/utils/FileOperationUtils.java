@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
+//@Scope(value = SCOPE_PROTOTYPE)
 public class FileOperationUtils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileOperationUtils.class);
@@ -33,7 +34,7 @@ public class FileOperationUtils {
 			Files.createDirectories(path);
 			Path filePath = Paths.get(path.toString(), fileName);
 			if (StringUtils.hasText(content) && !response.equalsIgnoreCase(content)) {
-				Files.write(filePath, content.getBytes());
+				Files.writeString(filePath, content);
 				fileChannel = FileChannel.open(filePath);
 				String fileSize = FileUtils.byteCountToDisplaySize(fileChannel.size());
 				LOGGER.info("File {} written successfully in {} with size {}", fileName, dirPath, fileSize);

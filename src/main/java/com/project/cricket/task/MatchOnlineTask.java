@@ -33,10 +33,10 @@ public class MatchOnlineTask implements Callable<Integer> {
 	private ApplicationConfiguration appConfig;
 
 	@Autowired
-	private FileOperationUtils fileUtils;
+	private RestTemplate restTemplate;
 
 	@Autowired
-	private RestTemplate restTemplate;
+	private FileOperationUtils fileUtils;
 
 	private int matchId;
 	private String task;
@@ -62,7 +62,7 @@ public class MatchOnlineTask implements Callable<Integer> {
 			String fileName = String.valueOf(matchId) + ".json";
 			matchJson = getMatchJson(matchId);
 			boolean flag = fileUtils.writeToFile(appConfig.getMatchJsonFileLocation(), fileName, matchJson);
-			if (!flag) {
+			if (flag) {
 				return matchId;
 			}
 		} catch (Exception e) {
@@ -76,11 +76,11 @@ public class MatchOnlineTask implements Callable<Integer> {
 		String url = String.format(MATCH_URL, matchId);
 		Document document = null;
 		try {
-			document = Jsoup.connect(url).get();
+			document = Jsoup.connect(url).timeout(60000).get();
 			Element element = document.getElementById(NEXT_DATA);
 			String scorecard = element.data();
 			boolean flag = fileUtils.writeToFile(appConfig.getMatchScorecardFileLocation(), fileName, StringUtils.trimWhitespace(scorecard));
-			if (!flag) {
+			if (flag) {
 				return matchId;
 			}
 		} catch (Exception e) {
