@@ -19,7 +19,7 @@ import com.project.cricket.repository.ResultSummaryRepository;
 
 /**
  * 
- * @author Nirmal
+ * @author Nirmal Kumar
  *
  */
 @RestController

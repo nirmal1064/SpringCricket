@@ -35,6 +35,8 @@ import lombok.Getter;
 @Getter
 public class ApplicationConfiguration {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationConfiguration.class);
+
 	@Value("${threads}")
 	private int numOfThreads;
 
@@ -43,8 +45,6 @@ public class ApplicationConfiguration {
 
 	@Value("${file.matchscorecard.location}")
 	private String matchScorecardFileLocation;
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationConfiguration.class);
 
 	@SuppressWarnings("rawtypes")
 	@Bean
