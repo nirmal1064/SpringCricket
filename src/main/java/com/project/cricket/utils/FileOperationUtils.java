@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
-//@Scope(value = SCOPE_PROTOTYPE)
 public class FileOperationUtils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileOperationUtils.class);
