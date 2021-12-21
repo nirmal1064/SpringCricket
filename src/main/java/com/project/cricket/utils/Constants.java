@@ -37,4 +37,5 @@ public final class Constants {
 	public static final String LONG = "long";
 	public static final String SUB = "sub";
 	public static final String DNB = "DNB";
+	public static final String MATCHNOTFOUND = "Match %s not found";
 }

@@ -62,21 +62,23 @@ public class MatchController {
 	 * @return
 	 */
 	@PostMapping(value = "/matchjson")
-	public ResponseEntity<List<String>> saveMatchJsonToFile(@RequestParam(required = false) Integer classId, @RequestParam(required = false) Integer startYear, 
+	public ResponseEntity<List<Integer>> saveMatchJsonToFile(@RequestParam(required = false) Integer classId, @RequestParam(required = false) Integer startYear, 
 			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId, @RequestParam Boolean overWrite) {
 		LOGGER.info("Request to saveMatchJsonToFile");
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
-		List<String> matchJson = matchService.getMatchJson(matchIds, true, overWrite);
-		return cricUtils.getListResponse(matchJson);
+		List<Integer> matchJson = matchService.getMatchJson(matchIds);
+		matchIds.removeAll(matchJson);
+		return cricUtils.getListResponse(matchIds);
 	}
 
 	@PostMapping(value = "/matchscorecard")
-	public ResponseEntity<List<String>> saveMatchScorecardToFile(@RequestParam(required = false) Integer classId, @RequestParam(required = false) Integer startYear, 
+	public ResponseEntity<List<Integer>> saveMatchScorecardToFile(@RequestParam(required = false) Integer classId, @RequestParam(required = false) Integer startYear, 
 			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId, @RequestParam Boolean overWrite) {
 		LOGGER.info("Request to saveMatchScorecardToFile");
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
-		List<String> matchScorecard = matchService.getMatchScorecard(matchIds, true, overWrite);
-		return cricUtils.getListResponse(matchScorecard);
+		List<Integer> matchScorecard = matchService.getMatchScorecard(matchIds);
+		matchIds.removeAll(matchScorecard);
+		return cricUtils.getListResponse(matchIds);
 	}
 
 	@GetMapping(value = "/getmissingscorecard")

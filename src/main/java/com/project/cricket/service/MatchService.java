@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
-import org.springframework.util.StringUtils;
 
 import com.project.cricket.config.ApplicationConfiguration;
 import com.project.cricket.config.ServiceFactory;
@@ -41,30 +40,28 @@ public class MatchService {
 
 	private ExecutorService service;
 
-	public List<String> getMatchJson(List<Integer> matchIds, boolean writeToFile, boolean overWrite) {
+	public List<Integer> getMatchJson(List<Integer> matchIds) {
 		LOGGER.info("MatchJson summary for {} matches", matchIds.size());
-		return handleMatchTask(matchIds, writeToFile, overWrite, JSON, JSON_SUMMARY_LOG);
+		return handleMatchTask(matchIds, JSON, JSON_SUMMARY_LOG);
 	}
 
-	public List<String> getMatchScorecard(List<Integer> matchIds, boolean writeToFile, boolean overWrite) {
+	public List<Integer> getMatchScorecard(List<Integer> matchIds) {
 		LOGGER.info("Match Scorecard summary for {} matches", matchIds.size());
-		return handleMatchTask(matchIds, writeToFile, overWrite, HTML, SCORECARD_SUMMARY_LOG);
+		return handleMatchTask(matchIds, HTML, SCORECARD_SUMMARY_LOG);
 	}
 
-	private List<String> handleMatchTask(List<Integer> matchIds, boolean writeToFile, 
-			boolean overWrite, String type, String comments) {
-		List<String> result = new ArrayList<>();
+	private List<Integer> handleMatchTask(List<Integer> matchIds, String type, String comments) {
+		List<Integer> result = new ArrayList<>();
 		StopWatch stopWatch = new StopWatch();
 		try {
 			List<MatchStringTask> matchTasks = new ArrayList<>();
-			List<Future<String>> resultsFuture;
 			stopWatch.start();
 			for (Integer matchId : matchIds) {
 				MatchStringTask matchTask = serviceFactory.matchStringTask();
-				matchTask.init(matchId, writeToFile, overWrite, type, false);
+				matchTask.init(matchId, type);
 				matchTasks.add(matchTask);
 			}
-			resultsFuture = service.invokeAll(matchTasks);
+			List<Future<Integer>> resultsFuture = service.invokeAll(matchTasks);
 			addResults(stopWatch, result, resultsFuture);
 			LOGGER.info(comments, matchIds.size(), stopWatch.getTotalTimeSeconds());
 		} catch (InterruptedException e) {
@@ -76,11 +73,11 @@ public class MatchService {
 		return result;
 	}
 
-	private void addResults(StopWatch stopWatch, List<String> result, List<Future<String>> resultsFuture) throws InterruptedException, ExecutionException {
-		for (Future<String> future : resultsFuture) {
-			String json = future.get();
-			if (StringUtils.hasLength(json)) {
-				result.add(json);
+	private void addResults(StopWatch stopWatch, List<Integer> result, List<Future<Integer>> resultsFuture) throws InterruptedException, ExecutionException {
+		for (Future<Integer> future : resultsFuture) {
+			Integer id = future.get();
+			if (id != null) {
+				result.add(id);
 			}
 		}
 		stopWatch.stop();

@@ -25,7 +25,7 @@ import com.project.cricket.utils.FileOperationUtils;
 
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class MatchStringTask implements Callable<String> {
+public class MatchStringTask implements Callable<Integer> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MatchStringTask.class);
 
@@ -39,21 +39,15 @@ public class MatchStringTask implements Callable<String> {
 	private RestTemplate restTemplate;
 
 	private int matchId;
-	private boolean writeToFile;
-	private boolean overWrite;
 	private String task;
-	private boolean fromFile;
 
-	public void init(int matchId, boolean writeToFile, boolean overWrite, String task, boolean fromFile) {
+	public void init(int matchId, String task) {
 		this.matchId = matchId;
-		this.writeToFile = writeToFile;
-		this.overWrite = overWrite;
 		this.task = task;
-		this.fromFile = fromFile;
 	}
 
 	@Override
-	public String call() throws Exception {
+	public Integer call() throws Exception {
 		if (task.equalsIgnoreCase(JSON)) {
 			return matchJson();
 		} else if (task.equalsIgnoreCase(HTML)) {
@@ -62,21 +56,14 @@ public class MatchStringTask implements Callable<String> {
 		return null;
 	}
 
-	private String matchJson() {
+	private Integer matchJson() {
 		String matchJson = "";
 		try {
 			String fileName = String.valueOf(matchId) + ".json";
-			if (fromFile) {
-				matchJson = fileUtils.readFile(appConfig.getMatchJsonFileLocation(), fileName);
-				return matchJson;
-			} else {
-				matchJson = getMatchJson(matchId);
-				if (writeToFile) {
-					boolean flag = fileUtils.writeToFile(appConfig.getMatchJsonFileLocation(), fileName, matchJson.trim(), overWrite);
-					if (!flag) {
-						return String.valueOf(matchId);
-					}
-				}
+			matchJson = getMatchJson(matchId);
+			boolean flag = fileUtils.writeToFile(appConfig.getMatchJsonFileLocation(), fileName, matchJson);
+			if (!flag) {
+				return matchId;
 			}
 		} catch (Exception e) {
 			LOGGER.error("Exception in json task for match {}", matchId, e);
@@ -84,11 +71,8 @@ public class MatchStringTask implements Callable<String> {
 		return null;
 	}
 
-	private String scrapeWebsite() {
+	private Integer scrapeWebsite() {
 		String fileName = String.valueOf(matchId) + ".json";
-		if (fromFile) {
-			return fileUtils.readFile(appConfig.getMatchScorecardFileLocation(), fileName);
-		}
 		String url = String.format(MATCH_URL, matchId);
 		LOGGER.info("scrapting html for {}", url);
 		Document document = null;
@@ -96,11 +80,9 @@ public class MatchStringTask implements Callable<String> {
 			document = Jsoup.connect(url).get();
 			Element element = document.getElementById(NEXT_DATA);
 			String scorecard = element.data();
-			if (writeToFile) {
-				boolean flag = fileUtils.writeToFile(appConfig.getMatchScorecardFileLocation(), fileName, StringUtils.trimWhitespace(scorecard), overWrite);
-				if (!flag) {
-					return String.valueOf(matchId);
-				}
+			boolean flag = fileUtils.writeToFile(appConfig.getMatchScorecardFileLocation(), fileName, StringUtils.trimWhitespace(scorecard));
+			if (!flag) {
+				return matchId;
 			}
 		} catch (Exception e) {
 			LOGGER.error("Exception in extracting scorecard for match {}", matchId, e);
@@ -112,6 +94,9 @@ public class MatchStringTask implements Callable<String> {
 		String response = "";
 		String url = String.format(MJSON_URL, matchId);
 		response = restTemplate.getForObject(url, String.class);
+		if (StringUtils.hasText(response)) {
+			return StringUtils.trimWhitespace(response);
+		}
 		return response;
 	}
 }

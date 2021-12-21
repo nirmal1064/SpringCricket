@@ -24,7 +24,7 @@ public class FileOperationUtils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileOperationUtils.class);
 
-	public boolean writeToFile(String dirPath, String fileName, String content, boolean overWrite) {
+	public boolean writeToFile(String dirPath, String fileName, String content) {
 		boolean flag = false;
 		FileChannel fileChannel = null;
 		try {
@@ -33,7 +33,7 @@ public class FileOperationUtils {
 			Path path = Paths.get(dirPath);
 			Files.createDirectories(path);
 			Path filePath = Paths.get(path.toString(), fileName);
-			if (!StringUtils.hasLength(response) || !response.equalsIgnoreCase(content)) {
+			if (StringUtils.hasText(content) && !response.equalsIgnoreCase(content)) {
 				Files.write(filePath, content.getBytes());
 				fileChannel = FileChannel.open(filePath);
 				String fileSize = FileUtils.byteCountToDisplaySize(fileChannel.size());
@@ -85,4 +85,5 @@ public class FileOperationUtils {
 		}
 		return StringUtils.trimWhitespace(response);
 	}
+
 }
