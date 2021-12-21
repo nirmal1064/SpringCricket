@@ -5,9 +5,10 @@ spring.jpa.open-in-view: false
 file.matchjson.location: /path/to/store
 file.matchscorecard.location: /path/to/store
 spring.jpa.properties.hibernate:
-   jdbc.batch_size: 100
+   jdbc.batch_size: 50
    order_inserts: true
-   generate_statistics: true
+   generate_statistics: false
+   order_updates: true
 ---
 spring:
    profiles: dev
@@ -16,12 +17,10 @@ spring:
       username: root
       password: password
       hikari:
-         maximum-pool-size: 20
-         connection-timeout: 120000
-         minimum-idle: 20
-         idle-timeout: 10000
-         max-lifetime: 1000
-         auto-commit: true
+         maximumPoolSize: 10
+         idleTimeout: 120000
+         connectionTimeout: 300000
+         leakDetectionThreshold: 300000
 threads: 20
 ---
 spring:

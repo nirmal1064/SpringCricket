@@ -114,16 +114,17 @@ public class MatchController {
 			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId) {
 
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
+		List<Integer> matchIdsAlreadyPresent = dbController.getAllMatchIdsFromMatchSummary();
 		List<Integer> exceptions = Arrays.asList(1104471);
 		matchIds.removeAll(exceptions);
+		matchIds.removeAll(matchIdsAlreadyPresent);
 		List<Match> matches = matchFileService.getMatches(matchIds);
 		List<Integer> result = new ArrayList<>();
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 		LOGGER.info("Inserting {} matches", matches.size());
 
-		result = dbService.saveInBatches(matches);
-		//result = dbService.saveMatchesInBatches(matches);
+		result = dbService.saveMatchesInBatches(matches);
 
 		LOGGER.info("Inserted {} matches", result.size());
 		matchIds.removeAll(result);

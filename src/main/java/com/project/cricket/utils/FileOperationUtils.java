@@ -33,7 +33,7 @@ public class FileOperationUtils {
 			Path path = Paths.get(dirPath);
 			Files.createDirectories(path);
 			Path filePath = Paths.get(path.toString(), fileName);
-			if ("".equalsIgnoreCase(response) || !response.equalsIgnoreCase(content)) {
+			if (!StringUtils.hasLength(response) || !response.equalsIgnoreCase(content)) {
 				Files.write(filePath, content.getBytes());
 				fileChannel = FileChannel.open(filePath);
 				String fileSize = FileUtils.byteCountToDisplaySize(fileChannel.size());
@@ -41,14 +41,6 @@ public class FileOperationUtils {
 			} else {
 				LOGGER.info("File {} already exists in {}", fileName, dirPath);
 			}
-//			if (!overWrite && filePath.toFile().exists()) {
-//				LOGGER.info("File {} already exists in {}", fileName, dirPath);
-//			} else {
-//				Files.write(filePath, content.getBytes());
-//				fileChannel = FileChannel.open(filePath);
-//				String fileSize = FileUtils.byteCountToDisplaySize(fileChannel.size());
-//				LOGGER.info("File {} written successfully in {} with size {}", fileName, dirPath, fileSize);
-//			}
 			flag = true;
 		} catch (Exception e) {
 			LOGGER.error("Exception in writing file {}", fileName, e);

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.project.cricket.entity.Match;
 
 @Repository
-public interface MatchSummaryRepository extends JpaRepository<Match, Long> {
+public interface MatchSummaryRepository extends JpaRepository<Match, Integer> {
 
 }

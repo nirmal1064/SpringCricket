@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import com.project.cricket.config.ApplicationConfiguration;
@@ -96,7 +97,7 @@ public class MatchStringTask implements Callable<String> {
 			Element element = document.getElementById(NEXT_DATA);
 			String scorecard = element.data();
 			if (writeToFile) {
-				boolean flag = fileUtils.writeToFile(appConfig.getMatchScorecardFileLocation(), fileName, scorecard, overWrite);
+				boolean flag = fileUtils.writeToFile(appConfig.getMatchScorecardFileLocation(), fileName, StringUtils.trimWhitespace(scorecard), overWrite);
 				if (!flag) {
 					return String.valueOf(matchId);
 				}
@@ -109,12 +110,8 @@ public class MatchStringTask implements Callable<String> {
 
 	private String getMatchJson(int matchId) {
 		String response = "";
-		try {
-			String url = String.format(MJSON_URL, matchId);
-			response = restTemplate.getForObject(url, String.class);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-		}
-		return response;
+		String url = String.format(MJSON_URL, matchId);
+		response = restTemplate.getForObject(url, String.class);
+		return StringUtils.trimWhitespace(response);
 	}
 }

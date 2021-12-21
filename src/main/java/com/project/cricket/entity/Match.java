@@ -1,7 +1,7 @@
 package com.project.cricket.entity;
 
 import static com.project.cricket.utils.Constants.TEXT;
-import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.ALL;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -39,7 +39,7 @@ public class Match implements Serializable {
 	private Integer matchId;
 
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = PERSIST)
+	@OneToMany(mappedBy = "match", cascade = ALL)
 	private List<Innings> innings = new ArrayList<>();
 
 	public List<Innings> getInnings() {
@@ -50,7 +50,7 @@ public class Match implements Serializable {
 	}
 
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<Player> player = new ArrayList<>();
 
 	public List<Player> getPlayer() {
@@ -61,7 +61,7 @@ public class Match implements Serializable {
 	}
 
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<Series> series = new ArrayList<>();
 
 	public List<Series> getSeries() {
@@ -72,7 +72,7 @@ public class Match implements Serializable {
 	}
 
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<Official> official = new ArrayList<>();
 
 	public List<Official> getOfficial() {
@@ -83,7 +83,7 @@ public class Match implements Serializable {
 	}
 
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<Batsman> batsmen = new ArrayList<>();
 
 	public List<Batsman> getBatsmen() {
@@ -94,7 +94,7 @@ public class Match implements Serializable {
 	}
 
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<Bowler> bowlers = new ArrayList<>();
 
 	public List<Bowler> getBowlers() {
@@ -105,7 +105,7 @@ public class Match implements Serializable {
 	}
 
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<Partnership> partnerships = new ArrayList<>();
 
 	public List<Partnership> getPartnerships() {
@@ -116,7 +116,7 @@ public class Match implements Serializable {
 	}
 
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<Fow> fows = new ArrayList<>();
 
 	public List<Fow> getFows() {
@@ -127,7 +127,7 @@ public class Match implements Serializable {
 	}
 
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<Debut> debuts = new ArrayList<>();
 
 	public List<Debut> getDebuts() {
@@ -138,7 +138,7 @@ public class Match implements Serializable {
 	}
 
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<ReplacementPlayer> replacement = new ArrayList<>();
 
 	public List<ReplacementPlayer> getReplacement() {
@@ -149,7 +149,7 @@ public class Match implements Serializable {
 	}
 
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<PlayersOfTheMatch> playersOfTheMatch = new ArrayList<>();
 
 	public List<PlayersOfTheMatch> getPlayersOfTheMatch() {
@@ -160,7 +160,7 @@ public class Match implements Serializable {
 	}
 
 	@Expose(serialize = false, deserialize = false)
-	@OneToMany(mappedBy = "match", cascade = PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<PlayersOfTheSeries> playersOfTheSeries = new ArrayList<>();
 
 	public List<PlayersOfTheSeries> getPlayersOfTheSeries() {

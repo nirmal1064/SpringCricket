@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.cricket.entity.Match;
 import com.project.cricket.entity.ResultSummary;
+import com.project.cricket.repository.MatchSummaryRepository;
 import com.project.cricket.repository.ResultSummaryRepository;
 
 /**
@@ -27,6 +29,9 @@ public class DbController {
 
 	@Autowired
 	private ResultSummaryRepository resultSummaryRepository;
+
+	@Autowired
+	private MatchSummaryRepository matchSummaryRepository;
 
 	@GetMapping(value = "/resultsummary", produces = APPLICATION_JSON_VALUE)
 	public List<ResultSummary> getResultsSummaryFromDb() {
@@ -56,6 +61,10 @@ public class DbController {
 	@GetMapping(value = "/matchids", produces = APPLICATION_JSON_VALUE)
 	public List<Integer> getMatchIds(@RequestParam Integer classId, @RequestParam Integer startYear, @RequestParam Integer endYear) {
 		return resultSummaryRepository.findByClassIdAndYearBetween(classId, startYear, endYear).stream().map(ResultSummary::getMatchId).collect(Collectors.toList());
+	}
+
+	public List<Integer> getAllMatchIdsFromMatchSummary() {
+		return matchSummaryRepository.findAll().stream().map(Match::getMatchId).collect(Collectors.toList());
 	}
 
 }
