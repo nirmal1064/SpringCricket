@@ -5,6 +5,7 @@ import static com.project.cricket.utils.Constants.JSON;
 import static com.project.cricket.utils.Constants.MATCH_URL;
 import static com.project.cricket.utils.Constants.MJSON_URL;
 import static com.project.cricket.utils.Constants.NEXT_DATA;
+import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
 import java.util.concurrent.Callable;
 
@@ -14,7 +15,6 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -24,7 +24,7 @@ import com.project.cricket.config.ApplicationConfiguration;
 import com.project.cricket.utils.FileOperationUtils;
 
 @Component
-@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Scope(value = SCOPE_PROTOTYPE)
 public class MatchOnlineTask implements Callable<Integer> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MatchOnlineTask.class);

@@ -12,6 +12,7 @@ import static com.project.cricket.utils.Constants.T20IHASH;
 import static com.project.cricket.utils.Constants.TD;
 import static com.project.cricket.utils.Constants.TESTHASH;
 import static com.project.cricket.utils.Constants.TR;
+import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,6 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
@@ -33,7 +33,7 @@ import com.project.cricket.exceptions.ResultNotFoundException;
 import com.project.cricket.utils.CricUtils;
 
 @Configuration
-@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Scope(value = SCOPE_PROTOTYPE)
 public class ResultsScraperTask implements Callable<List<ResultSummary>> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResultsScraperTask.class);
