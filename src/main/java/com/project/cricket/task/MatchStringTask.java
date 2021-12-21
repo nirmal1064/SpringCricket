@@ -72,7 +72,7 @@ public class MatchStringTask implements Callable<String> {
 			} else {
 				matchJson = getMatchJson(matchId);
 				if (writeToFile) {
-					boolean flag = fileUtils.writeToFile(appConfig.getMatchJsonFileLocation(), fileName, matchJson, overWrite);
+					boolean flag = fileUtils.writeToFile(appConfig.getMatchJsonFileLocation(), fileName, matchJson.trim(), overWrite);
 					if (!flag) {
 						return String.valueOf(matchId);
 					}
@@ -112,6 +112,6 @@ public class MatchStringTask implements Callable<String> {
 		String response = "";
 		String url = String.format(MJSON_URL, matchId);
 		response = restTemplate.getForObject(url, String.class);
-		return response.trim();
+		return response;
 	}
 }

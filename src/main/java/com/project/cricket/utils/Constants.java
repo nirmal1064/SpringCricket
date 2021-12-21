@@ -32,15 +32,9 @@ public final class Constants {
 	public static final String MATCH = "match";
 	public static final String CONTENT = "content";
 	public static final String SCORECARD = "scorecard";
-	public static final String MATCHPLAYERS = "matchPlayers";
 	public static final String SUPPORTINFO = "supportInfo";
-	public static final String FIELDUMPIRE = "field";
-	public static final String TVUMPIRE = "tv";
-	public static final String RESERVEUMPIRE = "reserve";
-	public static final String MATCHREFEREE = "referee";
 	public static final String SHORT = "short";
 	public static final String LONG = "long";
-	public static final String COMMENTARY = "commentary";
 	public static final String SUB = "sub";
 	public static final String DNB = "DNB";
 }
