@@ -25,9 +25,9 @@ import com.project.cricket.utils.FileOperationUtils;
 
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class MatchStringTask implements Callable<Integer> {
+public class MatchOnlineTask implements Callable<Integer> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(MatchStringTask.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MatchOnlineTask.class);
 
 	@Autowired
 	private ApplicationConfiguration appConfig;

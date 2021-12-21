@@ -21,7 +21,7 @@ import org.springframework.util.StopWatch;
 
 import com.project.cricket.config.ApplicationConfiguration;
 import com.project.cricket.config.ServiceFactory;
-import com.project.cricket.task.MatchStringTask;
+import com.project.cricket.task.MatchOnlineTask;
 import com.project.cricket.utils.ExecutorUtil;
 
 @Component
@@ -54,10 +54,10 @@ public class MatchService {
 		List<Integer> result = new ArrayList<>();
 		StopWatch stopWatch = new StopWatch();
 		try {
-			List<MatchStringTask> matchTasks = new ArrayList<>();
+			List<MatchOnlineTask> matchTasks = new ArrayList<>();
 			stopWatch.start();
 			for (Integer matchId : matchIds) {
-				MatchStringTask matchTask = serviceFactory.matchStringTask();
+				MatchOnlineTask matchTask = serviceFactory.matchOnlineTask();
 				matchTask.init(matchId, type);
 				matchTasks.add(matchTask);
 			}
