@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.EntityManagerFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +30,8 @@ public class DbService {
 	@Autowired
 	private ResultSummaryRepository resultSummaryRepository;
 
-	@PersistenceContext
-	private EntityManager em;
+	@Autowired
+	private EntityManagerFactory emf;
 
 	/**
 	 * Save the resultSummary to the db and return the count of the saved details
@@ -44,6 +44,8 @@ public class DbService {
 	}
 
 	public void saveMatches(List<Match> matches) {
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
 		for (Match match : matches) {
 			em.persist(match);
 			match.getInnings().stream().forEach(e -> em.persist(e));
@@ -59,7 +61,9 @@ public class DbService {
 			match.getPlayersOfTheMatch().stream().forEach(e -> em.persist(e));
 			match.getPlayersOfTheSeries().stream().forEach(e -> em.persist(e));
 		}
-		em.flush();
+		em.getTransaction().commit();
+		em.clear();
+		em.close();
 	}
 
 	public List<Integer> saveMatchesInBatches(List<Match> matches) {
