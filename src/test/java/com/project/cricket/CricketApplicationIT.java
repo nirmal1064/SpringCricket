@@ -98,12 +98,4 @@ public class CricketApplicationIT extends AbstractTestNGSpringContextTests {
 		Assert.assertTrue(!CollectionUtils.isEmpty(dbController.getResultsSummaryClassIdBetweenYears(1, 2020, 2021)));
 	}
 
-	@Test
-	public void testMatchJson() {
-//		MatchJson matchJson = matchController.getMatchJson(1239546).getBody();
-//		MatchJson matchJson2 = matchController.getMatchJson(5545454).getBody();
-//		Assert.assertNotNull(matchJson);
-//		Assert.assertNull(matchJson2);
-	}
-
 }
