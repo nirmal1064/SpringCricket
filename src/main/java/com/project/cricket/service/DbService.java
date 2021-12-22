@@ -48,18 +48,18 @@ public class DbService {
 		em.getTransaction().begin();
 		for (Match match : matches) {
 			em.persist(match);
-			match.getInnings().stream().forEach(e -> em.persist(e));
-			match.getPlayer().stream().forEach(e -> em.persist(e));
-			match.getSeries().stream().forEach(e -> em.persist(e));
-			match.getOfficial().stream().forEach(e -> em.persist(e));
-			match.getBatsmen().stream().forEach(e -> em.persist(e));
-			match.getBowlers().stream().forEach(e -> em.persist(e));
-			match.getPartnerships().stream().forEach(e -> em.persist(e));
-			match.getFows().stream().forEach(e -> em.persist(e));
-			match.getDebuts().stream().forEach(e -> em.persist(e));
-			match.getReplacement().stream().forEach(e -> em.persist(e));
-			match.getPlayersOfTheMatch().stream().forEach(e -> em.persist(e));
-			match.getPlayersOfTheSeries().stream().forEach(e -> em.persist(e));
+			match.getInnings().stream().forEach(em::persist);
+			match.getPlayer().stream().forEach(em::persist);
+			match.getSeries().stream().forEach(em::persist);
+			match.getOfficial().stream().forEach(em::persist);
+			match.getBatsmen().stream().forEach(em::persist);
+			match.getBowlers().stream().forEach(em::persist);
+			match.getPartnerships().stream().forEach(em::persist);
+			match.getFows().stream().forEach(em::persist);
+			match.getDebuts().stream().forEach(em::persist);
+			match.getReplacement().stream().forEach(em::persist);
+			match.getPlayersOfTheMatch().stream().forEach(em::persist);
+			match.getPlayersOfTheSeries().stream().forEach(em::persist);
 		}
 		em.getTransaction().commit();
 		em.clear();
