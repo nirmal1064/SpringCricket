@@ -1,0 +1,31 @@
+mysqldump -u root -p --no-data cricketdb > schema.sql
+
+mysqldump -u root -p cricketdb match_summary > match_summary.sql
+
+mysqldump -u root -p cricketdb batting_scorecard > batting_scorecard.sql
+
+mysqldump -u root -p cricketdb results_summary > results_summary.sql
+
+mysqldump -u root -p cricketdb bowling_scorecard > bowling_scorecard.sql
+
+mysqldump -u root -p cricketdb debuts > debuts.sql
+
+mysqldump -u root -p cricketdb fow_summary > fow_summary.sql
+
+mysqldump -u root -p cricketdb match_innings > match_innings.sql
+
+mysqldump -u root -p cricketdb official_summary > official_summary.sql
+
+mysqldump -u root -p cricketdb partnership_summary > partnership_summary.sql
+
+mysqldump -u root -p cricketdb players_of_the_match > players_of_the_match.sql
+
+mysqldump -u root -p cricketdb players_of_the_series > players_of_the_series.sql
+
+mysqldump -u root -p cricketdb replacement_summary > replacement_summary.sql
+
+mysqldump -u root -p cricketdb series > series.sql
+
+mysqldump -u root -p cricketdb squad_summary > squad_summary.sql
+
+mysqldump -u root -p cricketdb results_summary > results_summary.sql

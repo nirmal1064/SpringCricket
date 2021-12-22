@@ -63,6 +63,14 @@ public class DbController {
 		return resultSummaryRepository.findByClassIdAndYearBetween(classId, startYear, endYear).stream().map(ResultSummary::getMatchId).collect(Collectors.toList());
 	}
 
+	@GetMapping(value = "/missingids", produces = APPLICATION_JSON_VALUE)
+	public List<Integer> getMissingMatchIds(@RequestParam Integer classId) {
+		List<Integer> summaryMatchIds = resultSummaryRepository.findByClassId(classId).stream().map(ResultSummary::getMatchId).collect(Collectors.toList());
+		List<Integer> matchIds = getAllMatchIdsFromMatchSummary();
+		summaryMatchIds.removeAll(matchIds);
+		return summaryMatchIds;
+	}
+
 	public List<Integer> getAllMatchIdsFromMatchSummary() {
 		return matchSummaryRepository.findAll().stream().map(Match::getMatchId).collect(Collectors.toList());
 	}

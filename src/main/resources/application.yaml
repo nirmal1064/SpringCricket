@@ -6,9 +6,7 @@ file.matchjson.location: /path/to/store
 file.matchscorecard.location: /path/to/store
 spring.jpa.properties.hibernate:
    jdbc.batch_size: 50
-   order_inserts: true
    generate_statistics: false
-   order_updates: true
 ---
 spring:
    profiles: dev
