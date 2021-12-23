@@ -44,7 +44,7 @@ public class Match implements Serializable {
 
 	public List<Innings> getInnings() {
 		if (innings == null) {
-			return new ArrayList<>();
+			innings = new ArrayList<>();
 		}
 		return innings;
 	}
@@ -55,7 +55,7 @@ public class Match implements Serializable {
 
 	public List<Player> getPlayer() {
 		if (player == null) {
-			return new ArrayList<>();
+			player = new ArrayList<>();
 		}
 		return player;
 	}
@@ -66,7 +66,7 @@ public class Match implements Serializable {
 
 	public List<Series> getSeries() {
 		if (series == null) {
-			return new ArrayList<>();
+			series = new ArrayList<>();
 		}
 		return series;
 	}
@@ -77,7 +77,7 @@ public class Match implements Serializable {
 
 	public List<Official> getOfficial() {
 		if (official == null) {
-			return new ArrayList<>();
+			official = new ArrayList<>();
 		}
 		return official;
 	}
@@ -88,7 +88,7 @@ public class Match implements Serializable {
 
 	public List<Batsman> getBatsmen() {
 		if (batsmen == null) {
-			return new ArrayList<>();
+			batsmen = new ArrayList<>();
 		}
 		return batsmen;
 	}
@@ -99,7 +99,7 @@ public class Match implements Serializable {
 
 	public List<Bowler> getBowlers() {
 		if (bowlers == null) {
-			return new ArrayList<>();
+			bowlers = new ArrayList<>();
 		}
 		return bowlers;
 	}
@@ -110,7 +110,7 @@ public class Match implements Serializable {
 
 	public List<Partnership> getPartnerships() {
 		if (partnerships == null) {
-			return new ArrayList<>();
+			partnerships = new ArrayList<>();
 		}
 		return partnerships;
 	}
@@ -121,7 +121,7 @@ public class Match implements Serializable {
 
 	public List<Fow> getFows() {
 		if (fows == null) {
-			return new ArrayList<>();
+			fows = new ArrayList<>();
 		}
 		return fows;
 	}
@@ -132,7 +132,7 @@ public class Match implements Serializable {
 
 	public List<Debut> getDebuts() {
 		if (debuts == null) {
-			return new ArrayList<>();
+			debuts = new ArrayList<>();
 		}
 		return debuts;
 	}
@@ -143,7 +143,7 @@ public class Match implements Serializable {
 
 	public List<ReplacementPlayer> getReplacement() {
 		if (replacement == null) {
-			return new ArrayList<>();
+			replacement = new ArrayList<>();
 		}
 		return replacement;
 	}
@@ -154,7 +154,7 @@ public class Match implements Serializable {
 
 	public List<PlayersOfTheMatch> getPlayersOfTheMatch() {
 		if (playersOfTheMatch == null) {
-			return new ArrayList<>();
+			playersOfTheMatch = new ArrayList<>();
 		}
 		return playersOfTheMatch;
 	}
@@ -165,7 +165,7 @@ public class Match implements Serializable {
 
 	public List<PlayersOfTheSeries> getPlayersOfTheSeries() {
 		if (playersOfTheSeries == null) {
-			return new ArrayList<>();
+			playersOfTheSeries = new ArrayList<>();
 		}
 		return playersOfTheSeries;
 	}

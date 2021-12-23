@@ -1,6 +1,6 @@
 springdoc.swagger-ui.operationsSorter: method
 spring.jpa.hibernate.ddl-auto: update
-spring.jpa.show-sql: false
+spring.jpa.show-sql: true
 spring.jpa.open-in-view: false
 file.matchjson.location: /path/to/store
 file.matchscorecard.location: /path/to/store
