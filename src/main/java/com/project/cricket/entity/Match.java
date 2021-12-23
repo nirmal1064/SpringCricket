@@ -42,67 +42,25 @@ public class Match implements Serializable {
 	@OneToMany(mappedBy = "match", cascade = ALL)
 	private List<Innings> innings = new ArrayList<>();
 
-	public List<Innings> getInnings() {
-		if (innings == null) {
-			innings = new ArrayList<>();
-		}
-		return innings;
-	}
-
 	@Expose(serialize = false, deserialize = false)
 	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<Player> player = new ArrayList<>();
-
-	public List<Player> getPlayer() {
-		if (player == null) {
-			player = new ArrayList<>();
-		}
-		return player;
-	}
 
 	@Expose(serialize = false, deserialize = false)
 	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<Series> series = new ArrayList<>();
 
-	public List<Series> getSeries() {
-		if (series == null) {
-			series = new ArrayList<>();
-		}
-		return series;
-	}
-
 	@Expose(serialize = false, deserialize = false)
 	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<Official> official = new ArrayList<>();
-
-	public List<Official> getOfficial() {
-		if (official == null) {
-			official = new ArrayList<>();
-		}
-		return official;
-	}
 
 	@Expose(serialize = false, deserialize = false)
 	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<Batsman> batsmen = new ArrayList<>();
 
-	public List<Batsman> getBatsmen() {
-		if (batsmen == null) {
-			batsmen = new ArrayList<>();
-		}
-		return batsmen;
-	}
-
 	@Expose(serialize = false, deserialize = false)
 	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<Bowler> bowlers = new ArrayList<>();
-
-	public List<Bowler> getBowlers() {
-		if (bowlers == null) {
-			bowlers = new ArrayList<>();
-		}
-		return bowlers;
-	}
 
 	@Expose(serialize = false, deserialize = false)
 	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
@@ -119,56 +77,21 @@ public class Match implements Serializable {
 	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<Fow> fows = new ArrayList<>();
 
-	public List<Fow> getFows() {
-		if (fows == null) {
-			fows = new ArrayList<>();
-		}
-		return fows;
-	}
-
 	@Expose(serialize = false, deserialize = false)
 	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<Debut> debuts = new ArrayList<>();
-
-	public List<Debut> getDebuts() {
-		if (debuts == null) {
-			debuts = new ArrayList<>();
-		}
-		return debuts;
-	}
 
 	@Expose(serialize = false, deserialize = false)
 	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<ReplacementPlayer> replacement = new ArrayList<>();
 
-	public List<ReplacementPlayer> getReplacement() {
-		if (replacement == null) {
-			replacement = new ArrayList<>();
-		}
-		return replacement;
-	}
-
 	@Expose(serialize = false, deserialize = false)
 	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<PlayersOfTheMatch> playersOfTheMatch = new ArrayList<>();
 
-	public List<PlayersOfTheMatch> getPlayersOfTheMatch() {
-		if (playersOfTheMatch == null) {
-			playersOfTheMatch = new ArrayList<>();
-		}
-		return playersOfTheMatch;
-	}
-
 	@Expose(serialize = false, deserialize = false)
 	@OneToMany(mappedBy = "match", cascade = ALL, orphanRemoval = true)
 	private List<PlayersOfTheSeries> playersOfTheSeries = new ArrayList<>();
-
-	public List<PlayersOfTheSeries> getPlayersOfTheSeries() {
-		if (playersOfTheSeries == null) {
-			playersOfTheSeries = new ArrayList<>();
-		}
-		return playersOfTheSeries;
-	}
 
 	@SerializedName("actual_days")
 	private Integer actualDays;

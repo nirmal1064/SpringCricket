@@ -3,6 +3,7 @@ package com.project.cricket.utils;
 import static com.project.cricket.utils.Constants.ATAG;
 import static com.project.cricket.utils.Constants.HREF;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jsoup.nodes.Element;
@@ -31,6 +32,13 @@ public class CricUtils {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	public static <T> List<T> emptyIfNull(List<T> list) {
+		if (CollectionUtils.isEmpty(list)) {
+			return new ArrayList<>();
+		}
+		return list;
 	}
 
 }

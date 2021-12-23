@@ -1,5 +1,7 @@
 package com.project.cricket.service;
 
+import static com.project.cricket.utils.CricUtils.emptyIfNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,18 +50,18 @@ public class DbService {
 		em.getTransaction().begin();
 		for (Match match : matches) {
 			em.persist(match);
-			match.getInnings().stream().forEach(em::persist);
-			match.getPlayer().stream().forEach(em::persist);
-			match.getSeries().stream().forEach(em::persist);
-			match.getOfficial().stream().forEach(em::persist);
-			match.getBatsmen().stream().forEach(em::persist);
-			match.getBowlers().stream().forEach(em::persist);
-			match.getPartnerships().stream().forEach(em::persist);
-			match.getFows().stream().forEach(em::persist);
-			match.getDebuts().stream().forEach(em::persist);
-			match.getReplacement().stream().forEach(em::persist);
-			match.getPlayersOfTheMatch().stream().forEach(em::persist);
-			match.getPlayersOfTheSeries().stream().forEach(em::persist);
+			emptyIfNull(match.getInnings()).stream().forEach(em::persist);
+			emptyIfNull(match.getPlayer()).stream().forEach(em::persist);
+			emptyIfNull(match.getSeries()).stream().forEach(em::persist);
+			emptyIfNull(match.getOfficial()).stream().forEach(em::persist);
+			emptyIfNull(match.getBatsmen()).stream().forEach(em::persist);
+			emptyIfNull(match.getBowlers()).stream().forEach(em::persist);
+			emptyIfNull(match.getPartnerships()).stream().forEach(em::persist);
+			emptyIfNull(match.getFows()).stream().forEach(em::persist);
+			emptyIfNull(match.getDebuts()).stream().forEach(em::persist);
+			emptyIfNull(match.getReplacement()).stream().forEach(em::persist);
+			emptyIfNull(match.getPlayersOfTheMatch()).stream().forEach(em::persist);
+			emptyIfNull(match.getPlayersOfTheSeries()).stream().forEach(em::persist);
 		}
 		em.getTransaction().commit();
 		em.clear();
