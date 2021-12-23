@@ -37,13 +37,13 @@ public class ResultsController {
 	}
 
 	@PostMapping(value = "/results")
-	public ResponseEntity<List<ResultSummary>> postMatchResults(@RequestParam Integer classId, @RequestParam Integer startYear, @RequestParam(required = false) Integer endYear) {
+	public ResponseEntity<Integer> postMatchResults(@RequestParam Integer classId, @RequestParam Integer startYear, @RequestParam(required = false) Integer endYear) {
 		LOGGER.info("Posting results");
 		if (endYear == null || endYear < startYear) {
 			endYear = startYear;
 		}
 		List<ResultSummary> summary = resultsScraperService.postSummary(classId, startYear, endYear, true);
-		return cricUtils.getListResponse(summary);
+		return cricUtils.getIntegerResponse(summary.size());
 	}
 
 }

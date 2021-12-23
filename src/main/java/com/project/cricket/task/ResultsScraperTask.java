@@ -2,12 +2,16 @@ package com.project.cricket.task;
 
 import static com.project.cricket.utils.Constants.DATA1;
 import static com.project.cricket.utils.Constants.ENGINE_TABLE;
+import static com.project.cricket.utils.Constants.FC;
 import static com.project.cricket.utils.Constants.FCHASH;
+import static com.project.cricket.utils.Constants.ICCTHASH;
+import static com.project.cricket.utils.Constants.LA;
 import static com.project.cricket.utils.Constants.MATCH_URL;
 import static com.project.cricket.utils.Constants.MJSON_URL;
 import static com.project.cricket.utils.Constants.NORESULTS;
 import static com.project.cricket.utils.Constants.ODIHASH;
 import static com.project.cricket.utils.Constants.SUMMARY_LINK;
+import static com.project.cricket.utils.Constants.T20;
 import static com.project.cricket.utils.Constants.T20IHASH;
 import static com.project.cricket.utils.Constants.TD;
 import static com.project.cricket.utils.Constants.TESTHASH;
@@ -27,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.util.StringUtils;
 
 import com.project.cricket.entity.ResultSummary;
 import com.project.cricket.exceptions.ResultNotFoundException;
@@ -60,7 +65,7 @@ public class ResultsScraperTask implements Callable<List<ResultSummary>> {
 		LOGGER.info("Requesting summary for {}", url);
 		Document document = null;
 		try {
-			document = Jsoup.connect(url).get();
+			document = Jsoup.connect(url).timeout(60000).get();
 			Elements engineTable = document.getElementsByClass(ENGINE_TABLE).get(0).getElementsByClass(DATA1);
 			if (engineTable.isEmpty()) {
 				throw new ResultNotFoundException(NORESULTS);
@@ -95,13 +100,9 @@ public class ResultsScraperTask implements Callable<List<ResultSummary>> {
 		String matchJsonUrl = String.format(MJSON_URL, matchId);
 		int matchNumber = getMatchNumber(scorecard);
 
-		if (verifyScorecard(scorecard)) {
-			return null;
-		}
-
 		ResultSummary matchResult = new ResultSummary();
 		matchResult.setMatchId(matchId);
-		matchResult.setClassId(classId);
+		matchResult.setClassId(getClassId(scorecard));
 		matchResult.setTeam1(team1);
 		matchResult.setTeam2(team2);
 		matchResult.setWinner(winner);
@@ -117,8 +118,21 @@ public class ResultsScraperTask implements Callable<List<ResultSummary>> {
 		return matchResult;
 	}
 
-	private boolean verifyScorecard(String scorecard) {
-		return (this.classId == 4 || this.classId == 5 || this.classId == 6) && (scorecard.contains(TESTHASH) || scorecard.contains(ODIHASH) || scorecard.contains(T20IHASH));
+	private int getClassId(String scorecard) {
+		if (scorecard.contains(TESTHASH)) {
+			return 1;
+		} else if (scorecard.contains(ODIHASH)) {
+			return 2;
+		} else if (scorecard.contains(T20IHASH)) {
+			return 3;
+		} else if (scorecard.contains(FC) || scorecard.contains(FCHASH)) {
+			return 4;
+		} else if (scorecard.contains(ICCTHASH) || scorecard.contains(LA)) {
+			return 5;
+		} else if (scorecard.contains(T20)) {
+			return 6;
+		}
+		return classId;
 	}
 
 	private int getMatchNumber(String scorecard) {
@@ -126,7 +140,7 @@ public class ResultsScraperTask implements Callable<List<ResultSummary>> {
 		scorecard = scorecard.replace(ODIHASH, "");
 		scorecard = scorecard.replace(T20IHASH, "");
 		scorecard = scorecard.replace(FCHASH, "");
-		scorecard = cricUtils.cleanString(scorecard);
+		scorecard = StringUtils.trimWhitespace(scorecard);
 		try {
 			return Integer.parseInt(scorecard);
 		} catch (NumberFormatException e) {

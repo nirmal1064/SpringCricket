@@ -15,7 +15,11 @@ public final class Constants {
 	public static final String TESTHASH = "Test # ";
 	public static final String ODIHASH  = "ODI # ";
 	public static final String T20IHASH = "T20I # ";
+	public static final String T20 = "T20";
 	public static final String FCHASH = "FC # ";
+	public static final String FC = "FC";
+	public static final String ICCTHASH = "ICCT # ";
+	public static final String LA = "LA";
 	public static final String COMMENTS = "https://hsapi.espncricinfo.com/v1/pages/match/comments?lang=en&leagueId=%s&eventId=%s&period=%s&page=%s&filter=full&liveTest=false";
 	public static final String NEXT_DATA = "__NEXT_DATA__";
 	public static final String HTML = "HTML";

@@ -34,6 +34,13 @@ public class CricUtils {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
+	public <T> ResponseEntity<T> getIntegerResponse(T response) {
+		if (response != null) {
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
 	public static <T> List<T> emptyIfNull(List<T> list) {
 		if (CollectionUtils.isEmpty(list)) {
 			return new ArrayList<>();
