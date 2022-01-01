@@ -4,6 +4,7 @@ plugins {
 	id "org.sonarqube" version "${sonarqube}"
 	id "java"
 	id "jacoco"
+	id "eclipse"
 }
 
 group = "com.project"
@@ -11,7 +12,7 @@ version = "0.0.1-SNAPSHOT"
 sourceCompatibility = "11"
 
 configurations {
-  all*.exclude group: "org.apache.logging.log4j"
+	all*.exclude group: "org.apache.logging.log4j"
 }
 
 repositories {
@@ -31,7 +32,7 @@ dependencies {
 	implementation "commons-io:commons-io:${commonsio}"
 	implementation "com.google.code.gson:gson:${gson}"
 	compileOnly "org.projectlombok:lombok:${lombok}"
-    annotationProcessor "org.projectlombok:lombok:${lombok}"
+	annotationProcessor "org.projectlombok:lombok:${lombok}"
 
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
 	testImplementation "org.testng:testng:${testng}"
@@ -40,9 +41,9 @@ dependencies {
 }
 
 jacocoTestReport {
-    reports {
-        xml.enabled true
-    }
+	reports {
+		xml.enabled true
+	}
 }
 
 test {
@@ -62,9 +63,9 @@ sonarqube {
 		property "sonar.host.url", "https://sonarcloud.io"
 		property "sonar.core.codeCoveragePlugin", "jacoco"
 		property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
-  	}
+	}
 }
 
 tasks.named("sonarqube").configure {
-    dependsOn test
+	dependsOn test
 }

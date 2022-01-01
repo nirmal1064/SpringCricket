@@ -101,6 +101,22 @@ public class MatchController {
 		return cricUtils.getListResponse(matchIds);
 	}
 
+	@PostMapping(value = "/savemissingjson")
+	public ResponseEntity<List<Integer>> saveMissingMatchJson(@RequestParam Integer classId, @RequestParam(required = false) Integer startYear, 
+			@RequestParam(required = false) Integer endYear) {
+		LOGGER.info("Saving missing matchjson ids");
+		List<Integer> missingJsonIds = getMissingMatchJsonIds(classId, startYear, endYear).getBody();
+		return saveMatchJsonToFile(null, null, null, missingJsonIds);
+	}
+
+	@PostMapping(value = "/savemissingscorecard")
+	public ResponseEntity<List<Integer>> saveMissingMatchScorecard(@RequestParam Integer classId, @RequestParam(required = false) Integer startYear, 
+			@RequestParam(required = false) Integer endYear) {
+		LOGGER.info("Saving missing matchscorecard ids");
+		List<Integer> missingScorecardIds = getMissingMatchScorecardIds(classId, startYear, endYear).getBody();
+		return saveMatchScorecardToFile(null, null, null, missingScorecardIds);
+	}
+
 	@GetMapping(value = "/missingjson")
 	public ResponseEntity<List<Integer>> checkMatchJson(@RequestParam(required = false) Integer classId, @RequestParam(required = false) Integer startYear, 
 			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId) {
@@ -114,7 +130,6 @@ public class MatchController {
 	@PostMapping(value = "/matchfulldb")
 	public ResponseEntity<List<Integer>> saveMatchToDbFromFile(@RequestParam(required = false) Integer classId, @RequestParam(required = false) Integer startYear, 
 			@RequestParam(required = false) Integer endYear, @RequestParam(required = false) List<Integer> matchId) {
-
 		List<Integer> matchIds = filterInput(classId, startYear, endYear, matchId);
 		List<Integer> matchIdsAlreadyPresent = dbController.getAllMatchIdsFromMatchSummary();
 		List<Integer> exceptions = Arrays.asList(1104483);
