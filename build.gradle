@@ -10,6 +10,7 @@ plugins {
 group = "com.project"
 version = "0.0.1-SNAPSHOT"
 sourceCompatibility = "11"
+targetCompatibility = "11"
 
 configurations {
 	all*.exclude group: "org.apache.logging.log4j"
@@ -20,17 +21,14 @@ repositories {
 }
 
 dependencies {
-	implementation ("org.springframework.boot:spring-boot-starter-web") {
-		exclude group: "com.fasterxml.jackson.core"
-	}
+	implementation "org.springframework.boot:spring-boot-starter-web"
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
 	runtimeOnly "mysql:mysql-connector-java"
-	implementation ("org.springdoc:springdoc-openapi-ui:${openApi}") {
-		exclude group: "commons-io"
-	}
+	implementation "org.springdoc:springdoc-openapi-ui:${openApi}"
 	implementation "org.jsoup:jsoup:${jsoup}"
 	implementation "commons-io:commons-io:${commonsio}"
 	implementation "com.google.code.gson:gson:${gson}"
+
 	compileOnly "org.projectlombok:lombok:${lombok}"
 	annotationProcessor "org.projectlombok:lombok:${lombok}"
 
