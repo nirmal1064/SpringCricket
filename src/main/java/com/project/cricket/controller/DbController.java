@@ -105,7 +105,6 @@ public class DbController {
 				&& !p.getScorecard().contains(T20IHASH)
 				&& !p.getScorecard().contains(T20)
 				&& !p.getScorecard().contains(LA)
-				&& !p.getScorecard().contains(T20IHASH)
 				&& !p.getScorecard().contains(ICCTHASH)
 				&& !p.getScorecard().contains(FC)
 				&& !p.getScorecard().contains(FCHASH);

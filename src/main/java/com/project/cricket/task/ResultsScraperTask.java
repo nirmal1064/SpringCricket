@@ -75,9 +75,7 @@ public class ResultsScraperTask implements Callable<List<ResultSummary>> {
 				Element row = rows.get(i);
 				Elements cols = row.select(TD);
 				ResultSummary matchResult = getMatchResult(cols);
-				if(matchResult != null) {
-					resultSummary.add(matchResult);
-				}
+				resultSummary.add(matchResult);
 			}
 			return resultSummary;
 		} catch (Exception e) {
